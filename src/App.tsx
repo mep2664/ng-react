@@ -1,25 +1,49 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { PageHeader, PieChart } from "./components";
 
 const App: React.FC = () => {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    return (
+        <React.Fragment>
+            <PageHeader />
+            <div style={{height: "150px"}}>
+                <PieChart
+                    Data={[
+                        {
+                            Caption: "A",
+                            Value: 50,
+                            PercentOfTotal: (50 / 215),
+                        },
+                        {
+                            Caption: "B",
+                            Value: 25,
+                            PercentOfTotal: (25 / 215),
+                        },
+                        {
+                            Caption: "C",
+                            Value: 75,
+                            PercentOfTotal: (75 / 215),
+                        },
+                        {
+                            Caption: "D",
+                            Value: 10,
+                            PercentOfTotal: (10 / 215),
+                        },
+                        {
+                            Caption: "E",
+                            Value: 20,
+                            PercentOfTotal: (20 / 215),
+                        },
+                        {
+                            Caption: "F",
+                            Value: 35,
+                            PercentOfTotal: (35 / 215),
+                        },
+                    ]}
+                    PercentStrokeWidth={1}
+                />
+            </div>
+        </React.Fragment>
   );
 }
 
