@@ -1,5 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
+import { Tooltip } from "../../";
 
 interface IGraphData {
     Caption: string;
@@ -19,7 +20,8 @@ const PieColors = [
     "green",
     "purple",
     "yellow",
-    "pink"
+    "pink",
+    "orange",
 ]
 
 const Chart = styled.svg`
@@ -45,6 +47,8 @@ const Segment = styled.circle<ISegment>`
 `;
 
 export const PieChart: React.FC<IPieChart> = ({Data, PercentStrokeWidth, Radius}) => {
+    const [tooltip, setTooltip] = React.useState(<React.Fragment></React.Fragment>);
+
     const diameter = Radius * 2;
     const maxPercentStrokeWidth: number = .95
     if (PercentStrokeWidth > 1) {
@@ -55,22 +59,24 @@ export const PieChart: React.FC<IPieChart> = ({Data, PercentStrokeWidth, Radius}
     }
     const strokeWidth: number = Radius * PercentStrokeWidth;
     const segmentRadius: number = Radius - strokeWidth / 2;
+    const circumference: number = 2*Math.PI*segmentRadius;
 
     const renderPieSegments = () => {
         let strokeDashOffset: number = 0;
         const segments: JSX.Element[] = Data.map((segment, index) => {
-            const circumference: number = 2*Math.PI*segmentRadius;
             let percentOfTotal = segment.PercentOfTotal;
             if (percentOfTotal > 1) {
                 percentOfTotal = percentOfTotal / 100;
             }
             const currentOffset = strokeDashOffset;
             strokeDashOffset -= percentOfTotal * circumference;
-            const strokeDashArray = `${percentOfTotal * circumference} ${(1 - percentOfTotal) * circumference}`;
+            const strokeDashArray = `${(percentOfTotal * circumference)} ${(1 - percentOfTotal) * circumference}`;
             return (
-                <Segment key={index} r={segmentRadius} cx={Radius} cy={Radius} fill="transparent"
+                <Segment tabIndex={0} key={index} r={segmentRadius} cx={Radius} cy={Radius} fill="transparent"
                     stroke={PieColors[index]} StrokeWidth={strokeWidth} StrokeDashoffset={currentOffset}
                     StrokeDasharray= {strokeDashArray}
+                    onMouseMove={(e) => setTooltip(<Tooltip Caption={`${segment.Caption}&#010;${segment.Value}(${(percentOfTotal*100).toFixed(2)}%)`} Top={e.clientY} Left={e.clientX} />)}
+                    onMouseOut={() => setTooltip(<React.Fragment></React.Fragment>)}
                 />
             );
         });
@@ -78,9 +84,14 @@ export const PieChart: React.FC<IPieChart> = ({Data, PercentStrokeWidth, Radius}
     }
 
     return (
-        <Chart height="100%" width="100%" viewBox={`0 0 ${diameter} ${diameter}`}>
-            <circle r={Radius} cx={Radius} cy={Radius} fill="transparent" />
-            {renderPieSegments()}
-        </Chart>
+        <React.Fragment>
+            <Chart height="100%" width="100%" viewBox={`0 0 ${diameter} ${diameter}`}
+                onMouseOut={() => setTooltip(<React.Fragment></React.Fragment>)}
+            >
+                <circle r={Radius} cx={Radius} cy={Radius} fill="transparent" />
+                {renderPieSegments()}
+            </Chart>
+            {tooltip}
+        </React.Fragment>
     );
 }

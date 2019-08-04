@@ -30,8 +30,13 @@ const data1 = [
     },
     {
         Caption: "F",
-        Value: 35,
-        PercentOfTotal: (35 / 215),
+        Value: 32.75,
+        PercentOfTotal: (32.75 / 215),
+    },
+    {
+        Caption: "G",
+        Value: 2.15,
+        PercentOfTotal: (2.15 / 215),
     },
 ];
 
