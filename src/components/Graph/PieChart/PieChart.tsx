@@ -10,6 +10,7 @@ interface IGraphData {
 interface IPieChart {
     Data: IGraphData[];
     PercentStrokeWidth: number;
+    Radius: number;
 }
 
 const PieColors = [
@@ -40,17 +41,20 @@ const Segment = styled.circle<ISegment>`
     cursor: pointer;
 
     &:hover {
-        stroke: black;
-    }
+        stroke-width: ${(props) => props.StrokeWidth + (props.StrokeWidth * .1)};    }
 `;
 
-// stroke-width: ${(props) => props.StrokeWidth + .5};
-
-export const PieChart: React.FC<IPieChart> = ({Data, PercentStrokeWidth}) => {
-    const pieRadius: number = 10;
-    const strokeWidth: number = pieRadius * ((PercentStrokeWidth > 1) ? (PercentStrokeWidth / 100) : PercentStrokeWidth);
-    const segmentRadius: number = pieRadius - strokeWidth / 2;
-    const maxPercentOfTotal: number = .95
+export const PieChart: React.FC<IPieChart> = ({Data, PercentStrokeWidth, Radius}) => {
+    const diameter = Radius * 2;
+    const maxPercentStrokeWidth: number = .95
+    if (PercentStrokeWidth > 1) {
+        PercentStrokeWidth = PercentStrokeWidth / 100;
+    }
+    if (PercentStrokeWidth > maxPercentStrokeWidth) {
+        PercentStrokeWidth = maxPercentStrokeWidth;
+    }
+    const strokeWidth: number = Radius * PercentStrokeWidth;
+    const segmentRadius: number = Radius - strokeWidth / 2;
 
     const renderPieSegments = () => {
         let strokeDashOffset: number = 0;
@@ -60,12 +64,11 @@ export const PieChart: React.FC<IPieChart> = ({Data, PercentStrokeWidth}) => {
             if (percentOfTotal > 1) {
                 percentOfTotal = percentOfTotal / 100;
             }
-            percentOfTotal = (percentOfTotal > maxPercentOfTotal ? maxPercentOfTotal : percentOfTotal)
             const currentOffset = strokeDashOffset;
             strokeDashOffset -= percentOfTotal * circumference;
             const strokeDashArray = `${percentOfTotal * circumference} ${(1 - percentOfTotal) * circumference}`;
             return (
-                <Segment key={index} r={segmentRadius} cx={pieRadius} cy={pieRadius} fill="transparent"
+                <Segment key={index} r={segmentRadius} cx={Radius} cy={Radius} fill="transparent"
                     stroke={PieColors[index]} StrokeWidth={strokeWidth} StrokeDashoffset={currentOffset}
                     StrokeDasharray= {strokeDashArray}
                 />
@@ -75,8 +78,8 @@ export const PieChart: React.FC<IPieChart> = ({Data, PercentStrokeWidth}) => {
     }
 
     return (
-        <Chart height="100%" width="100%" viewBox="0 0 20 20">
-            <circle r={pieRadius} cx={pieRadius} cy={pieRadius} fill="transparent" />
+        <Chart height="100%" width="100%" viewBox={`0 0 ${diameter} ${diameter}`}>
+            <circle r={Radius} cx={Radius} cy={Radius} fill="transparent" />
             {renderPieSegments()}
         </Chart>
     );
