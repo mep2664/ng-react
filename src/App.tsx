@@ -62,6 +62,7 @@ const App: React.FC = () => {
                     Data={data1}
                     PercentStrokeWidth={50}
                     Radius={100}
+                    HeightAndWidth="200px"
                 />
             </div>
         </React.Fragment>
