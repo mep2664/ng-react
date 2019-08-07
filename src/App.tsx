@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { PageHeader, PieChart } from "./components";
+import { PageHeader, PieChart, Tooltip } from "./components";
 
 const data1 = [
     {
@@ -54,10 +54,26 @@ const data2 = [
 ];
 
 const App: React.FC = () => {
+    const [tooltip, setTooltip] = React.useState(<React.Fragment></React.Fragment>);
+    const button = React.useRef<HTMLButtonElement>(null);
+
+    const handleMouseOver = () => {
+        if (button.current) {
+            setTooltip(
+                <Tooltip
+                    Caption="Tooltip!"
+                    Top={(button.current).offsetTop}
+                    Left={(button.current).offsetLeft + (button.current.offsetWidth / 2)}
+                    Position="Top"
+                />
+            );
+        }
+    }
+
     return (
         <React.Fragment>
             <PageHeader />
-            <div style={{height: "200px"}}>
+            <div style={{height: "200px", margin: "50px"}}>
                 <PieChart
                     Data={data1}
                     PercentStrokeWidth={50}
@@ -65,6 +81,16 @@ const App: React.FC = () => {
                     HeightAndWidth="200px"
                 />
             </div>
+            <div style={{margin: "50px"}}>
+                <button
+                    ref={button}
+                    onMouseOver={handleMouseOver}
+                    onMouseOut={() => setTooltip(<React.Fragment></React.Fragment>)}
+                >
+                    Test Tooltip
+                </button>
+            </div>
+            {tooltip}
         </React.Fragment>
   );
 }
