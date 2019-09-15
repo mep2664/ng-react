@@ -57,13 +57,12 @@ const App: React.FC = () => {
     const [tooltip, setTooltip] = React.useState(<React.Fragment></React.Fragment>);
     const button = React.useRef<HTMLButtonElement>(null);
 
-    const handleMouseOver = () => {
+    const handleMouseOver = (e: React.MouseEvent<HTMLButtonElement>) => {
         if (button.current) {
             setTooltip(
                 <Tooltip
                     Caption="Tooltip!"
-                    Top={(button.current).offsetTop}
-                    Left={(button.current).offsetLeft + (button.current.offsetWidth / 2)}
+                    AnchorElement={e.target as HTMLButtonElement}
                     Position="Top"
                 />
             );
