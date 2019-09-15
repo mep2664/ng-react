@@ -1,6 +1,6 @@
 import * as React from "react";
 
-interface ITicket {
+export interface ITicket {
     project: string;
     ticketId: number;
 }

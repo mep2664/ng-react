@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
-import { Dashboard, PageHeader, Ticket, Tooltip } from "./components";
-import { Route, BrowserRouter } from "react-router-dom";
+import { Dashboard, ITicket, NotFound, PageHeader, Ticket } from "./components";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 
 const App: React.FC = () => {
     //const [tooltip, setTooltip] = React.useState(<React.Fragment></React.Fragment>);
@@ -19,15 +19,22 @@ const App: React.FC = () => {
     //     }
     // }
 
+    function notFound() {
+        return <NotFound />
+    }
+
     const dashboard = () => {
         console.log("dashboard");
         return <Dashboard />;
     }
 
     function ticket({ match }: { match: any }) {
-        console.log(match.params)
-        console.log("ticket");
-        return <Ticket {...match.params} />;
+        match.params.ticketId = parseInt(match.params.ticketId);
+        const params: ITicket = match.params;
+        if (params.ticketId) {
+            return <Ticket {...params} />;
+        }
+        return <NotFound />;
     }
 
     return (
@@ -35,8 +42,12 @@ const App: React.FC = () => {
             <BrowserRouter>
                 <PageHeader />
                 <main>
-                    <Route path="/" exact component={dashboard} />
-                    <Route path="/ticket/:project-:ticketId" component={ticket} />
+                    <Switch>
+                        <Route path="/" exact component={dashboard} />
+                        <Route path="/ticket/:project-:ticketId" component={ticket} />
+                        <Route path="/page-not-found" component={notFound} />
+                        <Route default component={notFound} />
+                    </Switch>
                 </main>
                 {/*tooltip*/}
             </BrowserRouter>
