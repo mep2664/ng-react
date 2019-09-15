@@ -5,7 +5,7 @@ export const Dashboard: React.FC = () => {
     return (
         <div>
             dashboard
-            <Link to="/ticket/projectName-ticketID">NEWGIRRA-1</Link>
+            <Link to="/ticket/PROJECT-1">NEWGIRRA-1</Link>
         </div>
     );
 }

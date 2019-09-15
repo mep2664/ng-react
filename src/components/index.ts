@@ -1,6 +1,7 @@
 export * from "./Button";
 export * from "./Dashboard";
 export * from "./Graph";
+export * from "./Inputs";
 export * from "./Logo";
 export * from "./Navigation";
 export * from "./NotFound";
