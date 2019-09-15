@@ -4,7 +4,7 @@ import { backgroundColor, fontColor } from "../../colors";
 import { NavigationMenu } from "../../components";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+const Spaceholder = styled.div`
     height: 50px;
 `;
 
@@ -22,11 +22,11 @@ const Header = styled.header`
 
 export const PageHeader: React.FC = () => {
   return (
-    <Wrapper>
-        <Header>
-            <Logo />
-            <NavigationMenu />
-        </Header>
-    </Wrapper>
+    <Spaceholder>
+      <Header>
+        <Logo />
+        <NavigationMenu />
+      </Header>
+    </Spaceholder>
   );
 }

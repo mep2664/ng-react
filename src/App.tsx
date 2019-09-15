@@ -1,97 +1,47 @@
 import React from 'react';
 import './App.css';
-import { PageHeader, PieChart, Tooltip } from "./components";
-
-const data1 = [
-    {
-        Caption: "A",
-        Value: 50,
-        PercentOfTotal: (50 / 215),
-    },
-    {
-        Caption: "B",
-        Value: 25,
-        PercentOfTotal: (25 / 215),
-    },
-    {
-        Caption: "C",
-        Value: 75,
-        PercentOfTotal: (75 / 215),
-    },
-    {
-        Caption: "D",
-        Value: 10,
-        PercentOfTotal: (10 / 215),
-    },
-    {
-        Caption: "E",
-        Value: 20,
-        PercentOfTotal: (20 / 215),
-    },
-    {
-        Caption: "F",
-        Value: 32.75,
-        PercentOfTotal: (32.75 / 215),
-    },
-    {
-        Caption: "G",
-        Value: 2.15,
-        PercentOfTotal: (2.15 / 215),
-    },
-];
-
-const data2 = [
-    {
-        Caption: "A",
-        Value: 50,
-        PercentOfTotal: (50 / 100),
-    },
-    {
-        Caption: "B",
-        Value: 50,
-        PercentOfTotal: (50 / 100),
-    },
-];
+import { Dashboard, PageHeader, Ticket, Tooltip } from "./components";
+import { Route, BrowserRouter } from "react-router-dom";
 
 const App: React.FC = () => {
-    const [tooltip, setTooltip] = React.useState(<React.Fragment></React.Fragment>);
-    const button = React.useRef<HTMLButtonElement>(null);
+    //const [tooltip, setTooltip] = React.useState(<React.Fragment></React.Fragment>);
+    //const button = React.useRef<HTMLButtonElement>(null);
 
-    const handleMouseOver = (e: React.MouseEvent<HTMLButtonElement>) => {
-        if (button.current) {
-            setTooltip(
-                <Tooltip
-                    Caption="Tooltip!"
-                    AnchorElement={e.target as HTMLButtonElement}
-                    Position="Top"
-                />
-            );
-        }
+    // const handleMouseOver = (e: React.MouseEvent<HTMLButtonElement>) => {
+    //     if (button.current) {
+    //         setTooltip(
+    //             <Tooltip
+    //                 Caption="Tooltip!"
+    //                 AnchorElement={e.target as HTMLButtonElement}
+    //                 Position="Top"
+    //             />
+    //         );
+    //     }
+    // }
+
+    const dashboard = () => {
+        console.log("dashboard");
+        return <Dashboard />;
+    }
+
+    function ticket({ match }: { match: any }) {
+        console.log(match.params)
+        console.log("ticket");
+        return <Ticket {...match.params} />;
     }
 
     return (
         <React.Fragment>
-            <PageHeader />
-            <div style={{height: "200px", margin: "50px"}}>
-                <PieChart
-                    Data={data1}
-                    PercentStrokeWidth={50}
-                    Radius={100}
-                    HeightAndWidth="200px"
-                />
-            </div>
-            <div style={{margin: "50px"}}>
-                <button
-                    ref={button}
-                    onMouseOver={handleMouseOver}
-                    onMouseOut={() => setTooltip(<React.Fragment></React.Fragment>)}
-                >
-                    Test Tooltip
-                </button>
-            </div>
-            {tooltip}
+            <BrowserRouter>
+                <PageHeader />
+                <main>
+                    <Route path="/" exact component={dashboard} />
+                    <Route path="/ticket/:project-:ticketId" component={ticket} />
+                </main>
+                {/*tooltip*/}
+            </BrowserRouter>
         </React.Fragment>
-  );
+    );
 }
 
 export default App;
