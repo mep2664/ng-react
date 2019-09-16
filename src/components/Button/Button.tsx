@@ -1,5 +1,5 @@
 import React from "react";
-import { emphasisType, backgroundColor, fontColor, hoverBackgroundColor } from "../../colors";
+import { emphasisType, backgroundColor, fontColor, hoverBackgroundColor } from "../../theme";
 import styled from "styled-components";
 
 interface IStyledButton {
@@ -30,15 +30,15 @@ interface IButtonProps {
 
 }
 
-export const Button: React.FC<IButtonProps> = ({Caption, Emphasis, Type, OnClick}) => {
-  return (
-    <StyledButton
-        type={Type}
-        Emphasis={Emphasis}
+export const Button: React.FC<IButtonProps> = ({ Caption, Emphasis, Type, OnClick }) => {
+    return (
+        <StyledButton
+            type={Type}
+            Emphasis={Emphasis}
 
-        onClick={OnClick}
-    >
-        {Caption}
-    </StyledButton>
-  );
+            onClick={OnClick}
+        >
+            {Caption}
+        </StyledButton>
+    );
 }
