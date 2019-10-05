@@ -5,6 +5,7 @@
   "dependencies": {
     "@types/he": "^1.1.0",
     "@types/jest": "24.0.15",
+    "@types/lodash": "^4.14.138",
     "@types/node": "12.6.8",
     "@types/react": "16.8.23",
     "@types/react-dom": "16.8.4",
@@ -13,6 +14,7 @@
     "@types/styled-components": "^4.1.18",
     "he": "^1.2.0",
     "localized-strings": "^0.2.3",
+    "lodash": "^4.17.15",
     "node-sass": "^4.12.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
