@@ -10,4 +10,5 @@ export * from "./Navigation";
 export * from "./NotFound";
 export * from "./PageHeader";
 export * from "./Ticket";
+export * from "./TicketDetail";
 export * from "./Tooltip";

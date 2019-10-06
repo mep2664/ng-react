@@ -4,6 +4,13 @@ import { Dashboard, ITicket, Login, ModuleAside, NotFound, PageHeader, Ticket } 
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
+
+const client = new ApolloClient({
+    uri: "http://localhost:5556/graphql",
+})
+
 // maybe make this a section?
 const ContentWrapper = styled.div`
     display: grid;
@@ -48,7 +55,7 @@ const App: React.FC = () => {
     }
 
     return (
-        <React.Fragment>
+        <ApolloProvider client={client}>
             <BrowserRouter>
                 <PageHeader />
                 <ContentWrapper>
@@ -65,7 +72,7 @@ const App: React.FC = () => {
                 </ContentWrapper>
                 {/*tooltip*/}
             </BrowserRouter>
-        </React.Fragment>
+        </ApolloProvider>
     );
 }
 

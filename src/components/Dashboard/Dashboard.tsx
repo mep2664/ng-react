@@ -1,11 +1,46 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import gql from "graphql-tag";
+import { useQuery } from "@apollo/react-hooks";
+import { TicketDetail } from "../";
+
+const GET_TICKETS = gql`
+    {
+        tickets {
+            edges {
+                node {
+                    projectName
+                    ticketNumber
+                    ticketId
+                }
+            }
+        }
+    }
+`;
+
+const Tickets = () => {
+    const { loading, error, data } = useQuery(GET_TICKETS);
+    if (loading) {
+        return loading;
+    }
+
+    if (error) {
+        return error.message;
+    }
+
+    return (
+        <div>
+            {data.tickets.edges.map((ticket: any) => // TODO give ticket a type
+                <TicketDetail ticket={ticket.node} />
+            )}
+        </div>
+    );
+}
 
 export const Dashboard: React.FC = () => {
     return (
         <div>
-            dashboard
-            <Link to="/ticket/PROJECT-1">NEWGIRRA-1</Link>
+            {Tickets()}
         </div>
     );
 }
