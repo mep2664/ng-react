@@ -42,7 +42,7 @@ export const SelectInput: React.FC<ISelectInput> = ({ label, name, options, valu
             <Label>{label}</Label>
             <Select name={name} value={value} onChange={onChange}>
                 <option>{"< Not Selected >"}</option>
-                {options.map((option) => <option value={option.value}>{option.caption}</option>)}
+                {options.map((option, index) => <option key={index} value={option.value}>{option.caption}</option>)}
             </Select>
             {/* create an error tooltip for validation */}
         </React.Fragment>

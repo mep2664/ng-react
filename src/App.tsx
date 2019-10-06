@@ -50,9 +50,9 @@ const App: React.FC = () => {
     }
 
     function ticket({ match }: { match: any }) {
-        match.params.ticketId = parseInt(match.params.ticketId);
+        match.params.ticketNumber = parseInt(match.params.ticketNumber);
         const params: ITicket = match.params;
-        if (params.ticketId) {
+        if (params.ticketNumber) {
             return <Ticket {...params} />;
         }
         return <NotFound />;
@@ -69,7 +69,7 @@ const App: React.FC = () => {
                             <Route path="/" exact component={dashboard} />
                             <Route path="/login" component={login} />
                             <Route path="/create" component={create} />
-                            <Route path="/ticket/:project-:ticketId" component={ticket} />
+                            <Route path="/ticket/:project-:ticketNumber" component={ticket} />
                             <Route path="/page-not-found" component={notFound} />
                             <Route default component={notFound} />
                         </Switch>

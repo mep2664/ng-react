@@ -12,6 +12,11 @@ const GET_TICKETS = gql`
                     projectName
                     ticketNumber
                     ticketId
+                    description
+                    sprintId
+                    priority
+                    ticketType
+                    storyPoints
                 }
             }
         }

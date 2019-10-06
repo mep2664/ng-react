@@ -1,6 +1,27 @@
 import * as React from "react";
 import { SelectInput, TextInput } from "../../components";
 import styled from "styled-components";
+import gql from "graphql-tag";
+import { useQuery, useMutation } from "@apollo/react-hooks";
+
+const GET_TICKET = gql`
+    query ($projectName: String! $ticketNumber: Int!) {
+        tickets(projectName: $projectName, ticketNumber: $ticketNumber) {
+            edges {
+                node {
+                    projectName
+                    ticketNumber
+                    ticketId
+                    description
+                    sprintId
+                    priority
+                    ticketType
+                    storyPoints
+                }
+            }
+        }
+    }
+`;
 
 const TicketInfo = styled.div`
     display: grid;
@@ -37,14 +58,29 @@ const Description = styled.textarea`
 
 export interface ITicket {
     project: string;
-    ticketId: number;
+    ticketNumber: number;
 }
 
-const testOptions = [
-    { caption: "ProjectOne", value: 1 },
-    { caption: "ProjectTwp", value: 2 },
-    { caption: "ProjectThree", value: 3 },
-    { caption: "ProjectFour", value: 4 },
+const projectOptions = [
+    { caption: "Polaris", value: "POLARIS" },
+    { caption: "Pitcher", value: "PITCHER" },
+];
+
+const sprintOptions = [
+    { caption: "Sprint-One", value: 1 },
+    { caption: "Sprint-Two", value: 2 },
+];
+
+const typeOptions = [
+    { caption: "Enhancement", value: "Enhancement" },
+    { caption: "Bug", value: "Bug" },
+    { caption: "Research", value: "Research" },
+];
+
+const priorityOptions = [
+    { caption: "Blocker", value: "Blocker" },
+    { caption: "Standard", value: "Standard" },
+    { caption: "Minor", value: "Minor" },
 ];
 
 const storyPointsOptions = () => {
@@ -59,59 +95,56 @@ const storyPointsOptions = () => {
     return options;
 }
 
-export const Ticket: React.FC<ITicket> = ({ project, ticketId }) => {
+export const Ticket: React.FC<ITicket> = ({ project, ticketNumber }) => {
     const [projectName, setProject] = React.useState<string>(project);
-    const [sprint, setSprint] = React.useState<string>("");
-    const [type, setType] = React.useState<string>("");
+    const [sprintId, setSprintId] = React.useState<string>("");
+    const [ticketType, setTicketType] = React.useState<string>("");
     const [priority, setPriority] = React.useState<string>("");
     const [storyPoints, setStoryPoints] = React.useState<number>(0);
     const [description, setDescription] = React.useState<string>("");
+    const { loading, error, data } = useQuery(GET_TICKET, { variables: { projectName, ticketNumber } });
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const data = {
-            projectName,
-            sprint,
-            type,
-            priority,
-            storyPoints,
-            description,
+    React.useEffect(() => {
+        if (data) {
+            const ticket = data.tickets.edges[0].node
+            setSprintId(ticket.sprintId || "")
+            setTicketType(ticket.ticketType || "")
+            setPriority(ticket.priority || "")
+            setStoryPoints(ticket.storyPoints || "")
+            setDescription(ticket.description || "")
         }
-        fetch("http://localhost:5556/ticket", {
-            method: "POST",
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            redirect: "follow",
-            referrer: "no-referrer",
-            body: JSON.stringify(data),
-        }).then((response) => {
-            console.log(response);
-        }, (failure) => console.log(failure));
+    })
+
+    const handleChange = (attribute: string, setState: Function, value: any) => {
+        setState(value);
+    }
+
+    if (loading) {
+        return <div>loading...</div>;
+    }
+
+    if (error) {
+        return <div>{error.message}</div>
     }
 
     return (
         <div>
-            {`Ticket: ${project}-${ticketId}`}
-            <TicketInfo>
-                <form action="localhost:5556/ticket" method="post" onSubmit={handleSubmit}>
+            <React.Fragment>
+                <span>{`Ticket: ${projectName}-${ticketNumber}`}</span>
+                <TicketInfo>
                     <SelectInputs>
-                        <SelectInput label="Project" name="project" options={testOptions} value={projectName} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setProject(e.target.value)} />
-                        <SelectInput label="Sprint" name="sprint" options={testOptions} value={sprint} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSprint(e.target.value)} />
-                        <SelectInput label="Type" name="type" options={testOptions} value={type} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setType(e.target.value)} />
-                        <SelectInput label="Priority" name="priority" options={testOptions} value={priority} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setPriority(e.target.value)} />
-                        <SelectInput label="Story Points" name="storyPoints" options={storyPointsOptions()} value={storyPoints} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setStoryPoints(Number(e.target.value))} />
+                        <SelectInput label="Project" name="project" options={projectOptions} value={projectName} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange("projectName", setProject, e.target.value)} />
+                        <SelectInput label="Sprint" name="sprint" options={sprintOptions} value={sprintId} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange("sprintId", setSprintId, Number(e.target.value))} />
+                        <SelectInput label="Type" name="type" options={typeOptions} value={ticketType} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange("ticketType", setTicketType, e.target.value)} />
+                        <SelectInput label="Priority" name="priority" options={priorityOptions} value={priority} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange("priority", setPriority, e.target.value)} />
+                        <SelectInput label="Story Points" name="storyPoints" options={storyPointsOptions()} value={storyPoints} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange("storyPoints", setStoryPoints, Number(e.target.value))} />
                     </SelectInputs>
                     <DescriptionWrapper>
                         <label>Description</label>
                         <Description placeholder="Enter a ticket description here..." value={description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)} />
                     </DescriptionWrapper>
-                    <input type="submit" value="submit" />
-                </form>
-            </TicketInfo>
-        </div>
+                </TicketInfo>
+            </React.Fragment>
+        </div >
     );
 }
