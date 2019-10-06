@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Dashboard, ITicket, Login, ModuleAside, NotFound, PageHeader, Ticket } from "./components";
+import { CreateItem, Dashboard, ITicket, Login, ModuleAside, NotFound, PageHeader, Ticket } from "./components";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 
@@ -45,6 +45,10 @@ const App: React.FC = () => {
         return <Login />;
     }
 
+    const create = () => {
+        return <CreateItem />;
+    }
+
     function ticket({ match }: { match: any }) {
         match.params.ticketId = parseInt(match.params.ticketId);
         const params: ITicket = match.params;
@@ -64,13 +68,13 @@ const App: React.FC = () => {
                         <Switch>
                             <Route path="/" exact component={dashboard} />
                             <Route path="/login" component={login} />
+                            <Route path="/create" component={create} />
                             <Route path="/ticket/:project-:ticketId" component={ticket} />
                             <Route path="/page-not-found" component={notFound} />
                             <Route default component={notFound} />
                         </Switch>
                     </main>
                 </ContentWrapper>
-                {/*tooltip*/}
             </BrowserRouter>
         </ApolloProvider>
     );

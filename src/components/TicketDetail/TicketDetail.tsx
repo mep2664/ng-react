@@ -26,6 +26,11 @@ interface ITicket {
     ticketId: string;
     ticketNumber: number;
     projectName: string;
+    description: string;
+    priority: string;
+    sprintId: number;
+    storyPoints: number;
+    ticketType: string;
 }
 
 interface ITicketDetailProps {
@@ -36,7 +41,11 @@ export const TicketDetail: React.FC<ITicketDetailProps> = ({ ticket }) => {
     return (
         <Detail>
             <TicketLink to={`/ticket/${ticket.projectName.toUpperCase()}-${ticket.ticketNumber}`}>{`${ticket.projectName}-${ticket.ticketNumber}`}</TicketLink>
-            {`${ticket.ticketId} - ${ticket.projectName} - ${ticket.ticketNumber}`}
+            <div>{`Description: ${ticket.description}`}</div>
+            <div>{`Priority: ${ticket.priority}`}</div>
+            <div>{`Sprint ID: ${ticket.sprintId}`}</div>
+            <div>{`Story Points: ${ticket.storyPoints}`}</div>
+            <div>{`Ticket Type: ${ticket.ticketType}`}</div>
         </Detail>
     );
 }
