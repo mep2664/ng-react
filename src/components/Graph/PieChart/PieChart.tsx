@@ -46,7 +46,7 @@ interface ISegment {
     StrokeWidth: number;
 }
 const Segment = styled.circle<ISegment>`
-    transition: stroke-width .5s ease-in;
+    transition: stroke-width .25s ease-in;
     stroke-dasharray:  ${(props) => props.StrokeDasharray};
     stroke-dashoffset: ${(props) => props.StrokeDashoffset};
     stroke-width: ${(props) => props.StrokeWidth};
@@ -123,7 +123,7 @@ export const PieChart: React.FC<IPieChart> = ({Data, HeightAndWidth, PercentStro
                 <Chart height="100%" width="100%" viewBox={`0 0 ${diameter} ${diameter}`}
                     onMouseOut={() => setTooltip(<React.Fragment></React.Fragment>)}
                 >
-                    <circle r={Radius} cx={Radius} cy={Radius} fill="transparent" />
+                    <circle r={Radius + 5} cx={Radius} cy={Radius} fill="white"/>
                     {renderPieSegments()}
                 </Chart>
                 <Legend Data={getLegendData()}/>

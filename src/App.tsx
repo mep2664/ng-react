@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { PageHeader, PieChart, Tooltip } from "./components";
+import { Axis, PageHeader, PieChart, Tooltip } from "./components";
 
 const data1 = [
     {
@@ -91,6 +91,7 @@ const App: React.FC = () => {
                 </button>
             </div>
             {tooltip}
+            <Axis />
         </React.Fragment>
   );
 }
