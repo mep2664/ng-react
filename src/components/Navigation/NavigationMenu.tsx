@@ -1,13 +1,14 @@
 import React from "react";
-import { backgroundColor, fontColor, hoverBackgroundColor } from "../../colors";
+import { backgroundColor, fontColor, hoverBackgroundColor } from "../../theme";
 import { Button } from "../Button";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const NavigationWrapper = styled.div`
     background-color: ${backgroundColor.Primary};
 `;
 
-const NavigationLink = styled.a`
+const NavigationLink = styled(Link)`
     color: ${fontColor.Primary}
     cursor: pointer;
     margin: 5px;    
@@ -22,17 +23,17 @@ const NavigationLink = styled.a`
 `;
 
 export const NavigationMenu: React.FC = () => {
-  return (
-    <NavigationWrapper>
-        <Button 
-            Caption="Matt's Button"
-            Emphasis="Secondary"
-            Type="button"
-            OnClick={() => alert("Click")}
-        />
-        <NavigationLink>Home</NavigationLink>
-        <NavigationLink>About</NavigationLink>
-        <NavigationLink>Contact</NavigationLink>
-    </NavigationWrapper>
-  );
+    return (
+        <NavigationWrapper>
+            <Button
+                Caption="Matt's Button"
+                Emphasis="Secondary"
+                Type="button"
+                OnClick={() => alert("Click")}
+            />
+            <NavigationLink to="/">Dashboard</NavigationLink>
+            <NavigationLink to="/projects">Projects</NavigationLink>
+            <NavigationLink to="/tickets">Tickets</NavigationLink>
+        </NavigationWrapper>
+    );
 }

@@ -1,99 +1,79 @@
 import React from 'react';
 import './App.css';
-import { Axis, PageHeader, PieChart, Tooltip } from "./components";
+import { Dashboard, ITicket, Login, ModuleAside, NotFound, PageHeader, Ticket } from "./components";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import styled from "styled-components";
 
-const data1 = [
-    {
-        Caption: "A",
-        Value: 50,
-        PercentOfTotal: (50 / 215),
-    },
-    {
-        Caption: "B",
-        Value: 25,
-        PercentOfTotal: (25 / 215),
-    },
-    {
-        Caption: "C",
-        Value: 75,
-        PercentOfTotal: (75 / 215),
-    },
-    {
-        Caption: "D",
-        Value: 10,
-        PercentOfTotal: (10 / 215),
-    },
-    {
-        Caption: "E",
-        Value: 20,
-        PercentOfTotal: (20 / 215),
-    },
-    {
-        Caption: "F",
-        Value: 32.75,
-        PercentOfTotal: (32.75 / 215),
-    },
-    {
-        Caption: "G",
-        Value: 2.15,
-        PercentOfTotal: (2.15 / 215),
-    },
-];
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
 
-const data2 = [
-    {
-        Caption: "A",
-        Value: 50,
-        PercentOfTotal: (50 / 100),
-    },
-    {
-        Caption: "B",
-        Value: 50,
-        PercentOfTotal: (50 / 100),
-    },
-];
+const client = new ApolloClient({
+    uri: "http://localhost:5556/graphql",
+})
+
+// maybe make this a section?
+const ContentWrapper = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+`;
 
 const App: React.FC = () => {
-    const [tooltip, setTooltip] = React.useState(<React.Fragment></React.Fragment>);
-    const button = React.useRef<HTMLButtonElement>(null);
+    //const [tooltip, setTooltip] = React.useState(<React.Fragment></React.Fragment>);
+    //const button = React.useRef<HTMLButtonElement>(null);
 
-    const handleMouseOver = () => {
-        if (button.current) {
-            setTooltip(
-                <Tooltip
-                    Caption="Tooltip!"
-                    Top={(button.current).offsetTop}
-                    Left={(button.current).offsetLeft + (button.current.offsetWidth / 2)}
-                    Position="Top"
-                />
-            );
+    // const handleMouseOver = (e: React.MouseEvent<HTMLButtonElement>) => {
+    //     if (button.current) {
+    //         setTooltip(
+    //             <Tooltip
+    //                 Caption="Tooltip!"
+    //                 AnchorElement={e.target as HTMLButtonElement}
+    //                 Position="Top"
+    //             />
+    //         );
+    //     }
+    // }
+
+    function notFound() {
+        return <NotFound />
+    }
+
+    const dashboard = () => {
+        return <Dashboard />;
+    }
+
+    const login = () => {
+        return <Login />;
+    }
+
+    function ticket({ match }: { match: any }) {
+        match.params.ticketId = parseInt(match.params.ticketId);
+        const params: ITicket = match.params;
+        if (params.ticketId) {
+            return <Ticket {...params} />;
         }
+        return <NotFound />;
     }
 
     return (
-        <React.Fragment>
-            <PageHeader />
-            <div style={{height: "200px", margin: "50px"}}>
-                <PieChart
-                    Data={data1}
-                    PercentStrokeWidth={50}
-                    Radius={100}
-                    HeightAndWidth="200px"
-                />
-            </div>
-            <div style={{margin: "50px"}}>
-                <button
-                    ref={button}
-                    onMouseOver={handleMouseOver}
-                    onMouseOut={() => setTooltip(<React.Fragment></React.Fragment>)}
-                >
-                    Test Tooltip
-                </button>
-            </div>
-            {tooltip}
-            <Axis />
-        </React.Fragment>
-  );
+        <ApolloProvider client={client}>
+            <BrowserRouter>
+                <PageHeader />
+                <ContentWrapper>
+                    <ModuleAside />
+                    <main>
+                        <Switch>
+                            <Route path="/" exact component={dashboard} />
+                            <Route path="/login" component={login} />
+                            <Route path="/ticket/:project-:ticketId" component={ticket} />
+                            <Route path="/page-not-found" component={notFound} />
+                            <Route default component={notFound} />
+                        </Switch>
+                    </main>
+                </ContentWrapper>
+                {/*tooltip*/}
+            </BrowserRouter>
+        </ApolloProvider>
+    );
 }
 
 export default App;

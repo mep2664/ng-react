@@ -96,7 +96,7 @@ export const PieChart: React.FC<IPieChart> = ({Data, HeightAndWidth, PercentStro
                 <Segment key={index} r={segmentRadius} cx={Radius} cy={Radius} fill="transparent"
                     stroke={PieColors[index]} StrokeWidth={strokeWidth} StrokeDashoffset={currentOffset}
                     StrokeDasharray= {strokeDashArray}
-                    onMouseMove={(e) => setTooltip(<Tooltip Caption={`${segment.Caption}&#010;${segment.Value}(${(percentOfTotal*100).toFixed(2)}%)`} Top={e.clientY} Left={e.clientX} Position="Top" />)}
+                    onMouseMove={(e) => setTooltip(<Tooltip Caption={`${segment.Caption}&#010;${segment.Value}(${(percentOfTotal*100).toFixed(2)}%)`} AnchorElement={{MouseX: e.clientX, MouseY: e.clientY}} Position="Top" />)}
                     onMouseOut={() => setTooltip(<React.Fragment></React.Fragment>)}
                     onClick={() => setActive(active === index ? -1 : index)}
                     data-active={index === active}
