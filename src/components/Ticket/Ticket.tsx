@@ -23,6 +23,23 @@ const GET_TICKET = gql`
     }
 `;
 
+const UPDATE_TICKET = gql`
+    mutation updateTicket($changes: TicketInput!, $ticketId: ID! ) {
+        updateTicket(changes: $changes, ticketId: $ticketId) {
+            ticket {
+                ticketId
+                ticketNumber
+                projectName
+                sprintId
+                ticketType
+                priority
+                storyPoints
+                description
+            }
+        }
+    }
+`;
+
 const TicketInfo = styled.div`
     display: grid;
     grid-gap: 25px;
@@ -96,27 +113,39 @@ const storyPointsOptions = () => {
 }
 
 export const Ticket: React.FC<ITicket> = ({ project, ticketNumber }) => {
-    const [projectName, setProject] = React.useState<string>(project);
+    const [ticketId, setTicketId] = React.useState<string>("");
+    const [projectName, setProject,] = React.useState<string>(project);
     const [sprintId, setSprintId] = React.useState<string>("");
     const [ticketType, setTicketType] = React.useState<string>("");
     const [priority, setPriority] = React.useState<string>("");
     const [storyPoints, setStoryPoints] = React.useState<number>(0);
     const [description, setDescription] = React.useState<string>("");
     const { loading, error, data } = useQuery(GET_TICKET, { variables: { projectName, ticketNumber } });
+    const [updateTicket] = useMutation(UPDATE_TICKET);
+
+    React.useLayoutEffect(() => {
+        if (data && data.tickets.edges.length > 0) {
+            const ticket = data.tickets.edges[0].node;
+            setTicketId(ticket.ticketId);
+            console.log(ticketId);
+            setSprintId(ticket.sprintId || "");
+            setTicketType(ticket.ticketType || "");
+            setPriority(ticket.priority || "");
+            setStoryPoints(ticket.storyPoints || "");
+            setDescription(ticket.description || "");
+        }
+    }, [data]);
 
     React.useEffect(() => {
-        if (data) {
-            const ticket = data.tickets.edges[0].node
-            setSprintId(ticket.sprintId || "")
-            setTicketType(ticket.ticketType || "")
-            setPriority(ticket.priority || "")
-            setStoryPoints(ticket.storyPoints || "")
-            setDescription(ticket.description || "")
-        }
-    })
+        window.history.replaceState({}, document.title, `/ticket/${projectName}-${ticketNumber}`);
+    }, [projectName])
 
-    const handleChange = (attribute: string, setState: Function, value: any) => {
+    const handleChange = (attribute: string, setState: React.Dispatch<React.SetStateAction<any>>, value: any) => {
         setState(value);
+        console.log(`handleChange - ${value} = ${ticketType}`)
+        const changes: any = {};
+        changes[attribute] = value;
+        updateTicket({ variables: { changes, ticketId } });
     }
 
     if (loading) {
@@ -127,6 +156,8 @@ export const Ticket: React.FC<ITicket> = ({ project, ticketNumber }) => {
         return <div>{error.message}</div>
     }
 
+    console.log("render");
+    console.log(ticketType);
     return (
         <div>
             <React.Fragment>
@@ -141,7 +172,7 @@ export const Ticket: React.FC<ITicket> = ({ project, ticketNumber }) => {
                     </SelectInputs>
                     <DescriptionWrapper>
                         <label>Description</label>
-                        <Description placeholder="Enter a ticket description here..." value={description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)} />
+                        <Description placeholder="Enter a ticket description here..." value={description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleChange("description", setDescription, e.target.value)} />
                     </DescriptionWrapper>
                 </TicketInfo>
             </React.Fragment>

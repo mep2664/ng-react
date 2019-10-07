@@ -98,7 +98,7 @@ export const CreateItem: React.FC = () => {
     const [priority, setPriority] = React.useState<string>("");
     const [storyPoints, setStoryPoints] = React.useState<number>(0);
     const [description, setDescription] = React.useState<string>("");
-    const [createTicket, { data }] = useMutation(CREATE_TICKET);
+    const [createTicket] = useMutation(CREATE_TICKET);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -111,8 +111,8 @@ export const CreateItem: React.FC = () => {
             description,
         }
         console.log(data);
-        createTicket({variables: data});
-        
+        createTicket({ variables: data });
+
     }
 
     return (
