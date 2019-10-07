@@ -24,8 +24,8 @@ const GET_TICKET = gql`
 `;
 
 const UPDATE_TICKET = gql`
-    mutation updateTicket($changes: TicketInput!, $ticketId: ID! ) {
-        updateTicket(changes: $changes, ticketId: $ticketId) {
+    mutation updateTicket($changes: TicketInput!, $ticket: TicketInput! ) {
+        updateTicket(changes: $changes, ticket: $ticket) {
             ticket {
                 ticketId
                 ticketNumber
@@ -75,7 +75,7 @@ const Description = styled.textarea`
 
 export interface ITicket {
     project: string;
-    ticketNumber: number;
+    ticket: number;
 }
 
 const projectOptions = [
@@ -112,9 +112,10 @@ const storyPointsOptions = () => {
     return options;
 }
 
-export const Ticket: React.FC<ITicket> = ({ project, ticketNumber }) => {
+export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
     const [ticketId, setTicketId] = React.useState<string>("");
-    const [projectName, setProject,] = React.useState<string>(project);
+    const [projectName, setProjectName] = React.useState<string>(project);
+    const [ticketNumber, setTicketNumber] = React.useState<number>(ticket);
     const [sprintId, setSprintId] = React.useState<string>("");
     const [ticketType, setTicketType] = React.useState<string>("");
     const [priority, setPriority] = React.useState<string>("");
@@ -140,12 +141,33 @@ export const Ticket: React.FC<ITicket> = ({ project, ticketNumber }) => {
         window.history.replaceState({}, document.title, `/ticket/${projectName}-${ticketNumber}`);
     }, [projectName])
 
+    const handleProjectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = e.target.value;
+        setProjectName(value);
+        const changes = { projectName: value };
+        const ticket = {
+            ticketId, projectName, ticketNumber, sprintId,
+            ticketType, priority, storyPoints, description,
+        };
+        updateTicket({
+            variables: { changes, ticket },
+            update: (cache, response) => {
+                console.log("data");
+                console.log(response.data);
+            }
+        });
+        window.history.replaceState({}, document.title, `/ticket/${projectName}-${ticketNumber}`);
+    }
+
     const handleChange = (attribute: string, setState: React.Dispatch<React.SetStateAction<any>>, value: any) => {
         setState(value);
-        console.log(`handleChange - ${value} = ${ticketType}`)
         const changes: any = {};
         changes[attribute] = value;
-        updateTicket({ variables: { changes, ticketId } });
+        const ticket = {
+            ticketId, projectName, ticketNumber, sprintId,
+            ticketType, priority, storyPoints, description,
+        };
+        updateTicket({ variables: { changes, ticket } });
     }
 
     if (loading) {
@@ -164,7 +186,7 @@ export const Ticket: React.FC<ITicket> = ({ project, ticketNumber }) => {
                 <span>{`Ticket: ${projectName}-${ticketNumber}`}</span>
                 <TicketInfo>
                     <SelectInputs>
-                        <SelectInput label="Project" name="project" options={projectOptions} value={projectName} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange("projectName", setProject, e.target.value)} />
+                        <SelectInput label="Project" name="project" options={projectOptions} value={projectName} onChange={handleProjectChange} />
                         <SelectInput label="Sprint" name="sprint" options={sprintOptions} value={sprintId} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange("sprintId", setSprintId, Number(e.target.value))} />
                         <SelectInput label="Type" name="type" options={typeOptions} value={ticketType} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange("ticketType", setTicketType, e.target.value)} />
                         <SelectInput label="Priority" name="priority" options={priorityOptions} value={priority} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange("priority", setPriority, e.target.value)} />

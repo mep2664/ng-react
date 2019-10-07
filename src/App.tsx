@@ -18,41 +18,26 @@ const ContentWrapper = styled.div`
 `;
 
 const App: React.FC = () => {
-    //const [tooltip, setTooltip] = React.useState(<React.Fragment></React.Fragment>);
-    //const button = React.useRef<HTMLButtonElement>(null);
-
-    // const handleMouseOver = (e: React.MouseEvent<HTMLButtonElement>) => {
-    //     if (button.current) {
-    //         setTooltip(
-    //             <Tooltip
-    //                 Caption="Tooltip!"
-    //                 AnchorElement={e.target as HTMLButtonElement}
-    //                 Position="Top"
-    //             />
-    //         );
-    //     }
-    // }
-
     function notFound() {
         return <NotFound />
     }
 
-    const dashboard = () => {
+    function dashboard() {
         return <Dashboard />;
     }
 
-    const login = () => {
+    function login() {
         return <Login />;
     }
 
-    const create = () => {
-        return <CreateItem />;
+    function create({ match }: { match: any }) {
+        return <CreateItem {...match.params} />;
     }
 
     function ticket({ match }: { match: any }) {
-        match.params.ticketNumber = parseInt(match.params.ticketNumber);
+        match.params.ticket = parseInt(match.params.ticket);
         const params: ITicket = match.params;
-        if (params.ticketNumber) {
+        if (params.ticket) {
             return <Ticket {...params} />;
         }
         return <NotFound />;
@@ -68,8 +53,8 @@ const App: React.FC = () => {
                         <Switch>
                             <Route path="/" exact component={dashboard} />
                             <Route path="/login" component={login} />
-                            <Route path="/create" component={create} />
-                            <Route path="/ticket/:project-:ticketNumber" component={ticket} />
+                            <Route path="/create/:item" component={create} />
+                            <Route path="/ticket/:project-:ticket" component={ticket} />
                             <Route path="/page-not-found" component={notFound} />
                             <Route default component={notFound} />
                         </Switch>
