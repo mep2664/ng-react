@@ -23,6 +23,7 @@ const getCookie = (cname: string) => {
     return "";
 }
 
+// TODO - Invalidate AUTHTOKEN, if cookie is removed the token shoudn't persist
 const client = new ApolloClient({
     uri: "http://localhost:5556/graphql",
     headers: {
