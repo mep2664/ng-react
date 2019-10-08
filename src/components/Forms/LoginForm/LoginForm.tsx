@@ -1,36 +1,58 @@
 import * as React from "react";
+import { TextInput } from "../..";
+import styled from "styled-components";
+import gql from "graphql-tag";
+import { useMutation } from "@apollo/react-hooks";
+
+const LOGIN_USER = gql`
+    mutation LoginUser($email: String!, $password:String!) {
+        loginUser(email:$email, password:$password) {
+            token
+            error
+        }
+    }
+`;
 
 export const LoginForm: React.FC = () => {
-    const [username, setUsername] = React.useState<string>("");
+    const [email, setEmail] = React.useState<string>("");
     const [password, setPassword] = React.useState<string>("");
+    const [error, setError] = React.useState<string>("");
+    const [loginUser] = useMutation(LOGIN_USER);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const data = {
-            username,
+            email,
             password,
         }
-        fetch("http://localhost:5556/login", {
-            method: "POST",
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            redirect: "follow",
-            referrer: "no-referrer",
-            body: JSON.stringify(data),
-        }).then((response) => {
-            console.log(response);
-        }, (failure) => console.log(failure));
+        loginUser({
+            variables: data,
+            // TODO - figure out what to do with cache
+            update: (cache, response) => {
+                if (response.data.loginUser.token) {
+                    setError(response.data.loginUser.error)
+                    console.log(response.data.loginUser.token);
+                    const d = new Date();
+                    const numHours = 4;
+                    const expires = d.setTime(d.getTime() + ((numHours * 60 * 60 * 1000)));
+                    document.cookie = `uuid=${response.data.loginUser.token};expires=${expires};path=/`;
+                } else if (response.data.loginUser.error) {
+                    setError(response.data.loginUser.error);
+                } else {
+                    // TODO - never let this be a possibility
+                    setError("response didnt have token or error?");
+                }
+            }
+        });
+
     }
 
     return (
-        <form action="localhost:5556/login" method="post" onSubmit={handleSubmit}>
-            <input type="text" name="username" placeholder="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-            <input type="password" name="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <input type="submit" value="login" />
+        <form onSubmit={handleSubmit}>
+            {error && <div style={{ color: "red" }}>{error}</div>}
+            <TextInput name="email" label="Email" onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} />
+            <TextInput name="password" label="Password" onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} />
+            <input type="submit" value="submit" />
         </form>
     );
 }
