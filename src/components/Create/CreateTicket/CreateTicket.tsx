@@ -2,7 +2,20 @@ import * as React from "react";
 import { SelectInput, TextInput } from "../..";
 import styled from "styled-components";
 import gql from "graphql-tag";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation, useQuery } from "@apollo/react-hooks";
+
+const GET_PROJECTS = gql`
+query {
+    projects {
+        edges {
+            node {
+                projectId
+                projectName
+            }
+        }
+    }
+}
+`;
 
 const CREATE_TICKET = gql`
     mutation createTicket($projectName: String!, $description: String, $priority: String,
@@ -57,11 +70,6 @@ const Description = styled.textarea`
     resize: none;
 `;
 
-const projectOptions = [
-    { caption: "Polaris", value: "POLARIS" },
-    { caption: "Pitcher", value: "PITCHER" },
-];
-
 const sprintOptions = [
     { caption: "Sprint-One", value: 1 },
     { caption: "Sprint-Two", value: 2 },
@@ -98,6 +106,7 @@ export const CreateTicket: React.FC = () => {
     const [priority, setPriority] = React.useState<string>("");
     const [storyPoints, setStoryPoints] = React.useState<number>(0);
     const [description, setDescription] = React.useState<string>("");
+    const { loading, error, data } = useQuery(GET_PROJECTS);
     const [createTicket] = useMutation(CREATE_TICKET);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -114,6 +123,16 @@ export const CreateTicket: React.FC = () => {
         createTicket({ variables: data });
 
     }
+
+    if (loading) {
+        return <div>loading...</div>;
+    }
+
+    if (error) {
+        return <div>{error.message}</div>;
+    }
+
+    const projectOptions = data.projects.edges.map((project: any) => { return { caption: project.node.projectName, value: project.node.projectName } });
 
     return (
         <div>
