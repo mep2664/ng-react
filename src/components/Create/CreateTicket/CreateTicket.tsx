@@ -6,13 +6,8 @@ import { useMutation, useQuery } from "@apollo/react-hooks";
 
 const GET_PROJECTS = gql`
 query {
-    projects {
-        edges {
-            node {
-                projectId
-                projectName
-            }
-        }
+    allProjects {
+        projectName
     }
 }
 `;
@@ -132,7 +127,7 @@ export const CreateTicket: React.FC = () => {
         return <div>{error.message}</div>;
     }
 
-    const projectOptions = data.projects.edges.map((project: any) => { return { caption: project.node.projectName, value: project.node.projectName } });
+    const projectOptions = data.allProjects.map((project: any) => { return { caption: project.projectName, value: project.projectName } });
 
     return (
         <div>

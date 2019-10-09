@@ -21,13 +21,8 @@ const GET_TICKET = gql`
                 }
             }
         }
-        projects {
-            edges {
-                node {
-                    projectId
-                    projectName
-                }
-            }
+        allProjects {
+            projectName
         }
     }
 `;
@@ -182,7 +177,7 @@ export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
         return <div>{error.message}</div>
     }
 
-    const projectOptions = data.projects.edges.map((project: any) => { return { caption: project.node.projectName, value: project.node.projectName } });
+    const projectOptions = data.allProjects.map((project: any) => { return { caption: project.projectName, value: project.projectName } });
 
     return (
         <div>
