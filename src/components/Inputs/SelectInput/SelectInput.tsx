@@ -32,16 +32,17 @@ interface ISelectInput {
     label: string;
     name: string;
     options: IOption[];
+    isMultiple?: boolean;
     value?: any;
     onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-export const SelectInput: React.FC<ISelectInput> = ({ label, name, options, value, onChange }) => {
+export const SelectInput: React.FC<ISelectInput> = ({ label, name, options, isMultiple, value, onChange }) => {
     return (
         <React.Fragment>
             <Label>{label}</Label>
-            <Select name={name} value={value} onChange={onChange}>
-                <option>{"< Not Selected >"}</option>
+            <Select multiple={isMultiple} name={name} value={value} onChange={onChange}>
+                <option value="">{"< Not Selected >"}</option>
                 {options.map((option, index) => <option key={index} value={option.value}>{option.caption}</option>)}
             </Select>
             {/* create an error tooltip for validation */}

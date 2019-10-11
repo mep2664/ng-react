@@ -9,6 +9,9 @@ query {
     allProjects {
         projectName
     }
+    allSprints {
+        sprintName
+    }
 }
 `;
 
@@ -64,11 +67,6 @@ const Description = styled.textarea`
     padding: 5px;
     resize: none;
 `;
-
-const sprintOptions = [
-    { caption: "Sprint-One", value: 1 },
-    { caption: "Sprint-Two", value: 2 },
-];
 
 const typeOptions = [
     { caption: "Enhancement", value: "Enhancement" },
@@ -128,6 +126,7 @@ export const CreateTicket: React.FC = () => {
     }
 
     const projectOptions = data.allProjects.map((project: any) => { return { caption: project.projectName, value: project.projectName } });
+    const sprintOptions = data.allSprints.map((sprint: any) => { return { caption: sprint.sprintName, value: sprint.sprintName } });
 
     return (
         <div>
