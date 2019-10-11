@@ -36,6 +36,7 @@ export const LoginForm: React.FC = () => {
                     const numHours = 4;
                     const expires = d.setTime(d.getTime() + ((numHours * 60 * 60 * 1000)));
                     document.cookie = `uuid=${response.data.loginUser.token};expires=${expires};path=/`;
+                    window.location.reload();
                 } else if (response.data.loginUser.error) {
                     setError(response.data.loginUser.error);
                 } else {
@@ -49,6 +50,7 @@ export const LoginForm: React.FC = () => {
 
     return (
         <form onSubmit={handleSubmit}>
+            <div>Login</div>
             {error && <div style={{ color: "red" }}>{error}</div>}
             <TextInput name="email" label="Email" onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} />
             <TextInput name="password" label="Password" onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} />

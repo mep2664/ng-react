@@ -121,7 +121,7 @@ export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
     const [priority, setPriority] = React.useState<string>("");
     const [storyPoints, setStoryPoints] = React.useState<number>(0);
     const [description, setDescription] = React.useState<string>("");
-    const { loading, error, data } = useQuery(GET_TICKET, { variables: { projectName, ticketNumber } });
+    const { loading, error, data } = useQuery(GET_TICKET, { variables: { projectName, ticketNumber }, fetchPolicy: "no-cache" });
     const [updateTicket] = useMutation(UPDATE_TICKET);
 
     React.useLayoutEffect(() => {

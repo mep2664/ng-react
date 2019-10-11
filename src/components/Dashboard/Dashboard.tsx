@@ -24,7 +24,7 @@ const GET_TICKETS = gql`
 `;
 
 const Tickets = () => {
-    const { loading, error, data } = useQuery(GET_TICKETS);
+    const { loading, error, data } = useQuery(GET_TICKETS, { fetchPolicy: "no-cache" });
     if (loading) {
         return loading;
     }
