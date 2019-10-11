@@ -3,9 +3,10 @@ import { SelectInput, TextInput } from "../../components";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/react-hooks";
+import { Dictionary } from "lodash";
 
 const GET_TICKET = gql`
-    query ($projectName: String! $ticketNumber: Int!) {
+    query ($projectName: String!, $ticketNumber: Int!) {
         tickets(projectName: $projectName, ticketNumber: $ticketNumber) {
             edges {
                 node {
@@ -19,6 +20,9 @@ const GET_TICKET = gql`
                     storyPoints
                 }
             }
+        }
+        allProjects {
+            projectName
         }
     }
 `;
@@ -77,11 +81,6 @@ export interface ITicket {
     project: string;
     ticket: number;
 }
-
-const projectOptions = [
-    { caption: "Polaris", value: "POLARIS" },
-    { caption: "Pitcher", value: "PITCHER" },
-];
 
 const sprintOptions = [
     { caption: "Sprint-One", value: 1 },
@@ -178,8 +177,8 @@ export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
         return <div>{error.message}</div>
     }
 
-    console.log("render");
-    console.log(ticketType);
+    const projectOptions = data.allProjects.map((project: any) => { return { caption: project.projectName, value: project.projectName } });
+
     return (
         <div>
             <React.Fragment>

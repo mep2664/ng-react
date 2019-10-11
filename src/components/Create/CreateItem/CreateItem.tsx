@@ -1,6 +1,6 @@
 import * as React from "react";
 import { NotFound } from "../..";
-import { CreateTicket } from "../";
+import { CreateProject, CreateTicket } from "../";
 
 interface ICreateItem {
     item: string;
@@ -8,6 +8,8 @@ interface ICreateItem {
 
 export const CreateItem: React.FC<ICreateItem> = ({ item }) => {
     switch (item) {
+        case "project":
+            return <CreateProject />;
         case "ticket":
             return <CreateTicket />;
         default:
