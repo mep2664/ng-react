@@ -19,12 +19,14 @@ query {
 `;
 
 const CREATE_TEAM = gql`
-    mutation CREATE_TEAM($teamName:String!, $members:[UserType], $projects:[ProjectType], $status:String, $dateCreated:DateTime) {
+    mutation CREATE_TEAM($teamName:String!, $members:[ID], $projects:[ID], $status:String, $dateCreated:DateTime) {
         createTeam(teamName:$teamName, members:$members, projects:$projects, status:$status, dateCreated:$dateCreated){
             team {
                 teamId
                 teamName
                 status
+                members
+                projects
                 dateCreated
             }
         }
@@ -41,14 +43,14 @@ const SelectInputs = styled.div`
 
 const statusOptions = [
     { caption: "Pending", value: 1 },
-    { caption: "Active", value: 1 },
-    { caption: "Terminated", value: 2 },
+    { caption: "Active", value: 2 },
+    { caption: "Terminated", value: 3 },
 ];
 
 export const CreateTeam: React.FC = () => {
     const [teamName, setTeamName] = React.useState<string>("");
     const [members, setMembers] = React.useState<string[]>([]);
-    const [projects, setProjects] = React.useState<string>("");
+    const [projects, setProjects] = React.useState<string[]>([]);
     const [status, setStatus] = React.useState<string>("");
     const { loading, error, data } = useQuery(GET_OPTIONS);
     const [createTeam] = useMutation(CREATE_TEAM);
@@ -57,11 +59,12 @@ export const CreateTeam: React.FC = () => {
         e.preventDefault();
         const dateCreated = new Date().toISOString()
         const members_obj = members.map((member) => { return { userId: member } });
-        const projects_obj = members.map((project) => { return { projectId: project } });
+        console.log(members_obj);
+        console.log(projects);
         const data = {
             teamName,
             members: members_obj,
-            projects: projects_obj,
+            projects,
             status,
             dateCreated,
         }
@@ -81,7 +84,7 @@ export const CreateTeam: React.FC = () => {
     const projectOptions = data.allProjects.map((project: any) => { return { caption: project.projectName, value: project.projectId } });
     const userOptions = data.allUsers.map((user: any) => { return { caption: `${user.firstName} ${user.lastName}`, value: user.userId } });
 
-    console.log(members);
+    console.log(projects);
 
     return (
         <div>
@@ -92,7 +95,7 @@ export const CreateTeam: React.FC = () => {
                     { /* TODO - Multiple Select Input With Working State */}
                     <SelectInput isMultiple={true} label="Team Members" name="members" options={userOptions} value={members}
                         onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setMembers(members.includes(e.target.value) ? members.splice(members.indexOf(e.target.value), 1) : members.concat(e.target.value))} />
-                    <SelectInput label="Projects" name="projects" options={projectOptions} value={projects} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setProjects(e.target.value)} />
+                    <SelectInput label="Projects" name="projects" options={projectOptions} value={projects[0]} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setProjects([e.target.value])} />
                     <SelectInput label="Status" name="status" options={statusOptions} value={status} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setStatus(e.target.value)} />
                 </SelectInputs>
                 <input type="submit" value="submit" />

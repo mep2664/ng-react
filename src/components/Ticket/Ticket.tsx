@@ -127,7 +127,6 @@ export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
         if (data && data.tickets.edges.length > 0) {
             const ticket = data.tickets.edges[0].node;
             setTicketId(ticket.ticketId);
-            console.log(ticketId);
             setSprintId(ticket.sprintId || "");
             setTicketType(ticket.ticketType || "");
             setPriority(ticket.priority || "");
@@ -138,7 +137,7 @@ export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
 
     React.useEffect(() => {
         window.history.replaceState({}, document.title, `/ticket/${projectName}-${ticketNumber}`);
-    }, [projectName])
+    }, [projectName, ticketNumber])
 
     const handleProjectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;
@@ -151,11 +150,9 @@ export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
         updateTicket({
             variables: { changes, ticket },
             update: (cache, response) => {
-                console.log("data");
-                console.log(response.data);
+                setTicketNumber(response.data.updateTicket.ticket.ticketNumber);
             }
         });
-        window.history.replaceState({}, document.title, `/ticket/${projectName}-${ticketNumber}`);
     }
 
     const handleChange = (attribute: string, setState: React.Dispatch<React.SetStateAction<any>>, value: any) => {
