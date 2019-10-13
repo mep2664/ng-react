@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import { TicketDetail } from "../";
+import { Loader, TicketDetail } from "../";
 
 const GET_TICKETS = gql`
     {
@@ -26,7 +26,7 @@ const GET_TICKETS = gql`
 const Tickets = () => {
     const { loading, error, data } = useQuery(GET_TICKETS, { fetchPolicy: "no-cache" });
     if (loading) {
-        return loading;
+        return <Loader />;
     }
 
     if (error) {

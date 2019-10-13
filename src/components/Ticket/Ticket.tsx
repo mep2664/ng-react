@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SelectInput, TextInput } from "../../components";
+import { Loader, SelectInput, TextInput } from "../../components";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/react-hooks";
@@ -167,7 +167,7 @@ export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
     }
 
     if (loading) {
-        return <div>loading...</div>;
+        return <Loader />;
     }
 
     if (error) {

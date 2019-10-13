@@ -4,6 +4,7 @@ export * from "./Dashboard";
 export * from "./Forms";
 export * from "./Graph";
 export * from "./Inputs";
+export * from "./Loaders";
 export * from "./Login";
 export * from "./Logo";
 export * from "./ModuleAside";
