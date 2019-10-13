@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TextInput } from "../..";
+import { Loader, TextInput } from "../..";
 import gql from "graphql-tag";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 
@@ -50,7 +50,7 @@ export const CreateSprint: React.FC = () => {
     }
 
     if (loading) {
-        return <div>loading...</div>;
+        return <Loader />;
     }
 
     if (error) {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SelectInput, TextInput } from "../..";
+import { Loader, SelectInput, TextInput } from "../..";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import { useMutation, useQuery } from "@apollo/react-hooks";
@@ -118,7 +118,7 @@ export const CreateTicket: React.FC = () => {
     }
 
     if (loading) {
-        return <div>loading...</div>;
+        return <Loader />;
     }
 
     if (error) {
