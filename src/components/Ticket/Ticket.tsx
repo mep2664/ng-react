@@ -26,8 +26,8 @@ const GET_TICKET = gql`
 `;
 
 const UPDATE_TICKET = gql`
-    mutation updateTicket($changes: TicketInput!, $ticket: TicketInput! ) {
-        updateTicket(changes: $changes, ticket: $ticket) {
+    mutation updateTicket($changes: TicketInput!, $ticketId: ID! ) {
+        updateTicket(changes: $changes, ticketId: $ticketId) {
             ticket {
                 ticketId
                 ticketNumber
@@ -129,20 +129,18 @@ export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
 
     React.useEffect(() => {
         window.history.replaceState({}, document.title, `/ticket/${projectName}-${ticketNumber}`);
+        console.log(ticketNumber);
     }, [projectName, ticketNumber])
 
     const handleProjectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;
         setProjectName(value);
         const changes = { projectName: value };
-        const ticket = {
-            ticketId, projectName, ticketNumber, sprintName,
-            ticketType, priority, storyPoints, description,
-        };
         updateTicket({
-            variables: { changes, ticket },
+            variables: { changes, ticketId },
             update: (cache, response) => {
                 setTicketNumber(response.data.updateTicket.ticket.ticketNumber);
+                console.log(response.data.updateTicket.ticket.ticketNumber)
             }
         });
     }
@@ -151,11 +149,7 @@ export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
         setState(value);
         const changes: any = {};
         changes[attribute] = value;
-        const ticket = {
-            ticketId, projectName, ticketNumber, sprintName,
-            ticketType, priority, storyPoints, description,
-        };
-        updateTicket({ variables: { changes, ticket } });
+        updateTicket({ variables: { changes, ticketId } });
     }
 
     if (loading) {
