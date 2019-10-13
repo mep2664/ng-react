@@ -6,19 +6,15 @@ import { Loader, TicketDetail } from "../";
 
 const GET_TICKETS = gql`
     {
-        tickets {
-            edges {
-                node {
-                    projectName
-                    ticketNumber
-                    ticketId
-                    description
-                    sprintId
-                    priority
-                    ticketType
-                    storyPoints
-                }
-            }
+        allTickets {
+            projectName
+            ticketNumber
+            ticketId
+            description
+            sprintName
+            priority
+            ticketType
+            storyPoints
         }
     }
 `;
@@ -35,8 +31,8 @@ const Tickets = () => {
 
     return (
         <div>
-            {data.tickets.edges.map((ticket: any) => // TODO give ticket a type
-                <TicketDetail ticket={ticket.node} />
+            {data.allTickets.map((ticket: any) => // TODO give ticket a type
+                <TicketDetail ticket={ticket} />
             )}
         </div>
     );

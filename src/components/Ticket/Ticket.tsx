@@ -3,26 +3,24 @@ import { Loader, SelectInput, TextInput } from "../../components";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { Dictionary } from "lodash";
 
 const GET_TICKET = gql`
     query ($projectName: String!, $ticketNumber: Int!) {
-        tickets(projectName: $projectName, ticketNumber: $ticketNumber) {
-            edges {
-                node {
-                    projectName
-                    ticketNumber
-                    ticketId
-                    description
-                    sprintId
-                    priority
-                    ticketType
-                    storyPoints
-                }
-            }
+        ticket(projectName: $projectName, ticketNumber: $ticketNumber) {
+            projectName
+            ticketNumber
+            ticketId
+            description
+            sprintName
+            priority
+            ticketType
+            storyPoints
         }
         allProjects {
             projectName
+        }
+        allSprints {
+            sprintName
         }
     }
 `;
@@ -34,7 +32,7 @@ const UPDATE_TICKET = gql`
                 ticketId
                 ticketNumber
                 projectName
-                sprintId
+                sprintName
                 ticketType
                 priority
                 storyPoints
@@ -82,11 +80,6 @@ export interface ITicket {
     ticket: number;
 }
 
-const sprintOptions = [
-    { caption: "Sprint-One", value: 1 },
-    { caption: "Sprint-Two", value: 2 },
-];
-
 const typeOptions = [
     { caption: "Enhancement", value: "Enhancement" },
     { caption: "Bug", value: "Bug" },
@@ -115,7 +108,7 @@ export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
     const [ticketId, setTicketId] = React.useState<string>("");
     const [projectName, setProjectName] = React.useState<string>(project);
     const [ticketNumber, setTicketNumber] = React.useState<number>(ticket);
-    const [sprintId, setSprintId] = React.useState<string>("");
+    const [sprintName, setSprintName] = React.useState<string>("");
     const [ticketType, setTicketType] = React.useState<string>("");
     const [priority, setPriority] = React.useState<string>("");
     const [storyPoints, setStoryPoints] = React.useState<number>(0);
@@ -124,14 +117,13 @@ export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
     const [updateTicket] = useMutation(UPDATE_TICKET);
 
     React.useLayoutEffect(() => {
-        if (data && data.tickets.edges.length > 0) {
-            const ticket = data.tickets.edges[0].node;
-            setTicketId(ticket.ticketId);
-            setSprintId(ticket.sprintId || "");
-            setTicketType(ticket.ticketType || "");
-            setPriority(ticket.priority || "");
-            setStoryPoints(ticket.storyPoints || "");
-            setDescription(ticket.description || "");
+        if (data && data.ticket) {
+            setTicketId(data.ticket.ticketId);
+            setSprintName(data.ticket.sprintName || "");
+            setTicketType(data.ticket.ticketType || "");
+            setPriority(data.ticket.priority || "");
+            setStoryPoints(data.ticket.storyPoints || "");
+            setDescription(data.ticket.description || "");
         }
     }, [data]);
 
@@ -144,7 +136,7 @@ export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
         setProjectName(value);
         const changes = { projectName: value };
         const ticket = {
-            ticketId, projectName, ticketNumber, sprintId,
+            ticketId, projectName, ticketNumber, sprintName,
             ticketType, priority, storyPoints, description,
         };
         updateTicket({
@@ -160,7 +152,7 @@ export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
         const changes: any = {};
         changes[attribute] = value;
         const ticket = {
-            ticketId, projectName, ticketNumber, sprintId,
+            ticketId, projectName, ticketNumber, sprintName,
             ticketType, priority, storyPoints, description,
         };
         updateTicket({ variables: { changes, ticket } });
@@ -174,7 +166,8 @@ export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
         return <div>{error.message}</div>
     }
 
-    const projectOptions = data.allProjects.map((project: any) => { return { caption: project.projectName, value: project.projectName } });
+    const projectOptions = data.allProjects.map((project: any) => { return { caption: project.projectName, value: project.projectName.toUpperCase() } });
+    const sprintOptions = data.allSprints.map((sprint: any) => { return { caption: sprint.sprintName, value: sprint.sprintName } });
 
     return (
         <div>
@@ -183,7 +176,7 @@ export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
                 <TicketInfo>
                     <SelectInputs>
                         <SelectInput label="Project" name="project" options={projectOptions} value={projectName} onChange={handleProjectChange} />
-                        <SelectInput label="Sprint" name="sprint" options={sprintOptions} value={sprintId} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange("sprintId", setSprintId, Number(e.target.value))} />
+                        <SelectInput label="Sprint" name="sprint" options={sprintOptions} value={sprintName} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange("sprintName", setSprintName, e.target.value)} />
                         <SelectInput label="Type" name="type" options={typeOptions} value={ticketType} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange("ticketType", setTicketType, e.target.value)} />
                         <SelectInput label="Priority" name="priority" options={priorityOptions} value={priority} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange("priority", setPriority, e.target.value)} />
                         <SelectInput label="Story Points" name="storyPoints" options={storyPointsOptions()} value={storyPoints} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleChange("storyPoints", setStoryPoints, Number(e.target.value))} />

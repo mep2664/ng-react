@@ -19,14 +19,12 @@ query {
 `;
 
 const CREATE_TEAM = gql`
-    mutation CREATE_TEAM($teamName:String!, $members:[ID], $projects:[ID], $status:String, $dateCreated:DateTime) {
-        createTeam(teamName:$teamName, members:$members, projects:$projects, status:$status, dateCreated:$dateCreated){
+    mutation CREATE_TEAM($teamName:String! $status:String, $dateCreated:DateTime) {
+        createTeam(teamName:$teamName, status:$status, dateCreated:$dateCreated){
             team {
                 teamId
                 teamName
                 status
-                members
-                projects
                 dateCreated
             }
         }

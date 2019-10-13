@@ -6,20 +6,18 @@ import { useMutation, useQuery } from "@apollo/react-hooks";
 
 const GET_PROJECTS = gql`
 query {
-    allProjects {
-        projectName
-    }
     allSprints {
         sprintName
+        projectName
     }
 }
 `;
 
 const CREATE_TICKET = gql`
-    mutation createTicket($projectName: String!, $description: String, $priority: String,
-        $sprintId: Int, $storyPoints: Int, $ticketType: String) {
+    mutation createTicket($description: String, $priority: String,
+        $sprintName: String, $projectName: String, $storyPoints: Int, $ticketType: String) {
             createTicket(projectName: $projectName, description: $description, priority: $priority,
-                sprintId: $sprintId, storyPoints: $storyPoints, ticketType: $ticketType)
+                sprintName: $sprintName, storyPoints: $storyPoints, ticketType: $ticketType)
             {
                 ticket {
                     ticketId
@@ -27,7 +25,7 @@ const CREATE_TICKET = gql`
                     ticketNumber
                     description
                     priority
-                    sprintId
+                    sprintName
                     storyPoints
                     ticketType
                 }
@@ -93,8 +91,8 @@ const storyPointsOptions = () => {
 }
 
 export const CreateTicket: React.FC = () => {
-    const [projectName, setProject] = React.useState<string>("");
-    const [sprintId, setSprintId] = React.useState<string>("");
+    const [projectName, setProjectName] = React.useState<string>("");
+    const [sprintName, setSprintName] = React.useState<string>("");
     const [ticketType, setTicketType] = React.useState<string>("");
     const [priority, setPriority] = React.useState<string>("");
     const [storyPoints, setStoryPoints] = React.useState<number>(0);
@@ -106,7 +104,7 @@ export const CreateTicket: React.FC = () => {
         e.preventDefault();
         const data = {
             projectName,
-            sprintId,
+            sprintName,
             ticketType,
             priority,
             storyPoints,
@@ -125,8 +123,7 @@ export const CreateTicket: React.FC = () => {
         return <div>{error.message}</div>;
     }
 
-    const projectOptions = data.allProjects.map((project: any) => { return { caption: project.projectName, value: project.projectName } });
-    const sprintOptions = data.allSprints.map((sprint: any) => { return { caption: sprint.sprintName, value: sprint.sprintName } });
+    const sprintOptions = data.allSprints.map((sprint: any) => { return { caption: sprint.sprintName, value: JSON.stringify({ sprintName: sprint.sprintName, projectName: sprint.projectName }) } });
 
     return (
         <div>
@@ -134,8 +131,7 @@ export const CreateTicket: React.FC = () => {
             <TicketInfo>
                 <form action="localhost:5556/ticket" method="post" onSubmit={handleSubmit}>
                     <SelectInputs>
-                        <SelectInput label="Project" name="project" options={projectOptions} value={projectName} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setProject(e.target.value)} />
-                        <SelectInput label="Sprint" name="sprint" options={sprintOptions} value={sprintId} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSprintId(e.target.value)} />
+                        <SelectInput label="Sprint" name="sprint" options={sprintOptions} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => { const val = JSON.parse(e.target.value); setSprintName(val.sprintName); setProjectName(val.projectName); }} />
                         <SelectInput label="Type" name="type" options={typeOptions} value={ticketType} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setTicketType(e.target.value)} />
                         <SelectInput label="Priority" name="priority" options={priorityOptions} value={priority} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setPriority(e.target.value)} />
                         <SelectInput label="Story Points" name="storyPoints" options={storyPointsOptions()} value={storyPoints} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setStoryPoints(Number(e.target.value))} />
