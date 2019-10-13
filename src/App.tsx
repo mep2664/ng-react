@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { CreateItem, Dashboard, ITicket, Login, ModuleAside, NotFound, PageHeader, Ticket } from "./components";
+import { CreateItem, Dashboard, ITicket, Loaders, Login, ModuleAside, NotFound, PageHeader, Ticket } from "./components";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 
@@ -51,6 +51,10 @@ const App: React.FC = () => {
         return <Dashboard />;
     }
 
+    function loaders() {
+        return <Loaders />;
+    }
+
     function login() {
         return <Login />;
     }
@@ -84,6 +88,7 @@ const App: React.FC = () => {
                                 <Route path="/create/:item" component={create} />
                                 <Route path="/ticket/:project-:ticket" component={ticket} />
                                 <Route path="/page-not-found" component={notFound} />
+                                <Route path="/loaders" component={loaders} />
                                 <Route default component={notFound} />
                             </Switch>
                         </main>
