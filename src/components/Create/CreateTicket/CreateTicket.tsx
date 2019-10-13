@@ -6,9 +6,11 @@ import { useMutation, useQuery } from "@apollo/react-hooks";
 
 const GET_PROJECTS = gql`
 query {
+    allProjects {
+        projectName
+    }
     allSprints {
         sprintName
-        projectName
     }
 }
 `;
@@ -123,7 +125,8 @@ export const CreateTicket: React.FC = () => {
         return <div>{error.message}</div>;
     }
 
-    const sprintOptions = data.allSprints.map((sprint: any) => { return { caption: sprint.sprintName, value: JSON.stringify({ sprintName: sprint.sprintName, projectName: sprint.projectName }) } });
+    const projectOptions = data.allProjects.map((project: any) => { return { caption: project.projectName, value: project.projectName } });
+    const sprintOptions = data.allSprints.map((sprint: any) => { return { caption: sprint.sprintName, value: sprint.sprintName } });
 
     return (
         <div>
@@ -131,7 +134,8 @@ export const CreateTicket: React.FC = () => {
             <TicketInfo>
                 <form action="localhost:5556/ticket" method="post" onSubmit={handleSubmit}>
                     <SelectInputs>
-                        <SelectInput label="Sprint" name="sprint" options={sprintOptions} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => { const val = JSON.parse(e.target.value); setSprintName(val.sprintName); setProjectName(val.projectName); }} />
+                        <SelectInput label="Project" name="project" options={projectOptions} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setProjectName(e.target.value)} />
+                        <SelectInput label="Sprint" name="sprint" options={sprintOptions} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSprintName(e.target.value)} />
                         <SelectInput label="Type" name="type" options={typeOptions} value={ticketType} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setTicketType(e.target.value)} />
                         <SelectInput label="Priority" name="priority" options={priorityOptions} value={priority} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setPriority(e.target.value)} />
                         <SelectInput label="Story Points" name="storyPoints" options={storyPointsOptions()} value={storyPoints} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setStoryPoints(Number(e.target.value))} />
