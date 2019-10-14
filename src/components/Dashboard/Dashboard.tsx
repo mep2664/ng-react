@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import { Loader, TicketDetail } from "../";
+import styled from "styled-components";
 
 const GET_TICKETS = gql`
     {
@@ -19,6 +19,10 @@ const GET_TICKETS = gql`
     }
 `;
 
+const Wrapper = styled.div`
+    padding: 15px;
+`;
+
 const Tickets = () => {
     const { loading, error, data } = useQuery(GET_TICKETS, { fetchPolicy: "no-cache" });
     if (loading) {
@@ -30,11 +34,11 @@ const Tickets = () => {
     }
 
     return (
-        <div>
+        <Wrapper>
             {data.allTickets.map((ticket: any) => // TODO give ticket a type
                 <TicketDetail ticket={ticket} />
             )}
-        </div>
+        </Wrapper>
     );
 }
 
