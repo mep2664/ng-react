@@ -36,7 +36,11 @@ export const LoginForm: React.FC = () => {
                     const numHours = 4;
                     const expires = d.setTime(d.getTime() + ((numHours * 60 * 60 * 1000)));
                     document.cookie = `uuid=${response.data.loginUser.token};expires=${expires};path=/`;
-                    window.location.reload();
+                    if (window.location.pathname === "/login") {
+                        window.location.pathname = "/"
+                    } else {
+                        window.location.reload()
+                    }
                 } else if (response.data.loginUser.error) {
                     setError(response.data.loginUser.error);
                 } else {

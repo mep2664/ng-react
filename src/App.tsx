@@ -23,14 +23,6 @@ const getCookie = (cname: string) => {
     return "";
 }
 
-// TODO - Invalidate AUTHTOKEN, if cookie is removed the token shoudn't persist
-const client = new ApolloClient({
-    uri: "http://localhost:5556/graphql",
-    headers: {
-        AUTHTOKEN: getCookie("uuid"),
-    },
-});
-
 const loginClient =
     new ApolloClient({
         uri: "http://localhost:5556/login",
@@ -72,7 +64,12 @@ const App: React.FC = () => {
         return <NotFound />;
     }
 
-    console.log(`Cookie: ${getCookie("uuid")}`);
+    const client = new ApolloClient({
+        uri: "http://localhost:5556/graphql",
+        headers: {
+            AUTHTOKEN: getCookie("uuid"),
+        },
+    });
 
     if (getCookie("uuid")) {
         return (
