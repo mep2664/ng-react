@@ -1,6 +1,6 @@
 import React from "react";
 import { backgroundColor, fontColor, hoverBackgroundColor } from "../../theme";
-import { Button } from "../Button";
+import { Button } from "../Buttons";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 

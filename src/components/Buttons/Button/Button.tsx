@@ -1,5 +1,5 @@
 import React from "react";
-import { emphasisType, backgroundColor, fontColor, hoverBackgroundColor } from "../../theme";
+import { emphasisType, backgroundColor, fontColor, hoverBackgroundColor } from "../../../theme";
 import styled from "styled-components";
 
 interface IStyledButton {

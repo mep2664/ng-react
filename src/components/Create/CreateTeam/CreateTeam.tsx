@@ -44,7 +44,6 @@ export const CreateTeam: React.FC = () => {
             status,
             dateCreated,
         }
-        console.log(data);
         createTeam({ variables: data });
 
     }

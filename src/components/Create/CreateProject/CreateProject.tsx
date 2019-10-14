@@ -64,7 +64,6 @@ export const CreateProject: React.FC = () => {
             projectName,
             description,
         }
-        console.log(data);
         createProject({ variables: data });
 
     }

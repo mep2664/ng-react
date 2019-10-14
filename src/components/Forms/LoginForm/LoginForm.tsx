@@ -13,14 +13,27 @@ const LOGIN_USER = gql`
     }
 `;
 
-export const LoginForm: React.FC = () => {
+interface ILoginFormProps {
+    formId: string;
+    onSubmitChange?: (isSubmitting: boolean) => void;
+}
+
+export const LoginForm: React.FC<ILoginFormProps> = ({ formId, onSubmitChange }) => {
     const [email, setEmail] = React.useState<string>("");
     const [password, setPassword] = React.useState<string>("");
     const [error, setError] = React.useState<string>("");
+    const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
     const [loginUser] = useMutation(LOGIN_USER);
+
+    React.useEffect(() => {
+        if (onSubmitChange) {
+            onSubmitChange(isSubmitting);
+        }
+    }, [isSubmitting])
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setSubmitting(true);
         const data = {
             email,
             password,
@@ -31,7 +44,6 @@ export const LoginForm: React.FC = () => {
             update: (cache, response) => {
                 if (response.data.loginUser.token) {
                     setError(response.data.loginUser.error)
-                    console.log(response.data.loginUser.token);
                     const d = new Date();
                     const numHours = 4;
                     const expires = d.setTime(d.getTime() + ((numHours * 60 * 60 * 1000)));
@@ -47,18 +59,17 @@ export const LoginForm: React.FC = () => {
                     // TODO - never let this be a possibility
                     setError("response didnt have token or error?");
                 }
+                setSubmitting(false);
             }
-        });
-
+        }).catch((error) => { setError(error); setSubmitting(false) });;
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form id={formId} onSubmit={handleSubmit}>
             <div>Login</div>
             {error && <div style={{ color: "red" }}>{error}</div>}
             <TextInput name="email" label="Email" onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} />
             <TextInput name="password" label="Password" onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} />
-            <input type="submit" value="submit" />
-        </form>
+        </form >
     );
 }

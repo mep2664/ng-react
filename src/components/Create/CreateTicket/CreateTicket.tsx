@@ -112,7 +112,6 @@ export const CreateTicket: React.FC = () => {
             storyPoints,
             description,
         }
-        console.log(data);
         createTicket({ variables: data });
 
     }

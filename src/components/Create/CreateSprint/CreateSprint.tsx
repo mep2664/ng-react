@@ -32,7 +32,6 @@ export const CreateSprint: React.FC = () => {
             dateStart: new Date(dateStart).toISOString(),
             dateEnd: new Date(dateEnd).toISOString(),
         }
-        console.log(data);
         createSprint({ variables: data });
 
     }

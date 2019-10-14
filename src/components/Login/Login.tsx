@@ -1,12 +1,22 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { LoginForm, RegisterForm } from "../../components";
+import { OrForm, LoginForm, RegisterForm } from "../../components";
 
 export const Login: React.FC = () => {
+    const loginFormId = "login_form";
+    const registerFormId = "register_form"
+
+    const leftForm = (props: any) => <LoginForm {...props} formId={loginFormId} />;
+    const rightForm = (props: any) => <RegisterForm {...props} formId={registerFormId} />;
+
     return (
         <React.Fragment>
-            <LoginForm />
-            <RegisterForm />
+            <OrForm
+                LeftFormID={loginFormId}
+                RightFormID={registerFormId}
+                LeftForm={leftForm}
+                RightForm={rightForm}
+            />
         </React.Fragment>
     );
 }

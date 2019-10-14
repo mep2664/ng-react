@@ -1,4 +1,4 @@
-export * from "./Button";
+export * from "./Buttons";
 export * from "./Create";
 export * from "./Dashboard";
 export * from "./Forms";

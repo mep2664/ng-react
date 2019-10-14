@@ -129,7 +129,6 @@ export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
 
     React.useEffect(() => {
         window.history.replaceState({}, document.title, `/ticket/${projectName}-${ticketNumber}`);
-        console.log(ticketNumber);
     }, [projectName, ticketNumber])
 
     const handleProjectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -140,7 +139,6 @@ export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
             variables: { changes, ticketId },
             update: (cache, response) => {
                 setTicketNumber(response.data.updateTicket.ticket.ticketNumber);
-                console.log(response.data.updateTicket.ticket.ticketNumber)
             }
         });
     }
