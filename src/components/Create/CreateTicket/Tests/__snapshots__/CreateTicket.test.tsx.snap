@@ -1,0 +1,221 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tests for the CreateTicket component Component matches snapshot 1`] = `
+<div>
+  <div>
+    Create Ticket...
+    <div
+      class="sc-gipzik jnlnU"
+    >
+      <form
+        action="localhost:5556/ticket"
+        method="post"
+      >
+        <div
+          class="sc-csuQGl fjpGMP"
+        >
+          <label
+            class="sc-kpOJdX kQolWU"
+            for="selectInput__Project"
+          >
+            Project
+          </label>
+          <select
+            class="sc-dxgOiQ kgctCh"
+            id="selectInput__Project"
+            name="project"
+          >
+            <option
+              value=""
+            >
+              &lt; Not Selected &gt;
+            </option>
+            <option
+              value="PROJECT-1"
+            >
+              PROJECT-1
+            </option>
+            <option
+              value="PROJECT-2"
+            >
+              PROJECT-2
+            </option>
+            <option
+              value="PROJECT-3"
+            >
+              PROJECT-3
+            </option>
+          </select>
+          <label
+            class="sc-kpOJdX kQolWU"
+            for="selectInput__Sprint"
+          >
+            Sprint
+          </label>
+          <select
+            class="sc-dxgOiQ kgctCh"
+            id="selectInput__Sprint"
+            name="sprint"
+          >
+            <option
+              value=""
+            >
+              &lt; Not Selected &gt;
+            </option>
+            <option
+              value="SPRINT-1"
+            >
+              SPRINT-1
+            </option>
+            <option
+              value="SPRINT-2"
+            >
+              SPRINT-2
+            </option>
+            <option
+              value="SPRINT-3"
+            >
+              SPRINT-3
+            </option>
+          </select>
+          <label
+            class="sc-kpOJdX kQolWU"
+            for="selectInput__Type"
+          >
+            Type
+          </label>
+          <select
+            class="sc-dxgOiQ kgctCh"
+            id="selectInput__Type"
+            name="type"
+          >
+            <option
+              value=""
+            >
+              &lt; Not Selected &gt;
+            </option>
+            <option
+              value="Enhancement"
+            >
+              Enhancement
+            </option>
+            <option
+              value="Bug"
+            >
+              Bug
+            </option>
+            <option
+              value="Research"
+            >
+              Research
+            </option>
+          </select>
+          <label
+            class="sc-kpOJdX kQolWU"
+            for="selectInput__Priority"
+          >
+            Priority
+          </label>
+          <select
+            class="sc-dxgOiQ kgctCh"
+            id="selectInput__Priority"
+            name="priority"
+          >
+            <option
+              value=""
+            >
+              &lt; Not Selected &gt;
+            </option>
+            <option
+              value="Blocker"
+            >
+              Blocker
+            </option>
+            <option
+              value="Standard"
+            >
+              Standard
+            </option>
+            <option
+              value="Minor"
+            >
+              Minor
+            </option>
+          </select>
+          <label
+            class="sc-kpOJdX kQolWU"
+            for="selectInput__Story Points"
+          >
+            Story Points
+          </label>
+          <select
+            class="sc-dxgOiQ kgctCh"
+            id="selectInput__Story Points"
+            name="storyPoints"
+          >
+            <option
+              value=""
+            >
+              &lt; Not Selected &gt;
+            </option>
+            <option
+              value="1"
+            >
+              1
+            </option>
+            <option
+              value="2"
+            >
+              2
+            </option>
+            <option
+              value="3"
+            >
+              3
+            </option>
+            <option
+              value="5"
+            >
+              5
+            </option>
+            <option
+              value="8"
+            >
+              8
+            </option>
+            <option
+              value="13"
+            >
+              13
+            </option>
+            <option
+              value="21"
+            >
+              21
+            </option>
+          </select>
+        </div>
+        <div
+          class="sc-Rmtcm xaKOl"
+        >
+          <label
+            class="sc-ckVGcZ envGLI"
+            for="textArea__Description"
+          >
+            Description
+          </label>
+          <textarea
+            class="sc-jKJlTe jPBhPC"
+            id="textArea__Description"
+            name="description"
+          />
+        </div>
+        <input
+          type="submit"
+          value="submit"
+        />
+      </form>
+    </div>
+  </div>
+</div>
+`;

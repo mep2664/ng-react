@@ -1,10 +1,10 @@
 import * as React from "react";
-import { Loader, SelectInput } from "../..";
+import { Loader, SelectInput, TextArea } from "../..";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import { useMutation, useQuery } from "@apollo/react-hooks";
 
-const GET_PROJECTS = gql`
+export const GET_PROJECTS = gql`
 query {
     allProjects {
         projectName
@@ -15,7 +15,7 @@ query {
 }
 `;
 
-const CREATE_TICKET = gql`
+export const CREATE_TICKET = gql`
     mutation createTicket($description: String, $priority: String,
         $sprintName: String, $projectName: String, $storyPoints: Int, $ticketType: String) {
             createTicket(projectName: $projectName, description: $description, priority: $priority,
@@ -97,7 +97,7 @@ export const CreateTicket: React.FC = () => {
     const [sprintName, setSprintName] = React.useState<string>("");
     const [ticketType, setTicketType] = React.useState<string>("");
     const [priority, setPriority] = React.useState<string>("");
-    const [storyPoints, setStoryPoints] = React.useState<number>(0);
+    const [storyPoints, setStoryPoints] = React.useState<string>("");
     const [description, setDescription] = React.useState<string>("");
     const { loading, error, data } = useQuery(GET_PROJECTS);
     const [createTicket] = useMutation(CREATE_TICKET);
@@ -137,11 +137,10 @@ export const CreateTicket: React.FC = () => {
                         <SelectInput label="Sprint" name="sprint" options={sprintOptions} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSprintName(e.target.value)} />
                         <SelectInput label="Type" name="type" options={typeOptions} value={ticketType} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setTicketType(e.target.value)} />
                         <SelectInput label="Priority" name="priority" options={priorityOptions} value={priority} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setPriority(e.target.value)} />
-                        <SelectInput label="Story Points" name="storyPoints" options={storyPointsOptions()} value={storyPoints} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setStoryPoints(Number(e.target.value))} />
+                        <SelectInput label="Story Points" name="storyPoints" options={storyPointsOptions()} value={storyPoints} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setStoryPoints(e.target.value)} />
                     </SelectInputs>
                     <DescriptionWrapper>
-                        <label>Description</label>
-                        <Description placeholder="Enter a ticket description here..." value={description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)} />
+                        <TextArea label="Description" name="description" value={description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)} />
                     </DescriptionWrapper>
                     <input type="submit" value="submit" />
                 </form>
