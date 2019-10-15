@@ -4,7 +4,7 @@ import { useQuery } from "@apollo/react-hooks";
 import { Loader, TicketDetail } from "../";
 import styled from "styled-components";
 
-const GET_TICKETS = gql`
+export const GET_TICKETS = gql`
     {
         allTickets {
             projectName

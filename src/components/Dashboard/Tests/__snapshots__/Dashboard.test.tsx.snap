@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tests for the Dashboard component Component matches snapshot 1`] = `
+<div>
+  <div>
+    <div
+      class="sc-csuQGl eIEBoF"
+    >
+      <span>
+        TICKET_DETAIL
+      </span>
+      <span>
+        TICKET_DETAIL
+      </span>
+    </div>
+  </div>
+</div>
+`;
