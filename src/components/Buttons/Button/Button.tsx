@@ -35,7 +35,6 @@ export const Button: React.FC<IButtonProps> = ({ Caption, Emphasis, Type, OnClic
         <StyledButton
             type={Type}
             Emphasis={Emphasis}
-
             onClick={OnClick}
         >
             {Caption}

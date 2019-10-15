@@ -20,6 +20,6 @@ export const fontColor: IEmphasis = {
 }
 
 export const hoverBackgroundColor: IEmphasis = {
-    Primary: "darkblue",
-    Secondary: "darkgrey",
+    Primary: "#1a49d6",
+    Secondary: "#a9a9a9",
 }
