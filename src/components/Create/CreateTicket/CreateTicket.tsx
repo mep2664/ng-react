@@ -113,7 +113,7 @@ export const CreateTicket: React.FC = () => {
             description,
         }
         createTicket({ variables: ticketData })
-            .catch((error) => { console.log(error.message); alert(error.message); });
+            .catch((error) => alert(error.message));
     }
 
     if (loading) {
