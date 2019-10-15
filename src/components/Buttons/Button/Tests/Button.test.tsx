@@ -3,19 +3,22 @@ import { render, fireEvent } from "@testing-library/react"
 import "@testing-library/jest-dom/extend-expect";
 import { emphasisType, backgroundColor, fontColor, hoverBackgroundColor } from "../../../../theme";
 import { Button } from "../Button"
+import { ButtonType } from "../../";
 
 describe("Tests for the Button component", () => {
-    const caption = "BUTTON_CAPTION";
-    const onClick = jest.fn();
-    const emphasis: emphasisType = "Primary";
+    const Caption = "BUTTON_CAPTION";
+    const OnClick = jest.fn();
+    const Emphasis: emphasisType = "Primary";
+    const Type: ButtonType = "button";
+
+    const props = {
+        Caption, OnClick, Emphasis, Type,
+    };
 
     test("Component matches snapshot", () => {
         const { container } = render(
             <Button
-                Caption={caption}
-                Type="button"
-                Emphasis={emphasis}
-                OnClick={onClick}
+                {...props}
             />,
         );
         expect(container).toMatchSnapshot();
@@ -24,42 +27,33 @@ describe("Tests for the Button component", () => {
     test("Button exists", () => {
         const { queryByText } = render(
             <Button
-                Caption={caption}
-                Type="button"
-                Emphasis={emphasis}
-                OnClick={onClick}
+                {...props}
             />,
         )
-        expect(queryByText(caption)).toBeDefined();
+        expect(queryByText(Caption)).toBeDefined();
     });
 
     test("Emphasis style is applied correctly", () => {
         const { container } = render(
             <Button
-                Caption={caption}
-                Type="button"
-                Emphasis={emphasis}
-                OnClick={onClick}
+                {...props}
             />,
         )
         const button = container.firstElementChild as HTMLElement;
-        expect(button).toHaveStyle(`background-color: ${backgroundColor[emphasis]}; color: ${fontColor[emphasis]}`);
+        expect(button).toHaveStyle(`background-color: ${backgroundColor[Emphasis]}; color: ${fontColor[Emphasis]}`);
 
         fireEvent.mouseOver(button);
-        expect(button).toHaveStyle(`background-color: ${hoverBackgroundColor[emphasis]}`);
+        expect(button).toHaveStyle(`background-color: ${hoverBackgroundColor[Emphasis]}`);
     });
 
     test("onClick event fires correctly", () => {
         const { container } = render(
             <Button
-                Caption={caption}
-                Type="button"
-                Emphasis={emphasis}
-                OnClick={onClick}
+                {...props}
             />,
         )
         const button = container.firstElementChild as HTMLButtonElement;
         fireEvent.click(button);
-        expect(onClick).toHaveBeenCalledTimes(1);
+        expect(OnClick).toHaveBeenCalledTimes(1);
     });
 });

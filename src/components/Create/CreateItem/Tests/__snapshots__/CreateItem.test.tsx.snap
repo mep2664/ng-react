@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tests for the CreateItem component Component matches snapshot 1`] = `
+<div>
+  <span>
+    NOT_FOUND
+  </span>
+</div>
+`;

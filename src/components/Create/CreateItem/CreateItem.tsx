@@ -1,6 +1,9 @@
 import * as React from "react";
 import { NotFound } from "../..";
-import { CreateProject, CreateSprint, CreateTeam, CreateTicket } from "../";
+import { CreateProject } from "../CreateProject";
+import { CreateSprint } from "../CreateSprint";
+import { CreateTeam } from "../CreateTeam";
+import { CreateTicket } from "../CreateTicket"
 
 interface ICreateItem {
     item: string;
