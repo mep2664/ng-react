@@ -3,7 +3,7 @@ import { TextInput } from "../..";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 
-const LOGIN_USER = gql`
+export const LOGIN_USER = gql`
     mutation LoginUser($email: String!, $password:String!) {
         loginUser(email:$email, password:$password) {
             token
@@ -48,27 +48,28 @@ export const LoginForm: React.FC<ILoginFormProps> = ({ formId, onSubmitChange })
                     const expires = d.setTime(d.getTime() + ((numHours * 60 * 60 * 1000)));
                     document.cookie = `uuid=${response.data.loginUser.token};expires=${expires};path=/`;
                     if (window.location.pathname === "/login") {
-                        window.location.pathname = "/"
+                        window.location.assign(window.location.href.replace("/login", "/"));
                     } else {
                         window.location.reload()
                     }
-                } else if (response.data.loginUser.error) {
-                    setError(response.data.loginUser.error);
                 } else {
-                    // TODO - never let this be a possibility
-                    setError("response didnt have token or error?");
+                    if (response.data.loginUser.error) {
+                        setError(response.data.loginUser.error);
+                    } else {
+                        setError("something went wrong...");
+                    }
                 }
                 setSubmitting(false);
             }
-        }).catch((error) => { setError(error); setSubmitting(false) });;
+        }).catch((error) => { setError(error.message); setSubmitting(false) });;
     }
 
     return (
         <form id={formId} onSubmit={handleSubmit}>
             <div>Login</div>
             {error && <div style={{ color: "red" }}>{error}</div>}
-            <TextInput name="email" label="Email" onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} />
-            <TextInput name="password" label="Password" onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} />
+            <TextInput name="email" label="Email" value={email} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} />
+            <TextInput name="password" label="Password" value={password} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} />
         </form >
     );
 }
