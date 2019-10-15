@@ -63,19 +63,17 @@ export const OrButton: React.FC<IOrButtonProps> = ({ LeftCaption, RightCaption, 
     return (
         <ButtonWrapper>
             <LeftButton
-                type={LeftType}
+                type={LeftType || "button"}
                 form={LeftForm}
                 onClick={LeftOnClick}
-                onSubmit={() => alert('left')}
             >
                 {LeftCaption}
             </LeftButton>
             <OrSpan>or</OrSpan>
             <RightButton
-                type={RightType}
+                type={RightType || "button"}
                 form={RightForm}
                 onClick={RightOnClick}
-                onSubmit={() => alert('right')}
             >
                 {RightCaption}
             </RightButton>

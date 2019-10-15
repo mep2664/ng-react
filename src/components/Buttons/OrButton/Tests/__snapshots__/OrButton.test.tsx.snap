@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tests for the Button component Component matches snapshot 1`] = `
+<div>
+  <div
+    class="sc-bdVaJa kOWXyZ"
+  >
+    <button
+      class="sc-htpNat fOGaoi"
+      form="LEFT_FORM"
+      type="submit"
+    >
+      LEFT_CAPTION
+    </button>
+    <span
+      class="sc-bwzfXH gMKPiz"
+    >
+      or
+    </span>
+    <button
+      class="sc-bxivhb iBBVCP"
+      form="RIGHT_FORM"
+      type="reset"
+    >
+      RIGHT_CAPTION
+    </button>
+  </div>
+</div>
+`;

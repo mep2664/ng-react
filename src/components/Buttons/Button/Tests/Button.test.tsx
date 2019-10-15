@@ -33,19 +33,6 @@ describe("Tests for the Button component", () => {
         expect(queryByText(caption)).toBeDefined();
     });
 
-    test("Caption is the buttons innerHTML", () => {
-        const { container } = render(
-            <Button
-                Caption={caption}
-                Type="button"
-                Emphasis={emphasis}
-                OnClick={onClick}
-            />,
-        )
-        const button = container.firstElementChild as HTMLButtonElement;
-        expect(button.innerHTML).toEqual(caption);
-    });
-
     test("Emphasis style is applied correctly", () => {
         const { container } = render(
             <Button
