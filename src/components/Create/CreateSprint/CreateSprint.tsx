@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Loader, TextInput } from "../..";
+import { TextInput } from "../..";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 

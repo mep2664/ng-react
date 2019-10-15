@@ -20,9 +20,6 @@ const Select = styled.select`
     width: 100%;
 `;
 
-const ValidationMessage = styled.span`
-`;
-
 interface IOption {
     caption: string;
     value: any;

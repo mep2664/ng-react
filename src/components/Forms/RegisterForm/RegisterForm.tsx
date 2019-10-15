@@ -1,6 +1,5 @@
 import * as React from "react";
 import { TextInput } from "../..";
-import styled from "styled-components";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 
@@ -31,7 +30,7 @@ export const RegisterForm: React.FC<IRegisterFormProps> = ({ formId, onSubmitCha
         if (onSubmitChange) {
             onSubmitChange(isSubmitting);
         }
-    }, [isSubmitting])
+    }, [isSubmitting, onSubmitChange])
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

@@ -207,7 +207,7 @@ export const Tooltip: React.FC<ITooltip> = ({ Caption, AnchorElement, Position }
                 setTop((AnchorElement as IMousePosition).MouseY - tooltip.current.offsetHeight - 10);
             }
         }
-    }, [AnchorElement, tooltip, tooltip.current]);
+    }, [AnchorElement, tooltip, Position]);
 
     return (
         <TooltipContainer

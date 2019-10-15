@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Loader, SelectInput, TextInput } from "../..";
+import { Loader, SelectInput } from "../..";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import { useMutation, useQuery } from "@apollo/react-hooks";

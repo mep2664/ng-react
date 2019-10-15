@@ -63,6 +63,7 @@ export const CreateProject: React.FC = () => {
         const data = {
             projectName,
             description,
+            teamId,
         }
         createProject({ variables: data });
 

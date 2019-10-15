@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Loader, SelectInput, TextInput } from "../..";
+import { SelectInput, TextInput } from "../..";
 import styled from "styled-components";
 import gql from "graphql-tag";
-import { useMutation, useQuery } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/react-hooks";
 
 const CREATE_TEAM = gql`
     mutation CREATE_TEAM($teamName:String! $status:String, $dateCreated:DateTime) {

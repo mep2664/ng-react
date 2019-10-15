@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
 import { OrForm, LoginForm, RegisterForm } from "../../components";
 
 export const Login: React.FC = () => {
