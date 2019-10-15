@@ -222,4 +222,46 @@ describe("Tests for the CreateTicket component", () => {
         await wait();
         expect(numTimesSubmitted).toEqual(1);
     });
+
+    test("Handles network error on submit correctly", async () => {
+        window.alert = jest.fn();
+        const errorMutationMock = {
+            request: {
+                query: CREATE_TICKET,
+                variables: vars,
+            },
+            error: new Error("mutation did not work..."),
+        };
+
+        const { getByText, getByLabelText } = render(
+            <MockedProvider mocks={[mocks[0], errorMutationMock]} addTypename={false}>
+                <CreateTicket />
+            </MockedProvider>,
+        );
+        await wait();
+
+        const project = getByLabelText("Project");
+        fireEvent.change(project, { target: { value: vars.projectName } });
+
+        const sprint = getByLabelText("Sprint");
+        fireEvent.change(sprint, { target: { value: vars.sprintName } });
+
+        const type = getByLabelText("Type");
+        fireEvent.change(type, { target: { value: vars.ticketType } });
+
+        const priority = getByLabelText("Priority");
+        fireEvent.change(priority, { target: { value: vars.priority } });
+
+        const storyPoints = getByLabelText("Story Points");
+        fireEvent.change(storyPoints, { target: { value: vars.storyPoints } });
+
+        const description = getByLabelText("Description");
+        fireEvent.change(description, { target: { value: vars.description } });
+
+        const submit = getByText("submit");
+        fireEvent.click(submit);
+        await wait();
+        expect(numTimesSubmitted).toEqual(1);
+        expect(window.alert).toHaveBeenCalledWith("Network error: mutation did not work...");
+    });
 });

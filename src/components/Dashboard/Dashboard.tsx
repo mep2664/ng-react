@@ -35,8 +35,8 @@ const Tickets = () => {
 
     return (
         <Wrapper>
-            {data.allTickets.map((ticket: any) => // TODO give ticket a type
-                <TicketDetail ticket={ticket} />
+            {(data.allTickets as any[]).map((ticket: any, index) => // TODO give ticket a type
+                <TicketDetail key={index} ticket={ticket} />
             )}
         </Wrapper>
     );
