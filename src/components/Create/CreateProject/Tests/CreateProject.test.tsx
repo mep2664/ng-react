@@ -49,10 +49,12 @@ const mocks = [
             numTimesSubmitted++;
             return {
                 data: {
-                    project: {
-                        projectId: "PROJECT_ID",
-                        projectName: vars.projectName,
-                        description: vars.description,
+                    createProject: {
+                        project: {
+                            projectId: "PROJECT_ID",
+                            projectName: vars.projectName,
+                            description: vars.description,
+                        },
                     },
                 },
             };

@@ -62,16 +62,18 @@ const mocks = [
             numTimesSubmitted++;
             return {
                 data: {
-                    project: {
-                        ticketId: "TICKET_ID",
-                        projectName: vars.projectName,
-                        ticketNumber: "1",
-                        sprintName: vars.sprintName,
-                        ticketType: vars.ticketType,
-                        priority: vars.priority,
-                        storyPoints: vars.storyPoints,
-                        description: vars.description,
-                    },
+                    createTicket: {
+                        ticket: {
+                            ticketId: "TICKET_ID",
+                            projectName: vars.projectName,
+                            ticketNumber: "1",
+                            sprintName: vars.sprintName,
+                            ticketType: vars.ticketType,
+                            priority: vars.priority,
+                            storyPoints: vars.storyPoints,
+                            description: vars.description,
+                        },
+                    }
                 },
             };
         },

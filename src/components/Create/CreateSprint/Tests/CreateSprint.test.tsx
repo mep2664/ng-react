@@ -17,12 +17,14 @@ const mocks = [
             numTimesSubmitted++;
             return {
                 data: {
-                    project: {
-                        sprintId: "SPRINT_ID",
-                        sprintName: vars.sprintName,
-                        goal: vars.goal,
-                        dateStart: new Date(vars.dateStart).toISOString(),
-                        dateEnd: new Date(vars.dateEnd).toISOString(),
+                    createSprint: {
+                        sprint: {
+                            sprintId: "SPRINT_ID",
+                            sprintName: vars.sprintName,
+                            goal: vars.goal,
+                            dateStart: new Date(vars.dateStart).toISOString(),
+                            dateEnd: new Date(vars.dateEnd).toISOString(),
+                        },
                     },
                 },
             };

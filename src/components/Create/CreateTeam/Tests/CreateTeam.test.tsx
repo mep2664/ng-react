@@ -19,11 +19,13 @@ const mocks = [
             numTimesSubmitted++;
             return {
                 data: {
-                    project: {
-                        teamId: "TEAM_ID",
-                        teamName: vars.teamName,
-                        status: vars.status,
-                        dateCreated,
+                    createTeam: {
+                        team: {
+                            teamId: "TEAM_ID",
+                            teamName: vars.teamName,
+                            status: vars.status,
+                            dateCreated,
+                        },
                     },
                 },
             };

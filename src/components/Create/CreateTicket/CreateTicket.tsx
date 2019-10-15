@@ -16,7 +16,7 @@ query {
 `;
 
 export const CREATE_TICKET = gql`
-    mutation createTicket($description: String, $priority: String,
+    mutation CreateTicket($description: String, $priority: String,
         $sprintName: String, $projectName: String, $storyPoints: Int, $ticketType: String) {
             createTicket(projectName: $projectName, description: $description, priority: $priority,
                 sprintName: $sprintName, storyPoints: $storyPoints, ticketType: $ticketType)
@@ -104,7 +104,7 @@ export const CreateTicket: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const data = {
+        const ticketData = {
             projectName,
             sprintName,
             ticketType,
@@ -112,7 +112,8 @@ export const CreateTicket: React.FC = () => {
             storyPoints,
             description,
         }
-        createTicket({ variables: data });
+        createTicket({ variables: ticketData })
+            .catch((error) => alert(error));
 
     }
 
