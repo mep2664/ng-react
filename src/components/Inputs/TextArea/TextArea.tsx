@@ -5,27 +5,27 @@ const Label = styled.label`
 
 `;
 
-const Input = styled.input`
+const TextAreaInput = styled.textarea`
     width: 100%;
-    border: 1px solid black;
-    border-radius: 5px;
+    height: 100%;
     box-sizing: border-box;
     padding: 5px;
+    resize: none;
 `;
 
 interface ITextInput {
     label: string;
     name: string;
     value?: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-export const TextInput: React.FC<ITextInput> = ({ label, name, onChange }) => {
-    const labelFor = `textInput__${label}`;
+export const TextArea: React.FC<ITextInput> = ({ label, name, onChange }) => {
+    const labelFor = `textArea__${label}`;
     return (
         <React.Fragment>
             <Label htmlFor={labelFor}>{label}</Label>
-            <Input id={labelFor} type="text" name={name} onChange={onChange} />
+            <TextAreaInput id={labelFor} name={name} onChange={onChange} />
             {/* create an error tooltip for validation */}
         </React.Fragment>
     );

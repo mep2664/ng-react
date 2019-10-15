@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tests for the CreateProject component Component matches snapshot 1`] = `
+<div>
+  <div>
+    Create Project...
+    <div
+      class="sc-Rmtcm AwuUM"
+    >
+      <form
+        action="localhost:5556/project"
+        method="post"
+      >
+        <label
+          class="sc-kEYyzF cXUhpx"
+          for="textInput__Project Name"
+        >
+          Project Name
+        </label>
+        <input
+          class="sc-kkGfuU bvDUFc"
+          id="textInput__Project Name"
+          name="projectName"
+          type="text"
+        />
+        <label
+          class="sc-ckVGcZ envGLI"
+          for="selectInput__Team"
+        >
+          Team
+        </label>
+        <select
+          class="sc-jKJlTe SQmOY"
+          id="selectInput__Team"
+          name="teamId"
+        >
+          <option
+            value=""
+          >
+            &lt; Not Selected &gt;
+          </option>
+          <option
+            value="5da4f7e39be0c7d43e05950b"
+          >
+            Canyon
+          </option>
+          <option
+            value="5da4f7e39be0c7d43e05950f"
+          >
+            Ridge
+          </option>
+          <option
+            value="5da4f7e39be0c7d43e059511"
+          >
+            Peak
+          </option>
+        </select>
+        <div
+          class="sc-bRBYWo kjpjtk"
+        >
+          <label
+            class="sc-eNQAEJ hALvCQ"
+            for="textArea__Description"
+          >
+            Description
+          </label>
+          <textarea
+            class="sc-hMqMXs elAqlG"
+            id="textArea__Description"
+            name="description"
+          />
+        </div>
+        <button
+          class="sc-bdVaJa eVEMrn"
+          type="submit"
+        >
+          submit
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+`;

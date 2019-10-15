@@ -4,7 +4,7 @@ import styled from "styled-components";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 
-const CREATE_TEAM = gql`
+export const CREATE_TEAM = gql`
     mutation CREATE_TEAM($teamName:String! $status:String, $dateCreated:DateTime) {
         createTeam(teamName:$teamName, status:$status, dateCreated:$dateCreated){
             team {
@@ -38,7 +38,8 @@ export const CreateTeam: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const dateCreated = new Date().toISOString()
+        const today = new Date();
+        const dateCreated = new Date(`${today.getMonth()}-${today.getDate()}-${today.getFullYear()}`).toISOString();
         const data = {
             teamName,
             status,
@@ -52,7 +53,7 @@ export const CreateTeam: React.FC = () => {
         <div>
             {`Create Team...`}
             <form action="localhost:5556/team" method="post" onSubmit={handleSubmit}>
-                <TextInput label="Team Name" name="teamName" onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTeamName(e.target.value)} />
+                <TextInput label="Team Name" name="teamName" value={teamName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTeamName(e.target.value)} />
                 <SelectInputs>
                     { /* TODO - Multiple Select Input With Working State for UserTeam table */}
                     <SelectInput label="Status" name="status" options={statusOptions} value={status} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setStatus(e.target.value)} />

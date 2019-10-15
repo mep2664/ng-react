@@ -1,10 +1,10 @@
 import * as React from "react";
-import { Loader, SelectInput, TextInput } from "../..";
+import { Button, Loader, SelectInput, TextArea, TextInput } from "../..";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 
-const GET_TEAMS = gql`
+export const GET_TEAMS = gql`
     query {
         allTeams {
             teamId
@@ -13,7 +13,7 @@ const GET_TEAMS = gql`
     }
 `;
 
-const CREATE_PROJECT = gql`
+export const CREATE_PROJECT = gql`
     mutation createProject($projectName: String!, $teamId: ID, $description: String) {
             createProject(projectName: $projectName, teamId: $teamId, description: $description)
             {
@@ -43,14 +43,6 @@ const DescriptionWrapper = styled.div`
     width: 100%;
 `;
 
-const Description = styled.textarea`
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    padding: 5px;
-    resize: none;
-`;
-
 export const CreateProject: React.FC = () => {
     const [projectName, setProject] = React.useState<string>("");
     const [teamId, setTeamId] = React.useState<string>("");
@@ -60,12 +52,12 @@ export const CreateProject: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const data = {
+        const projectData = {
             projectName,
             description,
             teamId,
         }
-        createProject({ variables: data });
+        createProject({ variables: projectData });
 
     }
 
@@ -84,13 +76,12 @@ export const CreateProject: React.FC = () => {
             {`Create Project...`}
             <ProjectInfo>
                 <form action="localhost:5556/project" method="post" onSubmit={handleSubmit}>
-                    <TextInput name="projectName" label="Project Name" onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProject(e.target.value)} />
-                    <SelectInput name="teamId" label="Team" options={teamOptions} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setTeamId(e.target.value)} />
+                    <TextInput name="projectName" label="Project Name" value={projectName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProject(e.target.value)} />
+                    <SelectInput name="teamId" label="Team" options={teamOptions} value={teamId} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setTeamId(e.target.value)} />
                     <DescriptionWrapper>
-                        <label>Description</label>
-                        <Description placeholder="Enter a project description here..." value={description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)} />
+                        <TextArea name="description" label="Description" value={description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)} />
                     </DescriptionWrapper>
-                    <input type="submit" value="submit" />
+                    <Button Caption="submit" Type="submit" Emphasis="Primary" />
                 </form>
             </ProjectInfo>
         </div>

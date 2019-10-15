@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tests for the CreateSprint component Component matches snapshot 1`] = `
+<div>
+  <div>
+    Create Sprint...
+    <form
+      action="localhost:5556/sprint"
+      method="post"
+    >
+      <label
+        class="sc-iAyFgw fQEosV"
+        for="textInput__Sprint Name"
+      >
+        Sprint Name
+      </label>
+      <input
+        class="sc-hSdWYo dqOLGd"
+        id="textInput__Sprint Name"
+        name="sprintName"
+        type="text"
+      />
+      <label
+        class="sc-iAyFgw fQEosV"
+        for="textInput__Goal"
+      >
+        Goal
+      </label>
+      <input
+        class="sc-hSdWYo dqOLGd"
+        id="textInput__Goal"
+        name="goal"
+        type="text"
+      />
+      <label
+        for="dateInput__dateStart"
+      >
+        Date Start
+      </label>
+      <input
+        id="dateInput__dateStart"
+        name="dateStart"
+        type="date"
+        value="2019-10-15"
+      />
+      <label
+        for="dateInput__dateEnd"
+      >
+        Date End
+      </label>
+      <input
+        id="dateInput__dateEnd"
+        name="dateEnd"
+        type="date"
+        value="2019-10-15"
+      />
+      <input
+        type="submit"
+        value="submit"
+      />
+    </form>
+  </div>
+</div>
+`;

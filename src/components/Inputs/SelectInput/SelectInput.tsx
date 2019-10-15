@@ -35,10 +35,11 @@ interface ISelectInput {
 }
 
 export const SelectInput: React.FC<ISelectInput> = ({ label, name, options, isMultiple, value, onChange }) => {
+    const labelFor = `selectInput__${label}`;
     return (
         <React.Fragment>
-            <Label>{label}</Label>
-            <Select multiple={isMultiple} name={name} value={value} onChange={onChange}>
+            <Label htmlFor={labelFor}>{label}</Label>
+            <Select id={labelFor} multiple={isMultiple} name={name} value={value} onChange={onChange}>
                 <option value="">{"< Not Selected >"}</option>
                 {options.map((option, index) => <option key={index} value={option.value}>{option.caption}</option>)}
             </Select>

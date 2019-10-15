@@ -26,7 +26,7 @@ interface IButtonProps {
     Type: "button" | "submit" | "reset";
     Emphasis: emphasisType;
 
-    OnClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    OnClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 
 }
 

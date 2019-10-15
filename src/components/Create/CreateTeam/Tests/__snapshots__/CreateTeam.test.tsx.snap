@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tests for the CreateTeam component Component matches snapshot 1`] = `
+<div>
+  <div>
+    Create Team...
+    <form
+      action="localhost:5556/team"
+      method="post"
+    >
+      <label
+        class="sc-kkGfuU eYjMeR"
+        for="textInput__Team Name"
+      >
+        Team Name
+      </label>
+      <input
+        class="sc-iAyFgw gJmJVE"
+        id="textInput__Team Name"
+        name="teamName"
+        type="text"
+      />
+      <div
+        class="sc-fBuWsC gsKjTu"
+      >
+        <label
+          class="sc-jKJlTe coeBTV"
+          for="selectInput__Status"
+        >
+          Status
+        </label>
+        <select
+          class="sc-eNQAEJ jBckej"
+          id="selectInput__Status"
+          name="status"
+        >
+          <option
+            value=""
+          >
+            &lt; Not Selected &gt;
+          </option>
+          <option
+            value="Pending"
+          >
+            Pending
+          </option>
+          <option
+            value="Active"
+          >
+            Active
+          </option>
+          <option
+            value="Terminated"
+          >
+            Terminated
+          </option>
+        </select>
+      </div>
+      <input
+        type="submit"
+        value="submit"
+      />
+    </form>
+  </div>
+</div>
+`;
