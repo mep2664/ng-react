@@ -28,95 +28,95 @@ describe("Tests for the Button component", () => {
     });
 
     test("Left button exists", () => {
-        const { queryByText } = render(
+        const { getByText } = render(
             <OrButton
                 {...props}
             />,
         )
-        expect(queryByText(LeftCaption)).toBeDefined();
+        expect(getByText(LeftCaption)).toBeDefined();
     });
 
     test("Right button exists", () => {
-        const { queryByText } = render(
+        const { getByText } = render(
             <OrButton
                 {...props}
             />,
         )
-        expect(queryByText(RightCaption)).toBeDefined();
+        expect(getByText(RightCaption)).toBeDefined();
     });
 
     test("Empty types attribute is set correctly", () => {
-        const { queryByText } = render(
+        const { getByText } = render(
             <OrButton
                 {...props}
                 LeftType={undefined}
                 RightType={undefined}
             />,
         )
-        const leftButton = queryByText(LeftCaption) as HTMLButtonElement;
+        const leftButton = getByText(LeftCaption);
         expect(leftButton).toHaveAttribute("type", "button");
-        const rightButton = queryByText(RightCaption) as HTMLButtonElement;
+        const rightButton = getByText(RightCaption);
         expect(rightButton).toHaveAttribute("type", "button");
     });
 
     test("LeftType attribute is set correctly", () => {
-        const { queryByText } = render(
+        const { getByText } = render(
             <OrButton
                 {...props}
             />,
         )
-        const button = queryByText(LeftCaption) as HTMLButtonElement;
+        const button = getByText(LeftCaption);
         expect(button).toHaveAttribute("type", LeftType);
     });
 
     test("RightType attribute is set correctly", () => {
-        const { queryByText } = render(
+        const { getByText } = render(
             <OrButton
                 {...props}
             />,
         )
-        const button = queryByText(RightCaption) as HTMLButtonElement;
+        const button = getByText(RightCaption);
         expect(button).toHaveAttribute("type", RightType);
     });
 
     test("LeftForm attribute is set correctly", () => {
-        const { queryByText } = render(
+        const { getByText } = render(
             <OrButton
                 {...props}
             />,
         )
-        const button = queryByText(LeftCaption) as HTMLButtonElement;
+        const button = getByText(LeftCaption);
         expect(button).toHaveAttribute("form", LeftForm);
     });
 
     test("RightForm attribute is set correctly", () => {
-        const { queryByText } = render(
+        const { getByText } = render(
             <OrButton
                 {...props}
             />,
         )
-        const button = queryByText(RightCaption) as HTMLButtonElement;
+        const button = getByText(RightCaption);
         expect(button).toHaveAttribute("form", RightForm);
     });
 
     test("LeftOnClick event fires correctly", () => {
-        const { queryByText } = render(
+        const { getByText } = render(
             <OrButton
                 {...props}
             />,
         )
-        const button = queryByText(LeftCaption) as HTMLButtonElement;
+        const button = getByText(LeftCaption);
         fireEvent.click(button);
         expect(LeftOnClick).toHaveBeenCalledTimes(1);
     });
 
     test("RightOnClick event fires correctly", () => {
-        const { queryByText } = render(
+        const { getByText } = render(
             <OrButton
                 {...props}
             />,
         )
-        const button = queryByText(RightCaption) as HTMLButtonElement;
+        const button = getByText(RightCaption);
         fireEvent.click(button);
         expect(RightOnClick).toHaveBeenCalledTimes(1);
     });

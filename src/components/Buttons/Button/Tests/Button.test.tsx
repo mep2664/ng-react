@@ -25,12 +25,12 @@ describe("Tests for the Button component", () => {
     });
 
     test("Button exists", () => {
-        const { queryByText } = render(
+        const { getByText } = render(
             <Button
                 {...props}
             />,
         )
-        expect(queryByText(Caption)).toBeDefined();
+        expect(getByText(Caption)).toBeDefined();
     });
 
     test("Emphasis style is applied correctly", () => {
