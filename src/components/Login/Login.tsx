@@ -15,6 +15,8 @@ export const Login: React.FC = () => {
                 RightFormID={registerFormId}
                 LeftForm={leftForm}
                 RightForm={rightForm}
+                LeftButtonCaption="Login"
+                RightButtonCaption="Register"
             />
         </React.Fragment>
     );

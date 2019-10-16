@@ -36,10 +36,10 @@ const SubmitOverlay = styled.div`
 export interface IOrFormProps {
     LeftFormID: string;
     RightFormID: string;
+    LeftButtonCaption: string;
+    RightButtonCaption: string;
     LeftForm: (props?: any) => JSX.Element;
     RightForm: (props?: any) => JSX.Element;
-    LeftFormProps?: any;
-    RightFormProps?: any;
 };
 
 export interface IOrFormState {
@@ -48,28 +48,22 @@ export interface IOrFormState {
     RightType: string;
 };
 
-export const OrForm: React.FC<IOrFormProps> = ({ LeftFormID, RightFormID, LeftForm, RightForm }) => {
+export const OrForm: React.FC<IOrFormProps> = ({ LeftFormID, RightFormID, LeftButtonCaption, RightButtonCaption, LeftForm, RightForm }) => {
     const [isLeftActive, setLeftActive] = React.useState<boolean>(true);
-    const [leftType, setLeftType] = React.useState<ButtonType>("submit");
-    const [rightType, setRightType] = React.useState<ButtonType>("button");
     const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
 
-    const handleLeftOnClick = () => {
-        if (isLeftActive) {
-            setLeftType("submit");
-        } else {
-            setLeftActive(true);
-            setRightType("button");
+    const handleLeftOnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        if (!isLeftActive) {
+            e.preventDefault();
         }
+        setLeftActive(true);
     }
 
-    const handleRightOnClick = () => {
-        if (!isLeftActive) {
-            setRightType("submit");
-        } else {
-            setLeftActive(false);
-            setLeftType("button");
+    const handleRightOnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        if (isLeftActive) {
+            e.preventDefault();
         }
+        setLeftActive(false);
     }
 
     return (
@@ -80,17 +74,17 @@ export const OrForm: React.FC<IOrFormProps> = ({ LeftFormID, RightFormID, LeftFo
             </FormContainer>
             <ButtonContainer>
                 <OrButton
-                    LeftCaption={"Login"}
-                    RightCaption={"Register"}
-                    LeftType={leftType}
-                    RightType={rightType}
+                    LeftCaption={LeftButtonCaption}
+                    RightCaption={RightButtonCaption}
+                    LeftType={isLeftActive ? "submit" : "button"}
+                    RightType={isLeftActive ? "button" : "submit"}
                     LeftForm={LeftFormID}
                     RightForm={RightFormID}
                     LeftOnClick={handleLeftOnClick}
                     RightOnClick={handleRightOnClick}
                 />
             </ButtonContainer>
-            {isSubmitting && <SubmitOverlay />}
+            {isSubmitting && <SubmitOverlay role="alert" aria-busy="true" aria-live="polite" />}
         </Wrapper>
     );
 }

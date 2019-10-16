@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tests for the OrForm component Component matches snapshot 1`] = `
+<div>
+  <div
+    class="sc-bRBYWo SvwzD"
+  >
+    <div
+      class="sc-hzDkRC jarRHX"
+    >
+      <form
+        title="LF_TITLE"
+      />
+    </div>
+    <div
+      class="sc-jhAzac cwGafY"
+    >
+      <div
+        class="sc-bwzfXH jElIFP"
+      >
+        <button
+          class="sc-bxivhb hVrGCN"
+          form="LEFT_FORM"
+          type="submit"
+        >
+          LEFT_BTN
+        </button>
+        <span
+          class="sc-htpNat fEbLPN"
+        >
+          or
+        </span>
+        <button
+          class="sc-ifAKCX hyMqUn"
+          form="RIGHT_FORM"
+          type="button"
+        >
+          RIGHT_BTN
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

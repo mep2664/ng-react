@@ -55,8 +55,8 @@ export interface IOrButtonProps {
     LeftForm?: string;
     RightForm?: string;
 
-    LeftOnClick: () => void;
-    RightOnClick: () => void;
+    LeftOnClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    RightOnClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 export const OrButton: React.FC<IOrButtonProps> = ({ LeftCaption, RightCaption, LeftType, RightType, LeftForm, RightForm, LeftOnClick, RightOnClick }) => {
