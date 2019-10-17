@@ -3,7 +3,7 @@ import { TextInput } from "../..";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 
-const REGISTER_USER = gql`
+export const REGISTER_USER = gql`
     mutation CreateUser($email:String!, $password:String!, $firstName:String!,$lastName:String!) {
         createUser(email:$email,password:$password,firstName:$firstName,lastName:$lastName) {
             token
@@ -14,7 +14,7 @@ const REGISTER_USER = gql`
 
 interface IRegisterFormProps {
     formId: string;
-    onSubmitChange: (isSubmitting: boolean) => void;
+    onSubmitChange?: (isSubmitting: boolean) => void;
 }
 
 export const RegisterForm: React.FC<IRegisterFormProps> = ({ formId, onSubmitChange }) => {
@@ -22,7 +22,7 @@ export const RegisterForm: React.FC<IRegisterFormProps> = ({ formId, onSubmitCha
     const [password, setPassword] = React.useState<string>("");
     const [firstName, setFirstName] = React.useState<string>("");
     const [lastName, setLastName] = React.useState<string>("");
-    const [error, setError] = React.useState<any>({});
+    const [error, setError] = React.useState<string>("");
     const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
     const [registerUser] = useMutation(REGISTER_USER);
 
@@ -52,27 +52,28 @@ export const RegisterForm: React.FC<IRegisterFormProps> = ({ formId, onSubmitCha
                     const expires = d.setTime(d.getTime() + ((numHours * 60 * 60 * 1000)));
                     // TODO - expires
                     document.cookie = `uuid=${response.data.createUser.token};expires=${expires};path=/`;
-                    window.location.pathname = "/";
-                } else if (response.data.createUser.errors) {
-                    setError(response.data.createUser.errors);
+                    window.location.assign(window.location.href.replace("/login", "/"));
                 } else {
-                    // TODO - never let this be a possibility
-                    setError([{ message: "response didnt have token or error?" }]);
+                    if (response.data.createUser.error) {
+                        setError(response.data.createUser.error);
+                    } else {
+                        setError("something went wrong...");
+                    }
                 }
                 setSubmitting(false);
             }
-        }).catch((error) => { setError(error); setSubmitting(false) });
+        }).catch((reason) => { setError(reason.message); setSubmitting(false) });
 
     }
 
     return (
         <form id={formId} onSubmit={handleSubmit}>
             <div>Register</div>
-            {error && <div style={{ color: "red" }}>{error.message}</div>}
-            <TextInput name="email" label="Email" onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} />
-            <TextInput name="password" label="Password" onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} />
-            <TextInput name="firstName" label="First Name" onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFirstName(e.target.value)} />
-            <TextInput name="lastName" label="Last Name" onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLastName(e.target.value)} />
+            {error && <div style={{ color: "red" }}>{error}</div>}
+            <TextInput name="email" label="Email" value={email} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} />
+            <TextInput name="password" label="Password" value={password} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} />
+            <TextInput name="firstName" label="First Name" value={firstName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFirstName(e.target.value)} />
+            <TextInput name="lastName" label="Last Name" value={lastName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLastName(e.target.value)} />
         </form>
     );
 }

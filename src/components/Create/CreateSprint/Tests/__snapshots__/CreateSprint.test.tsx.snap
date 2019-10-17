@@ -41,7 +41,7 @@ exports[`Tests for the CreateSprint component Component matches snapshot 1`] = `
         id="dateInput__dateStart"
         name="dateStart"
         type="date"
-        value="2019-10-15"
+        value="2019-10-17"
       />
       <label
         for="dateInput__dateEnd"
@@ -52,7 +52,7 @@ exports[`Tests for the CreateSprint component Component matches snapshot 1`] = `
         id="dateInput__dateEnd"
         name="dateEnd"
         type="date"
-        value="2019-10-15"
+        value="2019-10-17"
       />
       <input
         type="submit"
