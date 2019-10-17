@@ -53,34 +53,34 @@ const RightButton = styled.button`
 `;
 
 export interface IOrButtonProps {
-    LeftCaption: string;
-    RightCaption: string;
-    LeftType?: ButtonType;
-    RightType?: ButtonType;
-    LeftForm?: string;
-    RightForm?: string;
+    leftCaption: string;
+    rightCaption: string;
+    leftType?: ButtonType;
+    rightType?: ButtonType;
+    leftForm?: string;
+    rightForm?: string;
 
-    LeftOnClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
-    RightOnClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    leftOnClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    rightOnClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-export const OrButton: React.FC<IOrButtonProps> = ({ LeftCaption, RightCaption, LeftType, RightType, LeftForm, RightForm, LeftOnClick, RightOnClick }) => {
+export const OrButton: React.FC<IOrButtonProps> = ({ leftCaption, rightCaption, leftType, rightType, leftForm, rightForm, leftOnClick, rightOnClick }) => {
     return (
         <ButtonWrapper>
             <LeftButton
-                type={LeftType || "button"}
-                form={LeftForm}
-                onClick={LeftOnClick}
+                type={leftType || "button"}
+                form={leftForm}
+                onClick={leftOnClick}
             >
-                {LeftCaption}
+                {leftCaption}
             </LeftButton>
             <OrSpan>or</OrSpan>
             <RightButton
-                type={RightType || "button"}
-                form={RightForm}
-                onClick={RightOnClick}
+                type={rightType || "button"}
+                form={rightForm}
+                onClick={rightOnClick}
             >
-                {RightCaption}
+                {rightCaption}
             </RightButton>
         </ButtonWrapper>
     );

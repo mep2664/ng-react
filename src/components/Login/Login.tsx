@@ -1,5 +1,5 @@
 import * as React from "react";
-import { OrForm, LoginForm, Logo, RegisterForm } from "../../components";
+import { OrForm, LoginForm, RegisterForm } from "../../components";
 
 export const Login: React.FC = () => {
     const loginFormId = "login_form";
@@ -11,12 +11,12 @@ export const Login: React.FC = () => {
     return (
         <React.Fragment>
             <OrForm
-                LeftFormID={loginFormId}
-                RightFormID={registerFormId}
-                LeftForm={leftForm}
-                RightForm={rightForm}
-                LeftButtonCaption="Login"
-                RightButtonCaption="Register"
+                leftFormID={loginFormId}
+                rightFormID={registerFormId}
+                leftForm={leftForm}
+                rightForm={rightForm}
+                leftButtonCaption="Login"
+                rightButtonCaption="Register"
                 emphasis="Primary"
             />
         </React.Fragment>

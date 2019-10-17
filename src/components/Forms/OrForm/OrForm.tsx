@@ -43,22 +43,16 @@ const SubmitOverlay = styled.div`
 `;
 
 export interface IOrFormProps {
-    LeftFormID: string;
-    RightFormID: string;
-    LeftButtonCaption: string;
-    RightButtonCaption: string;
+    leftFormID: string;
+    rightFormID: string;
+    leftButtonCaption: string;
+    rightButtonCaption: string;
     emphasis?: emphasisType;
-    LeftForm: (props?: any) => JSX.Element;
-    RightForm: (props?: any) => JSX.Element;
+    leftForm: (props?: any) => JSX.Element;
+    rightForm: (props?: any) => JSX.Element;
 };
 
-export interface IOrFormState {
-    isLeftActive: boolean;
-    LeftType: string;
-    RightType: string;
-};
-
-export const OrForm: React.FC<IOrFormProps> = ({ LeftFormID, RightFormID, LeftButtonCaption, RightButtonCaption, LeftForm, RightForm, emphasis = "Primary" }) => {
+export const OrForm: React.FC<IOrFormProps> = ({ leftFormID, rightFormID, leftButtonCaption, rightButtonCaption, leftForm, rightForm, emphasis = "Primary" }) => {
     const [isLeftActive, setLeftActive] = React.useState<boolean>(true);
     const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
 
@@ -79,19 +73,19 @@ export const OrForm: React.FC<IOrFormProps> = ({ LeftFormID, RightFormID, LeftBu
     return (
         <Wrapper emphasis={emphasis}>
             <FormContainer>
-                {isLeftActive ? LeftForm({ onSubmitChange: (isSubmitting: boolean) => setSubmitting(isSubmitting), emphasis: emphasis })
-                    : RightForm({ onSubmitChange: (isSubmitting: boolean) => setSubmitting(isSubmitting), emphasis: emphasis })}
+                {isLeftActive ? leftForm({ onSubmitChange: (isSubmitting: boolean) => setSubmitting(isSubmitting), emphasis: emphasis })
+                    : rightForm({ onSubmitChange: (isSubmitting: boolean) => setSubmitting(isSubmitting), emphasis: emphasis })}
             </FormContainer>
             <ButtonContainer>
                 <OrButton
-                    LeftCaption={LeftButtonCaption}
-                    RightCaption={RightButtonCaption}
-                    LeftType={isLeftActive ? "submit" : "button"}
-                    RightType={isLeftActive ? "button" : "submit"}
-                    LeftForm={LeftFormID}
-                    RightForm={RightFormID}
-                    LeftOnClick={handleLeftOnClick}
-                    RightOnClick={handleRightOnClick}
+                    leftCaption={leftButtonCaption}
+                    rightCaption={rightButtonCaption}
+                    leftType={isLeftActive ? "submit" : "button"}
+                    rightType={isLeftActive ? "button" : "submit"}
+                    leftForm={leftFormID}
+                    rightForm={rightFormID}
+                    leftOnClick={handleLeftOnClick}
+                    rightOnClick={handleRightOnClick}
                 />
             </ButtonContainer>
             {isSubmitting && <SubmitOverlay role="alert" aria-busy="true" aria-live="polite" />}

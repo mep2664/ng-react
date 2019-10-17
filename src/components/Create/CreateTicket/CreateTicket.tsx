@@ -60,14 +60,6 @@ const DescriptionWrapper = styled.div`
     width: 100%;
 `;
 
-const Description = styled.textarea`
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    padding: 5px;
-    resize: none;
-`;
-
 const typeOptions = [
     { caption: "Enhancement", value: "Enhancement" },
     { caption: "Bug", value: "Bug" },
