@@ -1,7 +1,6 @@
 import React from 'react';
-import Logo from "../Logo/Logo"
 import { backgroundColor, fontColor } from "../../theme";
-import { NavigationMenu } from "../../components";
+import { Logo, NavigationMenu } from "../../components";
 import styled from "styled-components";
 
 const Spaceholder = styled.div`

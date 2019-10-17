@@ -2,6 +2,8 @@ import * as React from "react";
 import { TextInput } from "../..";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
+import styled from "styled-components";
+import { emphasisType } from "../../../theme";
 
 export const LOGIN_USER = gql`
     mutation LoginUser($email: String!, $password:String!) {
@@ -12,12 +14,17 @@ export const LOGIN_USER = gql`
     }
 `;
 
+const FormHeader = styled.h2`
+    text-align: center;
+`;
+
 interface ILoginFormProps {
     formId: string;
+    emphasis: emphasisType;
     onSubmitChange?: (isSubmitting: boolean) => void;
 }
 
-export const LoginForm: React.FC<ILoginFormProps> = ({ formId, onSubmitChange }) => {
+export const LoginForm: React.FC<ILoginFormProps> = ({ formId, emphasis = "Primary", onSubmitChange }) => {
     const [email, setEmail] = React.useState<string>("");
     const [password, setPassword] = React.useState<string>("");
     const [error, setError] = React.useState<string>("");
@@ -66,10 +73,10 @@ export const LoginForm: React.FC<ILoginFormProps> = ({ formId, onSubmitChange })
 
     return (
         <form id={formId} onSubmit={handleSubmit}>
-            <div>Login</div>
+            <FormHeader>Login</FormHeader>
             {error && <div style={{ color: "red" }}>{error}</div>}
-            <TextInput name="email" label="Email" value={email} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} />
-            <TextInput name="password" label="Password" value={password} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} />
+            <TextInput emphasis={emphasis} name="email" label="Email" value={email} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} />
+            <TextInput emphasis={emphasis} name="password" label="Password" value={password} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} />
         </form >
     );
 }

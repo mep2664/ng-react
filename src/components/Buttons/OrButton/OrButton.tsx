@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "styled-components"
 import { ButtonType } from "../";
+import { backgroundColor, fontColor } from "../../../theme";
 
 const ButtonWrapper = styled.div`
     position: relative;
@@ -28,7 +29,7 @@ const SharedButtonStyle = `
     width: 150px;
     padding: 0 20px;
     color: #1f1f1f;
-    border-radius: 5px;
+    border: none;
     font-family: Arial, "Arial Header", sans-serif;
     font-size: 16px;
     font-weight: 600;
@@ -39,12 +40,16 @@ const LeftButton = styled.button`
     ${SharedButtonStyle}
     margin-right: 1px;
     border-radius: 20px 0 0 20px;
+    background-color: ${backgroundColor["Positive"]};
+    color: ${fontColor["Positive"]};
 `;
 
 const RightButton = styled.button`
     ${SharedButtonStyle}
     margin-left: 1px;
     border-radius: 0 20px 20px 0;
+    background-color: ${backgroundColor["Positive"]};
+    color: ${fontColor["Positive"]};
 `;
 
 export interface IOrButtonProps {

@@ -7,11 +7,15 @@ const LogoWrapper = styled.div`
   align-items: center;
 `;
 
-const Logo: React.FC = () => {
+interface ILogoProps {
+  height?: string;
+  width?: string;
+}
+
+export const Logo: React.FC<ILogoProps> = ({ height, width }) => {
   return (
     <LogoWrapper>
-        <LogoIcon />Logo
+      <LogoIcon height={height} width={width} />
     </LogoWrapper>
   );
 }
-export default Logo;
