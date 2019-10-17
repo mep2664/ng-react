@@ -8,7 +8,7 @@ import { ButtonType } from "../../";
 describe("Tests for the Button component", () => {
     const caption = "BUTTON_CAPTION";
     const onClick = jest.fn();
-    const emphasis: emphasisType = "Primary";
+    const emphasis: emphasisType = "Secondary";
     const type: ButtonType = "button";
 
     const props = {
@@ -31,19 +31,6 @@ describe("Tests for the Button component", () => {
             />,
         )
         expect(getByText(caption)).toBeDefined();
-    });
-
-    test("Emphasis style is applied correctly", () => {
-        const { getByText } = render(
-            <Button
-                {...props}
-            />,
-        )
-        const button = getByText(props.caption);
-        expect(button).toHaveStyle(`background-color: ${backgroundColor[emphasis]}; color: ${fontColor[emphasis]}`);
-
-        fireEvent.mouseOver(button);
-        expect(button).toHaveStyle(`background-color: ${hoverBackgroundColor[emphasis]}`);
     });
 
     test("onClick event fires correctly", () => {

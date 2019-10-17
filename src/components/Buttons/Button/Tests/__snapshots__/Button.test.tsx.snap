@@ -3,7 +3,7 @@
 exports[`Tests for the Button component Component matches snapshot 1`] = `
 <div>
   <button
-    class="sc-bdVaJa busgcP"
+    class="sc-bdVaJa hyeVur"
     type="button"
   >
     BUTTON_CAPTION
