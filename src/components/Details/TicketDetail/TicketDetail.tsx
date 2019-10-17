@@ -11,7 +11,7 @@ const Detail = styled.div`
     box-sizing: border-box;
 `;
 
-const TicketLink = styled(Link)`
+const ItemLink = styled(Link)`
     text-transform: uppercase;
     font-weight: bold;
     text-decoration: none;
@@ -40,7 +40,7 @@ interface ITicketDetailProps {
 export const TicketDetail: React.FC<ITicketDetailProps> = ({ ticket }) => {
     return (
         <Detail>
-            <TicketLink to={`/ticket/${ticket.projectName.toUpperCase()}-${ticket.ticketNumber}`}>{`${ticket.projectName}-${ticket.ticketNumber}`}</TicketLink>
+            <ItemLink to={`/view/ticket/${ticket.projectName.toUpperCase()}-${ticket.ticketNumber}`}>{`${ticket.projectName}-${ticket.ticketNumber}`}</ItemLink>
             <div>{`Description: ${ticket.description}`}</div>
             <div>{`Priority: ${ticket.priority}`}</div>
             <div>{`Sprint Name: ${ticket.sprintName}`}</div>

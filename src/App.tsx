@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { CreateItem, Dashboard, ITicket, Loaders, Login, ModuleAside, NotFound, PageHeader, Ticket } from "./components";
+import { CreateItem, Dashboard, ITicket, Loaders, Login, ModuleAside, NotFound, PageHeader, ViewItem } from "./components";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 
@@ -55,14 +55,19 @@ const App: React.FC = () => {
         return <CreateItem {...match.params} />;
     }
 
-    function ticket({ match }: { match: any }) {
-        match.params.ticket = parseInt(match.params.ticket);
-        const params: ITicket = match.params;
-        if (params.ticket) {
-            return <Ticket {...params} />;
-        }
-        return <NotFound />;
+    function view({ match }: { match: any }) {
+        return <ViewItem {...match.params} />;
     }
+
+
+    // function ticket({ match }: { match: any }) {
+    //     match.params.ticket = parseInt(match.params.ticket);
+    //     const params: ITicket = match.params;
+    //     if (params.ticket) {
+    //         return <Ticket {...params} />;
+    //     }
+    //     return <NotFound />;
+    // }
 
     const client = new ApolloClient({
         uri: "http://localhost:5556/graphql",
@@ -83,7 +88,7 @@ const App: React.FC = () => {
                                 <Route path="/" exact component={dashboard} />
                                 <Route path="/login" component={login} />
                                 <Route path="/create/:item" component={create} />
-                                <Route path="/ticket/:project-:ticket" component={ticket} />
+                                <Route path="/view/:item/:identifier?" component={view} />
                                 <Route path="/page-not-found" component={notFound} />
                                 <Route path="/loaders" component={loaders} />
                                 <Route default component={notFound} />

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Loader, SelectInput } from "../../components";
+import { Loader, SelectInput } from "../../../components";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/react-hooks";
@@ -104,7 +104,7 @@ const storyPointsOptions = () => {
     return options;
 }
 
-export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
+export const ViewTicket: React.FC<ITicket> = ({ project, ticket }) => {
     const [ticketId, setTicketId] = React.useState<string>("");
     const [projectName, setProjectName] = React.useState<string>(project);
     const [ticketNumber, setTicketNumber] = React.useState<number>(ticket);
@@ -128,7 +128,7 @@ export const Ticket: React.FC<ITicket> = ({ project, ticket }) => {
     }, [data]);
 
     React.useEffect(() => {
-        window.history.replaceState({}, document.title, `/ticket/${projectName}-${ticketNumber}`);
+        window.history.replaceState({}, document.title, `/view/ticket/${projectName}-${ticketNumber}`);
     }, [projectName, ticketNumber])
 
     const handleProjectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
