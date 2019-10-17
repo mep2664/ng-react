@@ -1,7 +1,6 @@
 import * as React from "react";
 import { OrButton } from "../../";
 import styled from "styled-components";
-import { ButtonType } from "../../Buttons";
 
 const Wrapper = styled.div`
     display: grid;
