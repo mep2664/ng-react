@@ -1,6 +1,10 @@
 export const fontFamily = 'Arial, "Arial Header", sans-serif';
 
-interface IEmphasis {
+export interface IEmphasis {
+    emphasis: emphasisType;
+}
+
+interface IEmphasisTypes {
     Primary: string;
     Secondary: string;
     Dark: string;
@@ -15,7 +19,7 @@ interface IEmphasis {
 export type emphasisType = "Primary" | "Secondary" | "Dark" | "Light" |
     "Positive" | "Neutral" | "Warning" | "Error" | "Overlay";
 
-export const backgroundColor: IEmphasis = {
+export const backgroundColor: IEmphasisTypes = {
     Primary: "#2185d0",
     Secondary: "#e0e1e2",
     Dark: "#1b1c1d",
@@ -26,14 +30,14 @@ export const backgroundColor: IEmphasis = {
     Overlay: "rgba(0,0,0,0.1)",
 }
 
-export const borderColor: IEmphasis = {
+export const borderColor: IEmphasisTypes = {
     Primary: "#ffffff",
     Secondary: "#000000",
     Dark: "#0f0f0f",
     Light: "#f0f0f0",
 }
 
-export const fontColor: IEmphasis = {
+export const fontColor: IEmphasisTypes = {
     Primary: "#f0f0f0",
     Secondary: "#1f1f1f",
     Dark: "#1f1f1f",
@@ -41,14 +45,14 @@ export const fontColor: IEmphasis = {
     Positive: "#f0f0f0",
 }
 
-export const hoverBackgroundColor: IEmphasis = {
+export const hoverBackgroundColor: IEmphasisTypes = {
     Primary: "#1a49d6",
     Secondary: "#a9a9a9",
     Dark: "#000000",
     Light: "#ffffff",
 }
 
-export const hoverFontColor: IEmphasis = {
+export const hoverFontColor: IEmphasisTypes = {
     Primary: "#1a49d6",
     Secondary: "#a9a9a9",
     Dark: "#000000",

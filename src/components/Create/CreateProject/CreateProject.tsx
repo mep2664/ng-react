@@ -81,7 +81,7 @@ export const CreateProject: React.FC = () => {
                     <DescriptionWrapper>
                         <TextArea name="description" label="Description" value={description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value)} />
                     </DescriptionWrapper>
-                    <Button Caption="submit" Type="submit" Emphasis="Primary" />
+                    <Button caption="submit" type="submit" emphasis="Primary" />
                 </form>
             </ProjectInfo>
         </div>

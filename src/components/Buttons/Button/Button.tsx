@@ -1,43 +1,39 @@
 import React from "react";
-import { emphasisType, backgroundColor, fontColor, hoverBackgroundColor } from "../../../theme";
+import { IEmphasis, emphasisType, backgroundColor, fontColor, hoverBackgroundColor } from "../../../theme";
 import styled from "styled-components";
 
-interface IStyledButton {
-    Emphasis: emphasisType;
-}
-
-const StyledButton = styled.button<IStyledButton>`
-    background-color: ${(props) => backgroundColor[props.Emphasis]};
+const StyledButton = styled.button<IEmphasis>`
+    background-color: ${(props) => backgroundColor[props.emphasis]};
     border: none;
     border-radius: 3px;
-    color: ${(props) => fontColor[props.Emphasis]};
+    color: ${(props) => fontColor[props.emphasis]};
     cursor: pointer;
     font-size: 15px;
     padding: 10px;
     vertical-align: center;
 
     &:hover {
-        background-color: ${(props) => hoverBackgroundColor[props.Emphasis]};
+        background-color: ${(props) => hoverBackgroundColor[props.emphasis]};
     }
 `;
 
 interface IButtonProps {
-    Caption: string;
-    Type: "button" | "submit" | "reset";
-    Emphasis: emphasisType;
+    caption: string;
+    type: "button" | "submit" | "reset";
+    emphasis: emphasisType;
 
-    OnClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 
 }
 
-export const Button: React.FC<IButtonProps> = ({ Caption, Emphasis, Type, OnClick }) => {
+export const Button: React.FC<IButtonProps> = ({ caption, emphasis, type, onClick }) => {
     return (
         <StyledButton
-            type={Type}
-            Emphasis={Emphasis}
-            onClick={OnClick}
+            type={type}
+            emphasis={emphasis}
+            onClick={onClick}
         >
-            {Caption}
+            {caption}
         </StyledButton>
     );
 }

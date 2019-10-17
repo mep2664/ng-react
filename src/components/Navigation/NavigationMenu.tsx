@@ -26,28 +26,28 @@ export const NavigationMenu: React.FC = () => {
     return (
         <NavigationWrapper>
             <Button
-                Caption="Create Team"
-                Emphasis="Secondary"
-                Type="button"
-                OnClick={() => window.location.pathname = "/create/team"}
+                caption="Create Team"
+                emphasis="Secondary"
+                type="button"
+                onClick={() => window.location.pathname = "/create/team"}
             />
             <Button
-                Caption="Create Project"
-                Emphasis="Secondary"
-                Type="button"
-                OnClick={() => window.location.pathname = "/create/project"}
+                caption="Create Project"
+                emphasis="Secondary"
+                type="button"
+                onClick={() => window.location.pathname = "/create/project"}
             />
             <Button
-                Caption="Create Sprint"
-                Emphasis="Secondary"
-                Type="button"
-                OnClick={() => window.location.pathname = "/create/sprint"}
+                caption="Create Sprint"
+                emphasis="Secondary"
+                type="button"
+                onClick={() => window.location.pathname = "/create/sprint"}
             />
             <Button
-                Caption="Create Ticket"
-                Emphasis="Secondary"
-                Type="button"
-                OnClick={() => window.location.pathname = "/create/ticket"}
+                caption="Create Ticket"
+                emphasis="Secondary"
+                type="button"
+                onClick={() => window.location.pathname = "/create/ticket"}
             />
             <NavigationLink to="/">Dashboard</NavigationLink>
             <NavigationLink to="/projects">Projects</NavigationLink>
