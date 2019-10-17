@@ -9,28 +9,30 @@ exports[`Tests for the CreateSprint component Component matches snapshot 1`] = `
       method="post"
     >
       <label
-        class="sc-iAyFgw fQEosV"
+        class="sc-hSdWYo eXDbei"
         for="textInput__Sprint Name"
       >
         Sprint Name
       </label>
       <input
-        class="sc-hSdWYo dqOLGd"
+        class="sc-eHgmQL ldbiel"
         id="textInput__Sprint Name"
         name="sprintName"
         type="text"
+        value=""
       />
       <label
-        class="sc-iAyFgw fQEosV"
+        class="sc-hSdWYo eXDbei"
         for="textInput__Goal"
       >
         Goal
       </label>
       <input
-        class="sc-hSdWYo dqOLGd"
+        class="sc-eHgmQL ldbiel"
         id="textInput__Goal"
         name="goal"
         type="text"
+        value=""
       />
       <label
         for="dateInput__dateStart"

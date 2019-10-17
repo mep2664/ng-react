@@ -5,9 +5,11 @@ exports[`Tests for the RegisterForm component Component matches snapshot 1`] = `
   <form
     id="FORM_ID"
   >
-    <div>
+    <h2
+      class="sc-fMiknA eHwdYc"
+    >
       Register
-    </div>
+    </h2>
     
     <label
       class="sc-iAyFgw fQEosV"
@@ -16,10 +18,11 @@ exports[`Tests for the RegisterForm component Component matches snapshot 1`] = `
       Email
     </label>
     <input
-      class="sc-hSdWYo dqOLGd"
+      class="sc-hSdWYo fjzKFm"
       id="textInput__Email"
       name="email"
       type="text"
+      value=""
     />
     <label
       class="sc-iAyFgw fQEosV"
@@ -28,10 +31,11 @@ exports[`Tests for the RegisterForm component Component matches snapshot 1`] = `
       Password
     </label>
     <input
-      class="sc-hSdWYo dqOLGd"
+      class="sc-hSdWYo fjzKFm"
       id="textInput__Password"
       name="password"
       type="text"
+      value=""
     />
     <label
       class="sc-iAyFgw fQEosV"
@@ -40,10 +44,11 @@ exports[`Tests for the RegisterForm component Component matches snapshot 1`] = `
       First Name
     </label>
     <input
-      class="sc-hSdWYo dqOLGd"
+      class="sc-hSdWYo fjzKFm"
       id="textInput__First Name"
       name="firstName"
       type="text"
+      value=""
     />
     <label
       class="sc-iAyFgw fQEosV"
@@ -52,10 +57,11 @@ exports[`Tests for the RegisterForm component Component matches snapshot 1`] = `
       Last Name
     </label>
     <input
-      class="sc-hSdWYo dqOLGd"
+      class="sc-hSdWYo fjzKFm"
       id="textInput__Last Name"
       name="lastName"
       type="text"
+      value=""
     />
   </form>
 </div>

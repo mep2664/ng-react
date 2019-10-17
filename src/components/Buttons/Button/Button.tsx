@@ -3,17 +3,17 @@ import { IEmphasis, emphasisType, backgroundColor, fontColor, hoverBackgroundCol
 import styled from "styled-components";
 
 const StyledButton = styled.button<IEmphasis>`
-    background-color: ${(props) => backgroundColor[props.emphasis]};
+    background-color: ${({ emphasis }) => backgroundColor[emphasis]};
     border: none;
     border-radius: 3px;
-    color: ${(props) => fontColor[props.emphasis]};
+    color: ${({ emphasis }) => fontColor[emphasis]};
     cursor: pointer;
     font-size: 15px;
     padding: 10px;
     vertical-align: center;
 
     &:hover {
-        background-color: ${(props) => hoverBackgroundColor[props.emphasis]};
+        background-color: ${({ emphasis }) => hoverBackgroundColor[emphasis]};
     }
 `;
 

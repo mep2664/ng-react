@@ -3,23 +3,23 @@
 exports[`Tests for the OrForm component Component matches snapshot 1`] = `
 <div>
   <div
-    class="sc-bRBYWo SvwzD"
+    class="sc-hzDkRC fjJNAb"
   >
     <div
-      class="sc-hzDkRC jarRHX"
+      class="sc-jhAzac dLhCdB"
     >
       <form
         title="LF_TITLE"
       />
     </div>
     <div
-      class="sc-jhAzac cwGafY"
+      class="sc-fBuWsC dAloEz"
     >
       <div
         class="sc-bwzfXH jElIFP"
       >
         <button
-          class="sc-bxivhb hVrGCN"
+          class="sc-bxivhb kZMPJz"
           form="LEFT_FORM"
           type="submit"
         >
@@ -31,7 +31,7 @@ exports[`Tests for the OrForm component Component matches snapshot 1`] = `
           or
         </span>
         <button
-          class="sc-ifAKCX hyMqUn"
+          class="sc-ifAKCX ewbGBU"
           form="RIGHT_FORM"
           type="button"
         >

@@ -5,32 +5,33 @@ exports[`Tests for the CreateProject component Component matches snapshot 1`] = 
   <div>
     Create Project...
     <div
-      class="sc-Rmtcm AwuUM"
+      class="sc-bRBYWo bklyAT"
     >
       <form
         action="localhost:5556/project"
         method="post"
       >
         <label
-          class="sc-kEYyzF cXUhpx"
+          class="sc-kkGfuU eYjMeR"
           for="textInput__Project Name"
         >
           Project Name
         </label>
         <input
-          class="sc-kkGfuU bvDUFc"
+          class="sc-iAyFgw cEgyZf"
           id="textInput__Project Name"
           name="projectName"
           type="text"
+          value=""
         />
         <label
-          class="sc-ckVGcZ envGLI"
+          class="sc-jKJlTe coeBTV"
           for="selectInput__Team"
         >
           Team
         </label>
         <select
-          class="sc-jKJlTe SQmOY"
+          class="sc-eNQAEJ jBckej"
           id="selectInput__Team"
           name="teamId"
         >
@@ -56,22 +57,22 @@ exports[`Tests for the CreateProject component Component matches snapshot 1`] = 
           </option>
         </select>
         <div
-          class="sc-bRBYWo kjpjtk"
+          class="sc-hzDkRC frjYVh"
         >
           <label
-            class="sc-eNQAEJ hALvCQ"
+            class="sc-hMqMXs bIVqTe"
             for="textArea__Description"
           >
             Description
           </label>
           <textarea
-            class="sc-hMqMXs elAqlG"
+            class="sc-kEYyzF dPRCLP"
             id="textArea__Description"
             name="description"
           />
         </div>
         <button
-          class="sc-bdVaJa eVEMrn"
+          class="sc-bdVaJa busgcP"
           type="submit"
         >
           submit

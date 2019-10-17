@@ -9,28 +9,29 @@ exports[`Tests for the CreateTeam component Component matches snapshot 1`] = `
       method="post"
     >
       <label
-        class="sc-kkGfuU eYjMeR"
+        class="sc-iAyFgw fQEosV"
         for="textInput__Team Name"
       >
         Team Name
       </label>
       <input
-        class="sc-iAyFgw gJmJVE"
+        class="sc-hSdWYo fjzKFm"
         id="textInput__Team Name"
         name="teamName"
         type="text"
+        value=""
       />
       <div
-        class="sc-fBuWsC gsKjTu"
+        class="sc-fMiknA byHEZU"
       >
         <label
-          class="sc-jKJlTe coeBTV"
+          class="sc-eNQAEJ hALvCQ"
           for="selectInput__Status"
         >
           Status
         </label>
         <select
-          class="sc-eNQAEJ jBckej"
+          class="sc-hMqMXs hplJYk"
           id="selectInput__Status"
           name="status"
         >

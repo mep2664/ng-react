@@ -27,7 +27,7 @@ export const NavigationMenu: React.FC = () => {
         <NavigationWrapper>
             <Button
                 caption="Create Team"
-                emphasis="Secondary"
+                emphasis="Primary"
                 type="button"
                 onClick={() => window.location.pathname = "/create/team"}
             />

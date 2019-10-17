@@ -6,13 +6,13 @@ import { Button } from "../Button"
 import { ButtonType } from "../../";
 
 describe("Tests for the Button component", () => {
-    const Caption = "BUTTON_CAPTION";
-    const OnClick = jest.fn();
-    const Emphasis: emphasisType = "Primary";
-    const Type: ButtonType = "button";
+    const caption = "BUTTON_CAPTION";
+    const onClick = jest.fn();
+    const emphasis: emphasisType = "Primary";
+    const type: ButtonType = "button";
 
     const props = {
-        Caption, OnClick, Emphasis, Type,
+        caption, onClick, emphasis, type,
     };
 
     test("Component matches snapshot", () => {
@@ -30,30 +30,30 @@ describe("Tests for the Button component", () => {
                 {...props}
             />,
         )
-        expect(getByText(Caption)).toBeDefined();
+        expect(getByText(caption)).toBeDefined();
     });
 
     test("Emphasis style is applied correctly", () => {
-        const { container } = render(
+        const { getByText } = render(
             <Button
                 {...props}
             />,
         )
-        const button = container.firstElementChild as HTMLElement;
-        expect(button).toHaveStyle(`background-color: ${backgroundColor[Emphasis]}; color: ${fontColor[Emphasis]}`);
+        const button = getByText(props.caption);
+        expect(button).toHaveStyle(`background-color: ${backgroundColor[emphasis]}; color: ${fontColor[emphasis]}`);
 
         fireEvent.mouseOver(button);
-        expect(button).toHaveStyle(`background-color: ${hoverBackgroundColor[Emphasis]}`);
+        expect(button).toHaveStyle(`background-color: ${hoverBackgroundColor[emphasis]}`);
     });
 
     test("onClick event fires correctly", () => {
-        const { container } = render(
+        const { getByText } = render(
             <Button
                 {...props}
             />,
         )
-        const button = container.firstElementChild as HTMLButtonElement;
+        const button = getByText(props.caption);
         fireEvent.click(button);
-        expect(OnClick).toHaveBeenCalledTimes(1);
+        expect(onClick).toHaveBeenCalledTimes(1);
     });
 });

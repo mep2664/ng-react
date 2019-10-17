@@ -6,7 +6,7 @@ exports[`Tests for the Button component Component matches snapshot 1`] = `
     class="sc-bdVaJa kOWXyZ"
   >
     <button
-      class="sc-htpNat fOGaoi"
+      class="sc-htpNat ewFkYC"
       form="LEFT_FORM"
       type="submit"
     >
@@ -18,7 +18,7 @@ exports[`Tests for the Button component Component matches snapshot 1`] = `
       or
     </span>
     <button
-      class="sc-bxivhb iBBVCP"
+      class="sc-bxivhb cPfNQV"
       form="RIGHT_FORM"
       type="reset"
     >

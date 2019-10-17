@@ -5,23 +5,23 @@ exports[`Tests for the CreateTicket component Component matches snapshot 1`] = `
   <div>
     Create Ticket...
     <div
-      class="sc-gipzik jnlnU"
+      class="sc-Rmtcm AwuUM"
     >
       <form
         action="localhost:5556/ticket"
         method="post"
       >
         <div
-          class="sc-csuQGl fjpGMP"
+          class="sc-bRBYWo dCMlAG"
         >
           <label
-            class="sc-kpOJdX kQolWU"
+            class="sc-ckVGcZ envGLI"
             for="selectInput__Project"
           >
             Project
           </label>
           <select
-            class="sc-dxgOiQ kgctCh"
+            class="sc-jKJlTe SQmOY"
             id="selectInput__Project"
             name="project"
           >
@@ -47,13 +47,13 @@ exports[`Tests for the CreateTicket component Component matches snapshot 1`] = `
             </option>
           </select>
           <label
-            class="sc-kpOJdX kQolWU"
+            class="sc-ckVGcZ envGLI"
             for="selectInput__Sprint"
           >
             Sprint
           </label>
           <select
-            class="sc-dxgOiQ kgctCh"
+            class="sc-jKJlTe SQmOY"
             id="selectInput__Sprint"
             name="sprint"
           >
@@ -79,13 +79,13 @@ exports[`Tests for the CreateTicket component Component matches snapshot 1`] = `
             </option>
           </select>
           <label
-            class="sc-kpOJdX kQolWU"
+            class="sc-ckVGcZ envGLI"
             for="selectInput__Type"
           >
             Type
           </label>
           <select
-            class="sc-dxgOiQ kgctCh"
+            class="sc-jKJlTe SQmOY"
             id="selectInput__Type"
             name="type"
           >
@@ -111,13 +111,13 @@ exports[`Tests for the CreateTicket component Component matches snapshot 1`] = `
             </option>
           </select>
           <label
-            class="sc-kpOJdX kQolWU"
+            class="sc-ckVGcZ envGLI"
             for="selectInput__Priority"
           >
             Priority
           </label>
           <select
-            class="sc-dxgOiQ kgctCh"
+            class="sc-jKJlTe SQmOY"
             id="selectInput__Priority"
             name="priority"
           >
@@ -143,13 +143,13 @@ exports[`Tests for the CreateTicket component Component matches snapshot 1`] = `
             </option>
           </select>
           <label
-            class="sc-kpOJdX kQolWU"
+            class="sc-ckVGcZ envGLI"
             for="selectInput__Story Points"
           >
             Story Points
           </label>
           <select
-            class="sc-dxgOiQ kgctCh"
+            class="sc-jKJlTe SQmOY"
             id="selectInput__Story Points"
             name="storyPoints"
           >
@@ -196,16 +196,16 @@ exports[`Tests for the CreateTicket component Component matches snapshot 1`] = `
           </select>
         </div>
         <div
-          class="sc-Rmtcm xaKOl"
+          class="sc-hzDkRC frjYVh"
         >
           <label
-            class="sc-ckVGcZ envGLI"
+            class="sc-eNQAEJ hALvCQ"
             for="textArea__Description"
           >
             Description
           </label>
           <textarea
-            class="sc-jKJlTe jPBhPC"
+            class="sc-hMqMXs elAqlG"
             id="textArea__Description"
             name="description"
           />

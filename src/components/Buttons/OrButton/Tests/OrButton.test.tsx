@@ -5,17 +5,17 @@ import { OrButton } from "../OrButton"
 import { ButtonType } from "../../";
 
 describe("Tests for the Button component", () => {
-    const LeftCaption = "LEFT_CAPTION";
-    const RightCaption = "RIGHT_CAPTION";
-    const LeftOnClick = jest.fn();
-    const RightOnClick = jest.fn();
-    const LeftForm = "LEFT_FORM";
-    const RightForm = "RIGHT_FORM";
-    const LeftType: ButtonType = "submit";
-    const RightType: ButtonType = "reset";
+    const leftCaption = "LEFT_CAPTION";
+    const rightCaption = "RIGHT_CAPTION";
+    const leftOnClick = jest.fn();
+    const rightOnClick = jest.fn();
+    const leftForm = "LEFT_FORM";
+    const rightForm = "RIGHT_FORM";
+    const leftType: ButtonType = "submit";
+    const rightType: ButtonType = "reset";
 
     const props = {
-        LeftCaption, RightCaption, LeftOnClick, RightOnClick, LeftForm, RightForm, LeftType, RightType,
+        leftCaption, rightCaption, leftOnClick, rightOnClick, leftForm, rightForm, leftType, rightType,
     };
 
     test("Component matches snapshot", () => {
@@ -33,7 +33,7 @@ describe("Tests for the Button component", () => {
                 {...props}
             />,
         )
-        expect(getByText(LeftCaption)).toBeDefined();
+        expect(getByText(leftCaption)).toBeDefined();
     });
 
     test("Right button exists", () => {
@@ -42,82 +42,82 @@ describe("Tests for the Button component", () => {
                 {...props}
             />,
         )
-        expect(getByText(RightCaption)).toBeDefined();
+        expect(getByText(rightCaption)).toBeDefined();
     });
 
     test("Empty types attribute is set correctly", () => {
         const { getByText } = render(
             <OrButton
                 {...props}
-                LeftType={undefined}
-                RightType={undefined}
+                leftType={undefined}
+                rightType={undefined}
             />,
         )
-        const leftButton = getByText(LeftCaption);
+        const leftButton = getByText(leftCaption);
         expect(leftButton).toHaveAttribute("type", "button");
-        const rightButton = getByText(RightCaption);
+        const rightButton = getByText(rightCaption);
         expect(rightButton).toHaveAttribute("type", "button");
     });
 
-    test("LeftType attribute is set correctly", () => {
+    test("leftType attribute is set correctly", () => {
         const { getByText } = render(
             <OrButton
                 {...props}
             />,
         )
-        const button = getByText(LeftCaption);
-        expect(button).toHaveAttribute("type", LeftType);
+        const button = getByText(leftCaption);
+        expect(button).toHaveAttribute("type", leftType);
     });
 
-    test("RightType attribute is set correctly", () => {
+    test("rightType attribute is set correctly", () => {
         const { getByText } = render(
             <OrButton
                 {...props}
             />,
         )
-        const button = getByText(RightCaption);
-        expect(button).toHaveAttribute("type", RightType);
+        const button = getByText(rightCaption);
+        expect(button).toHaveAttribute("type", rightType);
     });
 
-    test("LeftForm attribute is set correctly", () => {
+    test("leftForm attribute is set correctly", () => {
         const { getByText } = render(
             <OrButton
                 {...props}
             />,
         )
-        const button = getByText(LeftCaption);
-        expect(button).toHaveAttribute("form", LeftForm);
+        const button = getByText(leftCaption);
+        expect(button).toHaveAttribute("form", leftForm);
     });
 
-    test("RightForm attribute is set correctly", () => {
+    test("rightForm attribute is set correctly", () => {
         const { getByText } = render(
             <OrButton
                 {...props}
             />,
         )
-        const button = getByText(RightCaption);
-        expect(button).toHaveAttribute("form", RightForm);
+        const button = getByText(rightCaption);
+        expect(button).toHaveAttribute("form", rightForm);
     });
 
-    test("LeftOnClick event fires correctly", () => {
+    test("leftOnClick event fires correctly", () => {
         const { getByText } = render(
             <OrButton
                 {...props}
             />,
         )
-        const button = getByText(LeftCaption);
+        const button = getByText(leftCaption);
         fireEvent.click(button);
-        expect(LeftOnClick).toHaveBeenCalledTimes(1);
+        expect(leftOnClick).toHaveBeenCalledTimes(1);
     });
 
-    test("RightOnClick event fires correctly", () => {
+    test("rightOnClick event fires correctly", () => {
         const { getByText } = render(
             <OrButton
                 {...props}
             />,
         )
-        const button = getByText(RightCaption);
+        const button = getByText(rightCaption);
         fireEvent.click(button);
-        expect(RightOnClick).toHaveBeenCalledTimes(1);
+        expect(rightOnClick).toHaveBeenCalledTimes(1);
     });
 });

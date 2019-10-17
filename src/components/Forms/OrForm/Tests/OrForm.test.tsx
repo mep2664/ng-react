@@ -6,12 +6,12 @@ import { OrForm } from "../OrForm"
 const leftFormTitle = "LF_TITLE";
 const rightFormTitle = "RF_TITLE";
 const props = {
-    LeftFormID: "LEFT_FORM",
-    RightFormID: "RIGHT_FORM",
-    LeftButtonCaption: "LEFT_BTN",
-    RightButtonCaption: "RIGHT_BTN",
-    LeftForm: (props: any) => <form title={leftFormTitle} onSubmit={() => props.onSubmitChange(true)} />,
-    RightForm: (props: any) => <form title={rightFormTitle} onSubmit={() => props.onSubmitChange(true)} />,
+    leftFormID: "LEFT_FORM",
+    rightFormID: "RIGHT_FORM",
+    leftButtonCaption: "LEFT_BTN",
+    rightButtonCaption: "RIGHT_BTN",
+    leftForm: (props: any) => <form title={leftFormTitle} onSubmit={() => props.onSubmitChange(true)} />,
+    rightForm: (props: any) => <form title={rightFormTitle} onSubmit={() => props.onSubmitChange(true)} />,
 };
 
 describe("Tests for the OrForm component", () => {
@@ -38,7 +38,7 @@ describe("Tests for the OrForm component", () => {
             <OrForm {...props} />
         );
         expect(queryByTitle(rightFormTitle)).toBeNull();
-        fireEvent.click(getByText(props.RightButtonCaption));
+        fireEvent.click(getByText(props.rightButtonCaption));
         expect(getByTitle(rightFormTitle)).toBeDefined();
     });
 
@@ -46,9 +46,9 @@ describe("Tests for the OrForm component", () => {
         const { getByText, getByTitle, queryByTitle } = render(
             <OrForm {...props} />
         );
-        fireEvent.click(getByText(props.RightButtonCaption));
+        fireEvent.click(getByText(props.rightButtonCaption));
         expect(queryByTitle(leftFormTitle)).toBeNull();
-        fireEvent.click(getByText(props.LeftButtonCaption));
+        fireEvent.click(getByText(props.leftButtonCaption));
         expect(getByTitle(leftFormTitle)).toBeDefined();
     });
 
@@ -56,11 +56,11 @@ describe("Tests for the OrForm component", () => {
         const { getByText } = render(
             <OrForm {...props} />
         );
-        const rightBtn = getByText(props.RightButtonCaption);
+        const rightBtn = getByText(props.rightButtonCaption);
         expect(rightBtn).toHaveAttribute("type", "button");
         fireEvent.click(rightBtn);
         expect(rightBtn).toHaveAttribute("type", "submit");
-        fireEvent.click(getByText(props.LeftButtonCaption));
+        fireEvent.click(getByText(props.leftButtonCaption));
         expect(rightBtn).toHaveAttribute("type", "button");
     });
 
@@ -68,8 +68,8 @@ describe("Tests for the OrForm component", () => {
         const { getByText } = render(
             <OrForm {...props} />
         );
-        const leftBtn = getByText(props.LeftButtonCaption);
-        const rightBtn = getByText(props.RightButtonCaption);
+        const leftBtn = getByText(props.leftButtonCaption);
+        const rightBtn = getByText(props.rightButtonCaption);
         expect(leftBtn).toHaveAttribute("type", "submit");
         fireEvent.click(rightBtn);
         expect(leftBtn).toHaveAttribute("type", "button");
@@ -95,7 +95,7 @@ describe("Tests for the OrForm component", () => {
             <OrForm {...props} />
         );
         await wait();
-        fireEvent.click(getByText(props.RightButtonCaption));
+        fireEvent.click(getByText(props.rightButtonCaption));
         fireEvent.submit(getByTitle(rightFormTitle));
         const loading = getByRole("alert");
         expect(loading).toBeDefined();
