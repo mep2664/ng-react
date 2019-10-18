@@ -6,7 +6,9 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 
 const GET_SPRINT_PROJECT = gql`
     query ($sprintProjectId: ID!) {
-        project(sprintProjectId: $sprintProjectId) {
+        sprintProject(sprintProjectId: $sprintProjectId) {
+            sprintName
+            projectName
             goal
         }
     }
@@ -14,7 +16,7 @@ const GET_SPRINT_PROJECT = gql`
 
 const UPDATE_SPRINT_PROJECT = gql`
     mutation updateSprintProject($changes: SprintProjectInput!, $sprintProjectId: ID! ) {
-        updateProject(changes: $changes, sprintProjectId: $sprintProjectId) {
+        updateSprintProject(changes: $changes, sprintProjectId: $sprintProjectId) {
             sprintProject {
                 sprintProjectId
                 sprintId
@@ -25,30 +27,22 @@ const UPDATE_SPRINT_PROJECT = gql`
     }
 `;
 
-const SprintProjectInfo = styled.div`
-    display: grid;
-    grid-gap: 25px;
-    align-items: center;
-    justify-items: end;
-    grid-template-columns: minmax(auto, 300px) auto;
-    box-sizing: border-box;
-    padding: 25px;
-`;
-
 export interface ISprint {
     sprintProjectId: string;
-    sprintName: string;
-    projectName: string;
 }
 
-export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId, sprintName, projectName }) => {
+export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
+    const [sprintName, setSprintName] = React.useState<string>("");;
+    const [projectName, setProjectName] = React.useState<string>("");
     const [goal, setGoal] = React.useState<string>("");
     const { loading, error, data } = useQuery(GET_SPRINT_PROJECT, { variables: { sprintProjectId }, fetchPolicy: "no-cache" });
     const [updateSprintProject] = useMutation(UPDATE_SPRINT_PROJECT);
 
     React.useLayoutEffect(() => {
         if (data && data.sprintProject) {
-            setGoal(data.project.goal);
+            setSprintName(data.sprintProject.sprintName);
+            setProjectName(data.sprintProject.projectName);
+            setGoal(data.sprintProject.goal);
         }
     }, [data]);
 
@@ -70,10 +64,8 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId, sprintName, pro
     return (
         <div>
             <React.Fragment>
-                <span>{`Sprint: ${sprintName} - ${projectName}`}</span>
-                <SprintProjectInfo>
-                    <TextInput label="Goal" name="goal" value={goal} onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange("goal", setGoal, e.target.value)} />
-                </SprintProjectInfo>
+                <div>{`Sprint: ${sprintName} - ${projectName}`}</div>
+                <TextInput label="Goal" name="goal" value={goal} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGoal(e.target.value)} onBlur={(e: React.FocusEvent<HTMLInputElement>) => handleChange("goal", setGoal, e.target.value)} />
             </React.Fragment>
         </div >
     );

@@ -23,15 +23,16 @@ interface ITextInput {
     name: string;
     value: string;
     emphasis?: emphasisType;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const TextInput: React.FC<ITextInput> = ({ label, name, value, emphasis = "Primary", onChange }) => {
+export const TextInput: React.FC<ITextInput> = ({ label, name, value, emphasis = "Secondary", onBlur, onChange }) => {
     const labelFor = `textInput__${label}`;
     return (
         <React.Fragment>
             <Label htmlFor={labelFor}>{label}</Label>
-            <Input id={labelFor} type="text" name={name} value={value} emphasis={emphasis} onChange={onChange} />
+            <Input id={labelFor} type="text" name={name} value={value} emphasis={emphasis} onBlur={onBlur} onChange={onChange} />
             {/* create an error tooltip for validation */}
         </React.Fragment>
     );
