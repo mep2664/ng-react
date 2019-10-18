@@ -1,11 +1,17 @@
 import * as React from "react";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import { Loader, ProjectDetail, SprintProjectDetail, TicketDetail } from "../";
+import { Loader, ProjectDetail, SprintProjectDetail, TicketDetail, UserDetail } from "../";
 import styled from "styled-components";
 
 export const GET_DATA = gql`
     {
+        allUsers {
+            userId
+            email
+            firstName
+            lastName
+        }
         allProjects {
             projectName
             description
@@ -35,6 +41,8 @@ const Wrapper = styled.div`
     grid-gap: 15px;
 `;
 
+const Users = styled.div``;
+
 const Projects = styled.div``;
 
 const Sprints = styled.div``;
@@ -53,6 +61,12 @@ export const Dashboard: React.FC = () => {
 
     return (
         <Wrapper>
+            <Users>
+                Users
+                {(data.allUsers as any[]).map((user: any, index) => // TODO give ticket a type
+                    <UserDetail key={index} user={user} />
+                )}
+            </Users>
             <Projects>
                 Projects
                 {(data.allProjects as any[]).map((project: any, index) => // TODO give ticket a type

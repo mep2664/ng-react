@@ -1,6 +1,6 @@
 import * as React from "react";
 import { NotFound } from "../../";
-import { ViewProject, ViewSprint, ViewTicket } from "../"
+import { ViewProject, ViewSprint, ViewTicket, ViewUser } from "../"
 
 interface IViewItem {
     item: string;
@@ -18,6 +18,8 @@ export const ViewItem: React.FC<IViewItem> = ({ item, identifier }) => {
             if (ids.length === 2) {
                 return <ViewTicket project={ids[0]} ticket={parseInt(ids[1])} />;
             }
+        case "user":
+            return <ViewUser userId={identifier} />
         default:
             return <NotFound />;
     }
