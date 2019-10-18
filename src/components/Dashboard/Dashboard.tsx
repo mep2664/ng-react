@@ -1,7 +1,7 @@
 import * as React from "react";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import { Loader, ProjectDetail, TicketDetail } from "../";
+import { Loader, ProjectDetail, SprintProjectDetail, TicketDetail } from "../";
 import styled from "styled-components";
 
 export const GET_DATA = gql`
@@ -9,6 +9,12 @@ export const GET_DATA = gql`
         allProjects {
             projectName
             description
+        }
+        allSprintProjects {
+            sprintProjectId
+            sprintName
+            projectName
+            goal
         }
         allTickets {
             projectName
@@ -31,6 +37,8 @@ const Wrapper = styled.div`
 
 const Projects = styled.div``;
 
+const Sprints = styled.div``;
+
 const Tickets = styled.div``;
 
 export const Dashboard: React.FC = () => {
@@ -40,7 +48,7 @@ export const Dashboard: React.FC = () => {
     }
 
     if (error) {
-        return <div>error.message</div>;
+        return <div>{error.message}</div>;
     }
 
     return (
@@ -51,6 +59,12 @@ export const Dashboard: React.FC = () => {
                     <ProjectDetail key={index} project={project} />
                 )}
             </Projects>
+            <Sprints>
+                Sprints
+                {(data.allSprintProjects as any[]).map((sprintProject: any, index) => // TODO give ticket a type
+                    <SprintProjectDetail key={index} sprintProject={sprintProject} />
+                )}
+            </Sprints>
             <Tickets>
                 Tickets
                 {(data.allTickets as any[]).map((ticket: any, index) => // TODO give ticket a type
