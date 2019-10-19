@@ -1,6 +1,6 @@
 import * as React from "react";
 import { NotFound } from "../../";
-import { ViewProject, ViewSprint, ViewTicket, ViewUser } from "../"
+import { ViewProject, ViewSprint, ViewTeam, ViewTicket, ViewUser } from "../"
 
 interface IViewItem {
     item: string;
@@ -13,6 +13,8 @@ export const ViewItem: React.FC<IViewItem> = ({ item, identifier }) => {
             return <ViewProject projectName={identifier} />;
         case "sprint_project":
             return <ViewSprint sprintProjectId={identifier} />;
+        case "team":
+            return <ViewTeam team={identifier} />;
         case "ticket":
             const ids = identifier.split("-");
             if (ids.length === 2) {

@@ -23,21 +23,22 @@ const ItemLink = styled(Link)`
 `
 
 interface ITeam {
-    userId: string;
-    email: string;
-    firstName: string;
-    lastName: string;
+    teamId: string;
+    teamName: string;
+    status: string;
+    teamMembers: { firstName: string, lastName: string }[];
 }
 
 interface ITeamDetailProps {
-    user: ITeam;
+    team: ITeam;
 }
 
-export const UserDetail: React.FC<ITeamDetailProps> = ({ user }) => {
+export const TeamDetail: React.FC<ITeamDetailProps> = ({ team }) => {
     return (
         <Detail>
-            <ItemLink to={`/view/user/${user.userId}`}>{`${user.firstName} ${user.lastName}`}</ItemLink>
-            <div>{`Email: ${user.email}`}</div>
+            <ItemLink to={`/view/team/${team.teamName}`}>{`${team.teamName}`}</ItemLink>
+            <div>{`Status: ${team.status}`}</div>
+            <div>{`Team Members: ${team.teamMembers.map((member) => `${member.firstName} ${member.lastName}`)}`.replace(",", ", ")}</div>
         </Detail>
     );
 }
