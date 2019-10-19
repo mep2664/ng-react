@@ -1,5 +1,5 @@
 import React from 'react';
-import { backgroundColor, fontColor } from "../../theme";
+import { bgColor, fontColor } from "../../theme";
 import { Logo, NavigationMenu } from "../../components";
 import styled from "styled-components";
 
@@ -8,7 +8,7 @@ const Spaceholder = styled.div`
 `;
 
 const Header = styled.header`
-    background-color: ${backgroundColor.Primary};
+    background-color: ${bgColor.Primary};
     color: ${fontColor.Primary};
     position: fixed;
     top: 0;

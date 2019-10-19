@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components"
 import { ButtonType } from "../";
-import { backgroundColor, fontColor } from "../../../theme";
+import { bgColor, fontColor } from "../../../theme";
 
 const ButtonWrapper = styled.div`
     position: relative;
@@ -40,7 +40,7 @@ const LeftButton = styled.button`
     ${SharedButtonStyle}
     margin-right: 1px;
     border-radius: 20px 0 0 20px;
-    background-color: ${backgroundColor["Positive"]};
+    background-color: ${bgColor["Positive"]};
     color: ${fontColor["Positive"]};
 `;
 
@@ -48,7 +48,7 @@ const RightButton = styled.button`
     ${SharedButtonStyle}
     margin-left: 1px;
     border-radius: 0 20px 20px 0;
-    background-color: ${backgroundColor["Positive"]};
+    background-color: ${bgColor["Positive"]};
     color: ${fontColor["Positive"]};
 `;
 

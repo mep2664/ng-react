@@ -1,6 +1,6 @@
 import * as React from "react";
 import { OrButton } from "../../";
-import { backgroundColor, borderColor, emphasisType, fontColor } from "../../../theme";
+import { bgColor, borderColor, emphasisType, fontColor } from "../../../theme";
 import styled from "styled-components";
 
 interface Iemphasis {
@@ -16,7 +16,7 @@ const Wrapper = styled.div<Iemphasis>`
     width: 400px;
     padding: 25px;
     color: ${({ emphasis }) => fontColor[emphasis]};
-    background-color: ${({ emphasis }) => backgroundColor[emphasis]};
+    background-color: ${({ emphasis }) => bgColor[emphasis]};
     border: 1px solid ${({ emphasis }) => borderColor[emphasis]};
     border-radius: 5px;
     position: relative;
@@ -38,7 +38,7 @@ const SubmitOverlay = styled.div`
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: ${backgroundColor["Overlay"]};
+    background-color: ${bgColor["Overlay"]};
     cursor: wait;
 `;
 

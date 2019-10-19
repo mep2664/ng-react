@@ -1,9 +1,9 @@
 import React from "react";
-import { IEmphasis, emphasisType, backgroundColor, fontColor, hoverBackgroundColor } from "../../../theme";
+import { IEmphasis, emphasisType, bgColor, fontColor, hoverBgColor } from "../../../theme";
 import styled from "styled-components";
 
 const StyledButton = styled.button<IEmphasis>`
-    background-color: ${({ emphasis }) => backgroundColor[emphasis]};
+    background-color: ${({ emphasis }) => bgColor[emphasis]};
     border: none;
     border-radius: 3px;
     color: ${({ emphasis }) => fontColor[emphasis]};
@@ -13,7 +13,7 @@ const StyledButton = styled.button<IEmphasis>`
     vertical-align: center;
 
     &:hover {
-        background-color: ${({ emphasis }) => hoverBackgroundColor[emphasis]};
+        background-color: ${({ emphasis }) => hoverBgColor[emphasis]};
     }
 `;
 

@@ -1,11 +1,11 @@
 import React from "react";
-import { backgroundColor, fontColor, hoverBackgroundColor } from "../../theme";
+import { bgColor, fontColor, hoverBgColor } from "../../theme";
 import { Button } from "../Buttons";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const NavigationWrapper = styled.div`
-    background-color: ${backgroundColor.Primary};
+    background-color: ${bgColor.Primary};
 `;
 
 const NavigationLink = styled(Link)`
@@ -18,7 +18,7 @@ const NavigationLink = styled(Link)`
     line-height: 15px;
 
     &:hover {
-        background: ${hoverBackgroundColor.Primary};
+        background: ${hoverBgColor.Primary};
     }
 `;
 

@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled, { keyframes } from "styled-components";
-import { backgroundColor, emphasisType, IEmphasis } from "../../../theme";
+import { bgColor, emphasisType, IEmphasis } from "../../../theme";
 
 const Container = styled.div`
     position: absolute;
@@ -34,7 +34,7 @@ const Animation = styled.div<IEmphasis>`
         display: block;
         width: 10%;
         height: 15px;
-        background-color: ${({ emphasis }) => backgroundColor[emphasis]};
+        background-color: ${({ emphasis }) => bgColor[emphasis]};
         position: absolute;
         animation: ${AnimationKeyframe} 1s infinite alternate ease-in-out;
     }
@@ -53,7 +53,7 @@ const Caption = styled.span <IEmphasis>`
     font-weight: bold;
     letter-spacing: 3px;
     font-family: verdana, sans-serif;
-    color: ${({ emphasis }) => backgroundColor[emphasis]};
+    color: ${({ emphasis }) => bgColor[emphasis]};
 `;
 
 interface ILoader {

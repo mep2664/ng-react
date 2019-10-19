@@ -19,7 +19,7 @@ interface IEmphasisTypes {
 export type emphasisType = "Primary" | "Secondary" | "Dark" | "Light" |
     "Positive" | "Neutral" | "Warning" | "Error" | "Overlay";
 
-export const backgroundColor: IEmphasisTypes = {
+export const bgColor: IEmphasisTypes = {
     Primary: "#2185d0",
     Secondary: "#e0e1e2",
     Dark: "#1b1c1d",
@@ -37,6 +37,16 @@ export const borderColor: IEmphasisTypes = {
     Light: "#f0f0f0",
 }
 
+export const buttonBgColor: IEmphasisTypes = {
+    Primary: "#2185d0",
+    Secondary: "#e0e1e2",
+    Dark: "#1b1c1d",
+    Light: "#f0f0f0",
+    Positive: "#21ba45",
+    Warning: "orange",
+    Error: "#d8000c",
+}
+
 export const fontColor: IEmphasisTypes = {
     Primary: "#f0f0f0",
     Secondary: "#1f1f1f",
@@ -45,7 +55,7 @@ export const fontColor: IEmphasisTypes = {
     Positive: "#f0f0f0",
 }
 
-export const hoverBackgroundColor: IEmphasisTypes = {
+export const hoverBgColor: IEmphasisTypes = {
     Primary: "#1a49d6",
     Secondary: "#a9a9a9",
     Dark: "#000000",
