@@ -1,7 +1,8 @@
 import * as React from "react";
 import styled from "styled-components";
 import { bgColor, fontColor } from "../../theme";
-import { OrForm, LoginForm, RegisterForm } from "../../components";
+import { Button, OrForm, LoginForm, Logo, RegisterForm } from "../../components";
+import strings from "../../Localization";
 
 const HomeWrapper = styled.div`
     background-color: ${bgColor.Dark};
@@ -11,7 +12,7 @@ const HomeWrapper = styled.div`
 const DescriptionLogin = styled.section`
     display: flex;
     justify-content: space-evenly;
-    padding: 50px 100px;
+    padding: 100px 100px;
     color: ${fontColor.Light};
     background-image: linear-gradient(to bottom, ${bgColor.Dark}, ${bgColor.Darkgray});
 `;
@@ -20,6 +21,46 @@ const Description = styled.div`
     max-width: 55%;
     padding: 50px 50px 50px 0px;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+`;
+
+const DescriptionBackImage = styled.div`
+    position: absolute;
+    opacity: 0.1;
+`;
+
+const HeaderContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+const DescriptionHeader = styled.h1`
+    font-size: 36px;
+    margin: 0;
+    padding-bottom: 5px;
+    text-align: center;
+`;
+
+const DescriptionSubHeader = styled.h2`
+    font-size: 26px;
+    margin: 0;
+    padding: 5px 25px;
+    border-top: 2px solid ${fontColor.Light}
+    text-align: center;
+`;
+
+const DescriptionText = styled.span`
+    padding: 0px 15px;
+    box-sizing: border-box;
+    text-align: center;
+`;
+
+const LearnMoreWrapper = styled.div`
+    z-index: 1;
 `;
 
 const DetailWrapper = styled.div`
@@ -37,7 +78,19 @@ const Detail = styled.section`
     border: 4px solid ${bgColor.Dark};
 `;
 
-const DetailHeader = styled.h2`
+const DetailHeader = styled.h1`
+    background-color: ${bgColor.Dark};
+    background-image: linear-gradient(to bottom, ${bgColor.Darkgray}, ${bgColor.Dark});
+    border-top: 2px solid ${bgColor.Lightgray};
+    color: ${fontColor.Light};
+    font-size: 36px;
+    text-align: center;
+    margin: 0;
+    padding: 25px;
+`;
+
+const DetailSubHeader = styled.h2`
+    margin-top: 0;
 `;
 
 export const Home: React.FC = () => {
@@ -51,9 +104,21 @@ export const Home: React.FC = () => {
         <HomeWrapper>
             <DescriptionLogin>
                 <Description>
-                    'SystemName' is a project management tool designed for agile development teams.
-                    Create and deliver the perfect product quicker by keeping your team on the correct
-                    track throughout the entire projects life cycle.
+                    <DescriptionBackImage>
+                        <Logo height="100%" width="100%" fill={bgColor.Midgray as string} />
+                    </DescriptionBackImage>
+                    <HeaderContainer>
+                        <DescriptionHeader>{strings.SystemName}</DescriptionHeader>
+                        <DescriptionSubHeader>Project Management</DescriptionSubHeader>
+                    </HeaderContainer>
+                    <DescriptionText>
+                        {strings.SystemName} is a project management tool designed for agile development teams.
+                        Create and deliver the perfect product quicker by keeping your team on the correct
+                        track throughout the entire projects life cycle.
+                    </DescriptionText>
+                    <LearnMoreWrapper>
+                        <Button caption={strings.Action_LearnMore} type="button" emphasis="Primary" onClick={() => { window.location.hash = ""; window.location.hash = "#learnMore"; }} />
+                    </LearnMoreWrapper>
                 </Description>
                 <OrForm
                     leftFormID={loginFormId}
@@ -66,32 +131,35 @@ export const Home: React.FC = () => {
                     fontEmphasis="Dark"
                 />
             </DescriptionLogin>
-            <DetailWrapper>
-                <Detail>
-                    <DetailHeader>Planning</DetailHeader>
-                    'SystemName' is a project management tool designed for agile development teams.
-                    Create and deliver the perfect product quicker by keeping your team on the correct
-                    track throughout the entire projects life cycle.
+            <div>
+                <DetailHeader id="learnMore">What this tool will do for your team</DetailHeader>
+                <DetailWrapper>
+                    <Detail>
+                        <DetailSubHeader>Planning</DetailSubHeader>
+                        'SystemName' is a project management tool designed for agile development teams.
+                        Create and deliver the perfect product quicker by keeping your team on the correct
+                        track throughout the entire projects life cycle.
                     </Detail>
-                <Detail>
-                    <DetailHeader>Estimating</DetailHeader>
-                    'SystemName' is a project management tool designed for agile development teams.
-                    Create and deliver the perfect product quicker by keeping your team on the correct
-                    track throughout the entire projects life cycle.
+                    <Detail>
+                        <DetailSubHeader>Estimating</DetailSubHeader>
+                        'SystemName' is a project management tool designed for agile development teams.
+                        Create and deliver the perfect product quicker by keeping your team on the correct
+                        track throughout the entire projects life cycle.
                     </Detail>
-                <Detail>
-                    <DetailHeader>Tracking</DetailHeader>
-                    'SystemName' is a project management tool designed for agile development teams.
-                    Create and deliver the perfect product quicker by keeping your team on the correct
-                    track throughout the entire projects life cycle.
+                    <Detail>
+                        <DetailSubHeader>Tracking</DetailSubHeader>
+                        'SystemName' is a project management tool designed for agile development teams.
+                        Create and deliver the perfect product quicker by keeping your team on the correct
+                        track throughout the entire projects life cycle.
                     </Detail>
-                <Detail>
-                    <DetailHeader>Reporting</DetailHeader>
-                    'SystemName' is a project management tool designed for agile development teams.
-                    Create and deliver the perfect product quicker by keeping your team on the correct
-                    track throughout the entire projects life cycle.
+                    <Detail>
+                        <DetailSubHeader>Reporting</DetailSubHeader>
+                        'SystemName' is a project management tool designed for agile development teams.
+                        Create and deliver the perfect product quicker by keeping your team on the correct
+                        track throughout the entire projects life cycle.
                     </Detail>
-            </DetailWrapper>
+                </DetailWrapper>
+            </div>
         </HomeWrapper>
     );
 }

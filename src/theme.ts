@@ -29,7 +29,7 @@ export const bgColor: IEmphasisTypes = {
     Dark: "rgb(25, 25, 25)",
     Darkgray: "rgb(55, 55, 55)",
     Midgray: "rgb(85, 85, 85)",
-    Lightgray: "rbg(115, 115, 115)",
+    Lightgray: "rgb(115, 115, 115)",
     Light: "#f0f0f0",
     Positive: "#21ba45",
     Warning: "orange",

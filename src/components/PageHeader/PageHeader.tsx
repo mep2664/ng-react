@@ -21,7 +21,7 @@ const Header = styled.header`
 export const PageHeader: React.FC = () => {
   return (
     <Header>
-      <Logo />
+      <Logo height="30px" width="30px" fill={bgColor.Light} />
       <NavigationMenu />
     </Header>
   );
