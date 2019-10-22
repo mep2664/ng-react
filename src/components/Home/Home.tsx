@@ -60,7 +60,7 @@ const DescriptionText = styled.span`
 `;
 
 const LearnMoreWrapper = styled.div`
-    z-index: 1;
+    position: relative;
 `;
 
 const DetailWrapper = styled.div`
@@ -78,6 +78,10 @@ const Detail = styled.section`
     border: 4px solid ${bgColor.Dark};
 `;
 
+const AnchorOffset = styled.div`
+    margin-top: -50px;
+`;
+
 const DetailHeader = styled.h1`
     background-color: ${bgColor.Dark};
     background-image: linear-gradient(to bottom, ${bgColor.Darkgray}, ${bgColor.Dark});
@@ -87,6 +91,14 @@ const DetailHeader = styled.h1`
     text-align: center;
     margin: 0;
     padding: 25px;
+
+    &::before {
+        content: "";
+        display: block;
+        height: 50px;
+        margin-top: -50px;
+        visibility: hidden;
+    }
 `;
 
 const DetailSubHeader = styled.h2`
@@ -132,7 +144,8 @@ export const Home: React.FC = () => {
                 />
             </DescriptionLogin>
             <div>
-                <DetailHeader id="learnMore">What this tool will do for your team</DetailHeader>
+                <AnchorOffset id="learnMore"></AnchorOffset>
+                <DetailHeader>What this tool will do for your team</DetailHeader>
                 <DetailWrapper>
                     <Detail>
                         <DetailSubHeader>Planning</DetailSubHeader>
