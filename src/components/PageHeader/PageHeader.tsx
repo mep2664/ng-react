@@ -3,12 +3,9 @@ import { bgColor, fontColor } from "../../theme";
 import { Logo, NavigationMenu } from "../../components";
 import styled from "styled-components";
 
-const Spaceholder = styled.div`
-    height: 50px;
-`;
-
+//${bgColor.Primary};
 const Header = styled.header`
-    background-color: ${bgColor.Primary};
+    background-color: ${bgColor.Header};
     color: ${fontColor.Primary};
     position: fixed;
     top: 0;
@@ -17,15 +14,15 @@ const Header = styled.header`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 15px;
+    box-sizing: border-box;
 `;
 
 export const PageHeader: React.FC = () => {
   return (
-    <Spaceholder>
-      <Header>
-        <Logo />
-        <NavigationMenu />
-      </Header>
-    </Spaceholder>
+    <Header>
+      <Logo />
+      <NavigationMenu />
+    </Header>
   );
 }

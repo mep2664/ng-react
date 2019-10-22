@@ -17,7 +17,8 @@ export const Login: React.FC = () => {
                 rightForm={rightForm}
                 leftButtonCaption="Login"
                 rightButtonCaption="Register"
-                emphasis="Primary"
+                bgEmphasis="Primary"
+                fontEmphasis="Secondary"
             />
         </React.Fragment>
     );

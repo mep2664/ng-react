@@ -14,20 +14,22 @@ interface IEmphasisTypes {
     Warning?: string;
     Error?: string;
     Overlay?: string;
+    Header?: string;
 }
 
 export type emphasisType = "Primary" | "Secondary" | "Dark" | "Light" |
-    "Positive" | "Neutral" | "Warning" | "Error" | "Overlay";
+    "Positive" | "Neutral" | "Warning" | "Error" | "Overlay" | "Header";
 
 export const bgColor: IEmphasisTypes = {
     Primary: "#2185d0",
     Secondary: "#e0e1e2",
-    Dark: "#1b1c1d",
+    Dark: "rgb(25, 25, 25)",
     Light: "#f0f0f0",
     Positive: "#21ba45",
     Warning: "orange",
     Error: "#d8000c",
     Overlay: "rgba(0,0,0,0.1)",
+    Header: "rgb(40, 40, 40, 0.96)",
 }
 
 export const borderColor: IEmphasisTypes = {

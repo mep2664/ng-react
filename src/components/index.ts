@@ -3,6 +3,7 @@ export * from "./Create";
 export * from "./Dashboard";
 export * from "./Forms";
 export * from "./Graph";
+export * from "./Home";
 export * from "./Inputs";
 export * from "./Loaders";
 export * from "./Login";

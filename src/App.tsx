@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { CreateItem, Dashboard, ITicket, Loaders, Login, ModuleAside, NotFound, PageHeader, ViewItem } from "./components";
+import { CreateItem, Dashboard, Home, ITicket, Loaders, Login, ModuleAside, NotFound, PageHeader, ViewItem } from "./components";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 
@@ -29,12 +29,21 @@ const loginClient =
     });
 
 // maybe make this a section?
-const ContentWrapper = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
+// const ContentWrapper = styled.div`
+//     display: grid;
+//     grid-template-columns: 1fr 3fr 1fr;
+// `;
+
+const Spaceholder = styled.div`
+    height: 50px;
+    background-color: white;
 `;
 
 const App: React.FC = () => {
+    function home() {
+        return <Home />
+    }
+
     function notFound() {
         return <NotFound />
     }
@@ -79,22 +88,21 @@ const App: React.FC = () => {
     if (getCookie("uuid")) {
         return (
             <ApolloProvider client={client}>
+                <Spaceholder></Spaceholder>
                 <BrowserRouter>
+                    <main>
+                        <Switch>
+                            <Route path="/" exact component={dashboard} />
+                            <Route path="/home" component={home} />
+                            <Route path="/login" component={login} />
+                            <Route path="/create/:item" component={create} />
+                            <Route path="/view/:item/:identifier?" component={view} />
+                            <Route path="/page-not-found" component={notFound} />
+                            <Route path="/loaders" component={loaders} />
+                            <Route default component={notFound} />
+                        </Switch>
+                    </main>
                     <PageHeader />
-                    <ContentWrapper>
-                        <ModuleAside />
-                        <main>
-                            <Switch>
-                                <Route path="/" exact component={dashboard} />
-                                <Route path="/login" component={login} />
-                                <Route path="/create/:item" component={create} />
-                                <Route path="/view/:item/:identifier?" component={view} />
-                                <Route path="/page-not-found" component={notFound} />
-                                <Route path="/loaders" component={loaders} />
-                                <Route default component={notFound} />
-                            </Switch>
-                        </main>
-                    </ContentWrapper>
                 </BrowserRouter>
             </ApolloProvider>
         );

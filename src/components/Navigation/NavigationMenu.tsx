@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const NavigationWrapper = styled.div`
-    background-color: ${bgColor.Primary};
 `;
 
 const NavigationLink = styled(Link)`

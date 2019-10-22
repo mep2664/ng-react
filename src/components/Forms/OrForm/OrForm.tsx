@@ -3,11 +3,12 @@ import { OrButton } from "../../";
 import { bgColor, borderColor, emphasisType, fontColor } from "../../../theme";
 import styled from "styled-components";
 
-interface Iemphasis {
-    emphasis: emphasisType;
+interface IEmphasis {
+    bgEmphasis: emphasisType;
+    fontEmphasis: emphasisType;
 }
 
-const Wrapper = styled.div<Iemphasis>`
+const Wrapper = styled.div<IEmphasis>`
     display: grid;
     grid-template-areas: 'main' 'footer';
     grid-gap: 15px;
@@ -15,9 +16,9 @@ const Wrapper = styled.div<Iemphasis>`
     min-height: 350px;
     width: 400px;
     padding: 25px;
-    color: ${({ emphasis }) => fontColor[emphasis]};
-    background-color: ${({ emphasis }) => bgColor[emphasis]};
-    border: 1px solid ${({ emphasis }) => borderColor[emphasis]};
+    color: ${({ fontEmphasis }) => fontColor[fontEmphasis]};
+    background-color: ${({ bgEmphasis }) => bgColor[bgEmphasis]};
+    border: 1px solid ${({ bgEmphasis }) => borderColor[bgEmphasis]};
     border-radius: 5px;
     position: relative;
 `;
@@ -33,7 +34,7 @@ const ButtonContainer = styled.div`
 `;
 
 const SubmitOverlay = styled.div`
-    position: absolute;
+    position: relative;
     top: 0;
     bottom: 0;
     left: 0;
@@ -47,12 +48,13 @@ export interface IOrFormProps {
     rightFormID: string;
     leftButtonCaption: string;
     rightButtonCaption: string;
-    emphasis?: emphasisType;
+    bgEmphasis?: emphasisType;
+    fontEmphasis?: emphasisType;
     leftForm: (props?: any) => JSX.Element;
     rightForm: (props?: any) => JSX.Element;
 };
 
-export const OrForm: React.FC<IOrFormProps> = ({ leftFormID, rightFormID, leftButtonCaption, rightButtonCaption, leftForm, rightForm, emphasis = "Primary" }) => {
+export const OrForm: React.FC<IOrFormProps> = ({ leftFormID, rightFormID, leftButtonCaption, rightButtonCaption, leftForm, rightForm, bgEmphasis = "Primary", fontEmphasis = "Secondary" }) => {
     const [isLeftActive, setLeftActive] = React.useState<boolean>(true);
     const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
 
@@ -71,10 +73,10 @@ export const OrForm: React.FC<IOrFormProps> = ({ leftFormID, rightFormID, leftBu
     }
 
     return (
-        <Wrapper emphasis={emphasis}>
+        <Wrapper bgEmphasis={bgEmphasis} fontEmphasis={fontEmphasis}>
             <FormContainer>
-                {isLeftActive ? leftForm({ onSubmitChange: (isSubmitting: boolean) => setSubmitting(isSubmitting), emphasis: emphasis })
-                    : rightForm({ onSubmitChange: (isSubmitting: boolean) => setSubmitting(isSubmitting), emphasis: emphasis })}
+                {isLeftActive ? leftForm({ onSubmitChange: (isSubmitting: boolean) => setSubmitting(isSubmitting), emphasis: bgEmphasis })
+                    : rightForm({ onSubmitChange: (isSubmitting: boolean) => setSubmitting(isSubmitting), emphasis: bgEmphasis })}
             </FormContainer>
             <ButtonContainer>
                 <OrButton
