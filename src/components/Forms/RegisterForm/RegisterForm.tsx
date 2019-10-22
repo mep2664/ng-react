@@ -60,7 +60,7 @@ export const RegisterForm: React.FC<IRegisterFormProps> = ({ formId, emphasis = 
                     const expires = d.setTime(d.getTime() + ((numHours * 60 * 60 * 1000)));
                     // TODO - expires
                     document.cookie = `uuid=${response.data.createUser.token};expires=${expires};path=/`;
-                    window.location.assign(window.location.href.replace("/login", "/"));
+                    window.location.assign(`${window.location.protocol}//${window.location.host}/dashboard`);
                 } else {
                     if (response.data.createUser.error) {
                         setError(response.data.createUser.error);

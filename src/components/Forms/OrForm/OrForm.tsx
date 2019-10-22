@@ -34,7 +34,7 @@ const ButtonContainer = styled.div`
 `;
 
 const SubmitOverlay = styled.div`
-    position: relative;
+    position: absolute;
     top: 0;
     bottom: 0;
     left: 0;

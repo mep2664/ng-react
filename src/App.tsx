@@ -92,8 +92,8 @@ const App: React.FC = () => {
                 <BrowserRouter>
                     <main>
                         <Switch>
-                            <Route path="/" exact component={dashboard} />
-                            <Route path="/home" component={home} />
+                            <Route path="/dashboard" component={dashboard} />
+                            <Route path="/(|home)" component={home} />
                             <Route path="/login" component={login} />
                             <Route path="/create/:item" component={create} />
                             <Route path="/view/:item/:identifier?" component={view} />

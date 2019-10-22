@@ -54,8 +54,10 @@ export const LoginForm: React.FC<ILoginFormProps> = ({ formId, emphasis = "Prima
                     const numHours = 4;
                     const expires = d.setTime(d.getTime() + ((numHours * 60 * 60 * 1000)));
                     document.cookie = `uuid=${response.data.loginUser.token};expires=${expires};path=/`;
-                    if (window.location.pathname === "/login") {
-                        window.location.assign(window.location.href.replace("/login", "/"));
+                    if (window.location.pathname === "/login" || window.location.pathname === "/home" || window.location.pathname === "/") {
+                        console.log("here");
+                        console.log(window.location.host + "/dashboard");
+                        window.location.assign(`${window.location.protocol}//${window.location.host}/dashboard`);
                     } else {
                         window.location.reload()
                     }
