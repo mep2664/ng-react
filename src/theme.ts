@@ -8,6 +8,9 @@ interface IEmphasisTypes {
     Primary: string;
     Secondary: string;
     Dark: string;
+    Darkgray?: string;
+    Midgray?: string;
+    Lightgray?: string;
     Light: string;
     Positive?: string;
     Neutral?: string;
@@ -17,13 +20,16 @@ interface IEmphasisTypes {
     Header?: string;
 }
 
-export type emphasisType = "Primary" | "Secondary" | "Dark" | "Light" |
-    "Positive" | "Neutral" | "Warning" | "Error" | "Overlay" | "Header";
+export type emphasisType = "Primary" | "Secondary" | "Dark" | "Darkgray" | "Midgray" | "Lightgray" |
+    "Light" | "Positive" | "Neutral" | "Warning" | "Error" | "Overlay" | "Header";
 
 export const bgColor: IEmphasisTypes = {
     Primary: "#2185d0",
     Secondary: "#e0e1e2",
     Dark: "rgb(25, 25, 25)",
+    Darkgray: "rgb(55, 55, 55)",
+    Midgray: "rgb(85, 85, 85)",
+    Lightgray: "rbg(115, 115, 115)",
     Light: "#f0f0f0",
     Positive: "#21ba45",
     Warning: "orange",

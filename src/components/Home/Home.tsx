@@ -13,6 +13,7 @@ const DescriptionLogin = styled.section`
     justify-content: space-evenly;
     padding: 50px 100px;
     color: ${fontColor.Light};
+    background-image: linear-gradient(to bottom, ${bgColor.Dark}, ${bgColor.Darkgray});
 `;
 
 const Description = styled.div`
@@ -22,42 +23,18 @@ const Description = styled.div`
 `;
 
 const DetailWrapper = styled.div`
-`;
-
-const DetailRow = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
-    border-top: 2px solid ${bgColor.Light};
-
-    &:first-child {
-        border-top: 2px solid ${bgColor.Light};
-    }
-
-    &:nth-child(odd)>section:nth-child(odd) {
-        background-color: ${bgColor.Dark};
-        color: ${fontColor.Light};
-    }
-
-    &:nth-child(even)>section:nth-child(odd) {
-        background-color: ${bgColor["Light"]};
-        color: ${fontColor["Dark"]};
-    }
-
-    &:nth-child(odd)>section:nth-child(even) {
-        background-color: ${bgColor["Light"]};
-        color: ${fontColor["Dark"]};
-    }
-
-    &:nth-child(even)>section:nth-child(even) {
-        background-color: ${bgColor["Dark"]};
-        color: ${fontColor["Light"]};
-    }
+    padding: 4px;
+    background-color: ${bgColor.Dark};
 `;
 
 const Detail = styled.section`
     min-height: 400px;
     padding: 50px;
     box-sizing: border-box;
+    background-color: ${bgColor.Light};
+    border: 4px solid ${bgColor.Dark};
 `;
 
 const DetailHeader = styled.h2`
@@ -90,34 +67,30 @@ export const Home: React.FC = () => {
                 />
             </DescriptionLogin>
             <DetailWrapper>
-                <DetailRow>
-                    <Detail>
-                        <DetailHeader>Planning</DetailHeader>
-                        'SystemName' is a project management tool designed for agile development teams.
-                        Create and deliver the perfect product quicker by keeping your team on the correct
-                        track throughout the entire projects life cycle.
+                <Detail>
+                    <DetailHeader>Planning</DetailHeader>
+                    'SystemName' is a project management tool designed for agile development teams.
+                    Create and deliver the perfect product quicker by keeping your team on the correct
+                    track throughout the entire projects life cycle.
                     </Detail>
-                    <Detail>
-                        <DetailHeader>Estimating</DetailHeader>
-                        'SystemName' is a project management tool designed for agile development teams.
-                        Create and deliver the perfect product quicker by keeping your team on the correct
-                        track throughout the entire projects life cycle.
+                <Detail>
+                    <DetailHeader>Estimating</DetailHeader>
+                    'SystemName' is a project management tool designed for agile development teams.
+                    Create and deliver the perfect product quicker by keeping your team on the correct
+                    track throughout the entire projects life cycle.
                     </Detail>
-                </DetailRow>
-                <DetailRow>
-                    <Detail>
-                        <DetailHeader>Tracking</DetailHeader>
-                        'SystemName' is a project management tool designed for agile development teams.
-                        Create and deliver the perfect product quicker by keeping your team on the correct
-                        track throughout the entire projects life cycle.
+                <Detail>
+                    <DetailHeader>Tracking</DetailHeader>
+                    'SystemName' is a project management tool designed for agile development teams.
+                    Create and deliver the perfect product quicker by keeping your team on the correct
+                    track throughout the entire projects life cycle.
                     </Detail>
-                    <Detail>
-                        <DetailHeader>Reporting</DetailHeader>
-                        'SystemName' is a project management tool designed for agile development teams.
-                        Create and deliver the perfect product quicker by keeping your team on the correct
-                        track throughout the entire projects life cycle.
+                <Detail>
+                    <DetailHeader>Reporting</DetailHeader>
+                    'SystemName' is a project management tool designed for agile development teams.
+                    Create and deliver the perfect product quicker by keeping your team on the correct
+                    track throughout the entire projects life cycle.
                     </Detail>
-                </DetailRow>
             </DetailWrapper>
         </HomeWrapper>
     );
