@@ -6,6 +6,7 @@ import styled from "styled-components";
 
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
+import { bgColor } from './theme';
 
 const getCookie = (cname: string) => {
     const name = cname + "=";
@@ -36,7 +37,7 @@ const loginClient =
 
 const Spaceholder = styled.div`
     height: 50px;
-    background-color: white;
+    background-color: ${bgColor.Darkgray};
 `;
 
 const App: React.FC = () => {

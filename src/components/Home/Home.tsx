@@ -80,6 +80,7 @@ const Detail = styled.section`
 
 const AnchorOffset = styled.div`
     margin-top: -50px;
+    height: 50px;
 `;
 
 const DetailHeader = styled.h1`
