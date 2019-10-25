@@ -45,21 +45,28 @@ export const LoginForm: React.FC<ILoginFormProps> = ({ formId, emphasis = "Prima
             referrer: "no-referrer",
             body: JSON.stringify(data),
         }).then((response) => {
-            response.json().then((session) => {
-                console.log(session);
-                const d = new Date();
-                const numHours = 4;
-                const expires = d.setTime(d.getTime() + ((numHours * 60 * 60 * 1000)));
-                document.cookie = `uuid=${session.sessionID};expires=${expires};path=/`;
-                if (window.location.pathname === "/login" || window.location.pathname === "/home" || window.location.pathname === "/") {
-                    console.log("here");
-                    console.log(window.location.host + "/dashboard");
-                    window.location.assign(`${window.location.protocol}//${window.location.host}/dashboard`);
-                } else {
-                    window.location.reload()
-                }
+            if (response.ok) {
+                response.json().then((session) => {
+                    console.log(session);
+                    const d = new Date();
+                    const numHours = 4;
+                    const expires = d.setTime(d.getTime() + ((numHours * 60 * 60 * 1000)));
+                    document.cookie = `uuid=${session.sessionID};expires=${expires};path=/`;
+                    if (window.location.pathname === "/login" || window.location.pathname === "/home" || window.location.pathname === "/") {
+                        console.log("here");
+                        console.log(window.location.host + "/dashboard");
+                        window.location.assign(`${window.location.protocol}//${window.location.host}/dashboard`);
+                    } else {
+                        window.location.reload()
+                    }
 
-            }, (reason) => { setError(reason.toString()); setSubmitting(false); });
+                }, (reason) => { setError(reason.toString()); setSubmitting(false); });
+            } else {
+                response.json().then((reason) => {
+                    setError(reason.error);
+                    setSubmitting(false);
+                }, (reason) => { setError(reason.toString()); setSubmitting(false); });
+            }
         }, (reason) => { setError(reason.toString()); setSubmitting(false); });
     }
 

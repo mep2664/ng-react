@@ -1,18 +1,7 @@
 import * as React from "react";
 import { TextInput } from "../..";
-import gql from "graphql-tag";
-import { useMutation } from "@apollo/react-hooks";
 import styled from "styled-components";
 import { emphasisType } from "../../../theme";
-
-export const REGISTER_USER = gql`
-    mutation CreateUser($email:String!, $password:String!, $firstName:String!,$lastName:String!) {
-        createUser(email:$email,password:$password,firstName:$firstName,lastName:$lastName) {
-            token
-            error
-        }
-    }
-`;
 
 const FormHeader = styled.h2`
     text-align: center;
@@ -32,7 +21,6 @@ export const RegisterForm: React.FC<IRegisterFormProps> = ({ formId, emphasis = 
     const [lastName, setLastName] = React.useState<string>("");
     const [error, setError] = React.useState<string>("");
     const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
-    const [registerUser] = useMutation(REGISTER_USER);
 
     React.useEffect(() => {
         if (onSubmitChange) {
@@ -62,16 +50,22 @@ export const RegisterForm: React.FC<IRegisterFormProps> = ({ formId, emphasis = 
             referrer: "no-referrer",
             body: JSON.stringify(data),
         }).then((response) => {
-            response.json().then((session) => {
-                console.log(session);
-                const d = new Date();
-                const numHours = 4;
-                const expires = d.setTime(d.getTime() + ((numHours * 60 * 60 * 1000)));
-                // TODO - expires
-                document.cookie = `uuid=${session.sessionID};expires=${expires};path=/`;
-                window.location.assign(`${window.location.protocol}//${window.location.host}/dashboard`);
-
-            }, (reason) => { setError(reason.toString()); setSubmitting(false); });
+            if (response.ok) {
+                response.json().then((session) => {
+                    console.log(session);
+                    const d = new Date();
+                    const numHours = 4;
+                    const expires = d.setTime(d.getTime() + ((numHours * 60 * 60 * 1000)));
+                    // TODO - expires
+                    document.cookie = `uuid=${session.sessionID};expires=${expires};path=/`;
+                    window.location.assign(`${window.location.protocol}//${window.location.host}/dashboard`);
+                }, (reason) => { setError(reason.toString()); setSubmitting(false); });
+            } else {
+                response.json().then((reason) => {
+                    setError(reason.error);
+                    setSubmitting(false);
+                }, (reason) => { setError(reason.toString()); setSubmitting(false); });
+            }
         }, (reason) => { setError(reason.toString()); setSubmitting(false); });
     }
 
