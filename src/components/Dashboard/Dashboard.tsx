@@ -67,6 +67,10 @@ export const Dashboard: React.FC = () => {
     }
 
     if (error) {
+        if (error.networkError && "statusCode" in error.networkError
+            && error.networkError["statusCode"] === 405) {
+            window.location.assign(`${window.location.protocol}//${window.location.host}/`);
+        }
         return <div>{error.message}</div>;
     }
 

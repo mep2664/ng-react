@@ -138,33 +138,25 @@ const AppComponent: React.FC<IAppProps> = ({ system, updateSession }) => {
         return <div></div>;
     }
 
-    if (system.loggedIn) {
-        return (
-            <ApolloProvider client={client}>
-                <Spaceholder></Spaceholder>
-                <BrowserRouter>
-                    <main>
-                        <Switch>
-                            <Route path="/dashboard" component={dashboard} />
-                            <Route path="/(|home)" component={home} />
-                            <Route path="/login" component={login} />
-                            <Route path="/create/:item" component={create} />
-                            <Route path="/view/:item/:identifier?" component={view} />
-                            <Route path="/page-not-found" component={notFound} />
-                            <Route path="/loaders" component={loaders} />
-                            <Route default component={notFound} />
-                        </Switch>
-                    </main>
-                    <PageHeader />
-                </BrowserRouter>
-            </ApolloProvider>
-        );
-    }
     return (
-        <React.Fragment>
-            <Home />
-            <PageHeader />
-        </React.Fragment>
+        <ApolloProvider client={client}>
+            <Spaceholder></Spaceholder>
+            <BrowserRouter>
+                <main>
+                    <Switch>
+                        <Route path="/dashboard" component={dashboard} />
+                        <Route path="/(|home)" component={home} />
+                        <Route path="/login" component={login} />
+                        <Route path="/create/:item" component={create} />
+                        <Route path="/view/:item/:identifier?" component={view} />
+                        <Route path="/page-not-found" component={notFound} />
+                        <Route path="/loaders" component={loaders} />
+                        <Route default component={notFound} />
+                    </Switch>
+                </main>
+                <PageHeader />
+            </BrowserRouter>
+        </ApolloProvider>
     );
 }
 
