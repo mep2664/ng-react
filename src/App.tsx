@@ -145,7 +145,7 @@ const AppComponent: React.FC<IAppProps> = ({ system, updateSession }) => {
                 <main>
                     <Switch>
                         <Route path="/dashboard" component={dashboard} />
-                        <Route path="/(|home)" component={home} />
+                        <Route path="/(|home)" component={system.loggedIn ? dashboard : home} />
                         <Route path="/login" component={login} />
                         <Route path="/create/:item" component={create} />
                         <Route path="/view/:item/:identifier?" component={view} />
