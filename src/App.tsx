@@ -41,14 +41,28 @@ const checkForActiveSession = (): Promise<SystemState> => {
     return new Promise<SystemState>((resolve, reject) => {
         const token = getCookie("uuid");
         if (token) {
-            fetch(`http://localhost:5556/rest/login/${token}`).then((response) => {
+            fetch(`http://localhost:5556/rest/login/${token}`,
+                {
+                    method: "GET",
+                    mode: "cors",
+                    cache: "no-cache",
+                    credentials: "same-origin",
+                    headers: {
+                        "Content-Type": "application/json; charset=utf-8",
+                        "Accept": "application/json",
+                    },
+                    redirect: "follow",
+                    referrer: "no-referrer",
+                }
+            ).then((response) => {
+                console.log(response);
                 response.json().then((session) => {
                     return resolve({
                         loggedIn: session.authenticated,
                         session: session.sessionID,
                         userName: session.userID,
                     })
-                })
+                }, (reason) => reject(reason));
             }, (reason) => reject(reason));
         } else {
             return resolve({

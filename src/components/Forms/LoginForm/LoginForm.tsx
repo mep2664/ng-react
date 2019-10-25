@@ -44,33 +44,62 @@ export const LoginForm: React.FC<ILoginFormProps> = ({ formId, emphasis = "Prima
             email,
             password,
         }
-        loginUser({
-            variables: data,
-            // TODO - figure out what to do with cache
-            update: (cache, response) => {
-                if (response.data.loginUser.token) {
-                    setError(response.data.loginUser.error)
-                    const d = new Date();
-                    const numHours = 4;
-                    const expires = d.setTime(d.getTime() + ((numHours * 60 * 60 * 1000)));
-                    document.cookie = `uuid=${response.data.loginUser.token};expires=${expires};path=/`;
-                    if (window.location.pathname === "/login" || window.location.pathname === "/home" || window.location.pathname === "/") {
-                        console.log("here");
-                        console.log(window.location.host + "/dashboard");
-                        window.location.assign(`${window.location.protocol}//${window.location.host}/dashboard`);
-                    } else {
-                        window.location.reload()
-                    }
+        fetch("http://localhost:5556/rest/login", {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+                "Accept": "application/json",
+            },
+            redirect: "follow",
+            referrer: "no-referrer",
+            body: JSON.stringify(data),
+        }).then((response) => {
+            response.json().then((session) => {
+                console.log(session);
+                const d = new Date();
+                const numHours = 4;
+                const expires = d.setTime(d.getTime() + ((numHours * 60 * 60 * 1000)));
+                document.cookie = `uuid=${session.sessionID};expires=${expires};path=/`;
+                if (window.location.pathname === "/login" || window.location.pathname === "/home" || window.location.pathname === "/") {
+                    console.log("here");
+                    console.log(window.location.host + "/dashboard");
+                    window.location.assign(`${window.location.protocol}//${window.location.host}/dashboard`);
                 } else {
-                    if (response.data.loginUser.error) {
-                        setError(response.data.loginUser.error);
-                    } else {
-                        setError("something went wrong...");
-                    }
+                    window.location.reload()
                 }
-                setSubmitting(false);
-            }
-        }).catch((error) => { setError(error.message); setSubmitting(false) });;
+
+            }, (reason) => { setError(reason.toString()); setSubmitting(false); });
+        }, (reason) => { setError(reason.toString()); setSubmitting(false); });
+        // loginUser({
+        //     variables: data,
+        //     // TODO - figure out what to do with cache
+        //     update: (cache, response) => {
+        //         if (response.data.loginUser.token) {
+        //             setError(response.data.loginUser.error)
+        //             const d = new Date();
+        //             const numHours = 4;
+        //             const expires = d.setTime(d.getTime() + ((numHours * 60 * 60 * 1000)));
+        //             document.cookie = `uuid=${response.data.loginUser.token};expires=${expires};path=/`;
+        //             if (window.location.pathname === "/login" || window.location.pathname === "/home" || window.location.pathname === "/") {
+        //                 console.log("here");
+        //                 console.log(window.location.host + "/dashboard");
+        //                 window.location.assign(`${window.location.protocol}//${window.location.host}/dashboard`);
+        //             } else {
+        //                 window.location.reload()
+        //             }
+        //         } else {
+        //             if (response.data.loginUser.error) {
+        //                 setError(response.data.loginUser.error);
+        //             } else {
+        //                 setError("something went wrong...");
+        //             }
+        //         }
+        //         setSubmitting(false);
+        //     }
+        // }).catch((error) => { setError(error.message); setSubmitting(false) });
     }
 
     return (
