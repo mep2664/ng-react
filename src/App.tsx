@@ -138,7 +138,7 @@ const AppComponent: React.FC<IAppProps> = ({ system, updateSession }) => {
         return <div></div>;
     }
 
-    if (getCookie("uuid")) {
+    if (system.loggedIn) {
         return (
             <ApolloProvider client={client}>
                 <Spaceholder></Spaceholder>
@@ -161,9 +161,10 @@ const AppComponent: React.FC<IAppProps> = ({ system, updateSession }) => {
         );
     }
     return (
-        <ApolloProvider client={loginClient}>
+        <React.Fragment>
             <Home />
-        </ApolloProvider>
+            <PageHeader />
+        </React.Fragment>
     );
 }
 

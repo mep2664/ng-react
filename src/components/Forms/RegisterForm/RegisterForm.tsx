@@ -49,29 +49,30 @@ export const RegisterForm: React.FC<IRegisterFormProps> = ({ formId, emphasis = 
             firstName,
             lastName
         }
-        registerUser({
-            variables: data,
-            // TODO - figure out what to do with cache
-            update: (cache, response) => {
-                if (response.data.createUser.token) {
-                    setError(response.data.createUser.error)
-                    const d = new Date();
-                    const numHours = 4;
-                    const expires = d.setTime(d.getTime() + ((numHours * 60 * 60 * 1000)));
-                    // TODO - expires
-                    document.cookie = `uuid=${response.data.createUser.token};expires=${expires};path=/`;
-                    window.location.assign(`${window.location.protocol}//${window.location.host}/dashboard`);
-                } else {
-                    if (response.data.createUser.error) {
-                        setError(response.data.createUser.error);
-                    } else {
-                        setError("something went wrong...");
-                    }
-                }
-                setSubmitting(false);
-            }
-        }).catch((reason) => { setError(reason.message); setSubmitting(false) });
+        fetch("http://localhost:5556/rest/register", {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+                "Accept": "application/json",
+            },
+            redirect: "follow",
+            referrer: "no-referrer",
+            body: JSON.stringify(data),
+        }).then((response) => {
+            response.json().then((session) => {
+                console.log(session);
+                const d = new Date();
+                const numHours = 4;
+                const expires = d.setTime(d.getTime() + ((numHours * 60 * 60 * 1000)));
+                // TODO - expires
+                document.cookie = `uuid=${session.sessionID};expires=${expires};path=/`;
+                window.location.assign(`${window.location.protocol}//${window.location.host}/dashboard`);
 
+            }, (reason) => { setError(reason.toString()); setSubmitting(false); });
+        }, (reason) => { setError(reason.toString()); setSubmitting(false); });
     }
 
     return (
