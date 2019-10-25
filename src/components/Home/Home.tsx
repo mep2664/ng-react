@@ -1,4 +1,8 @@
 import * as React from "react";
+import { AppState } from "../../store";
+import { SystemActionTypes, SystemState } from "../../store/System/types";
+import { updateSession } from "../../store/System/actions";
+import { connect } from "react-redux";
 import styled from "styled-components";
 import { bgColor, fontColor } from "../../theme";
 import { Button, OrForm, LoginForm, Logo, RegisterForm } from "../../components";
@@ -93,7 +97,19 @@ const DetailSubHeader = styled.h2`
     margin-top: 0;
 `;
 
-export const Home: React.FC = () => {
+const mapStateToProps = (state: AppState) => ({
+    system: state.system,
+});
+
+const mapDispatchToProps = {
+    updateSession: updateSession,
+}
+
+interface IHomeProps {
+    system: SystemState;
+}
+
+const HomeComponent: React.FC<IHomeProps> = ({ system }) => {
     const loginFormId = "login_form";
     const registerFormId = "register_form"
 
@@ -120,16 +136,19 @@ export const Home: React.FC = () => {
                         <Button caption={strings.Action_LearnMore} type="button" emphasis="Primary" onClick={() => { window.location.hash = ""; window.location.hash = "#learnMore"; }} />
                     </LearnMoreWrapper>
                 </Description>
-                <OrForm
-                    leftFormID={loginFormId}
-                    rightFormID={registerFormId}
-                    leftForm={leftForm}
-                    rightForm={rightForm}
-                    leftButtonCaption="Login"
-                    rightButtonCaption="Register"
-                    bgEmphasis="Light"
-                    fontEmphasis="Dark"
-                />
+                {
+                    !system.loggedIn &&
+                    < OrForm
+                        leftFormID={loginFormId}
+                        rightFormID={registerFormId}
+                        leftForm={leftForm}
+                        rightForm={rightForm}
+                        leftButtonCaption="Login"
+                        rightButtonCaption="Register"
+                        bgEmphasis="Light"
+                        fontEmphasis="Dark"
+                    />
+                }
             </DescriptionLogin>
             <div>
                 <DetailHeader id="learnMore">What this tool will do for your team</DetailHeader>
@@ -163,3 +182,5 @@ export const Home: React.FC = () => {
         </HomeWrapper>
     );
 }
+
+export const Home = connect(mapStateToProps, mapDispatchToProps)(HomeComponent);
