@@ -2,6 +2,7 @@ import React from 'react';
 import { bgColor, fontColor } from "../../theme";
 import { Logo, NavigationMenu } from "../../components";
 import styled from "styled-components";
+import strings from "../../Localization";
 
 //${bgColor.Primary};
 const Header = styled.header`
@@ -18,10 +19,22 @@ const Header = styled.header`
     box-sizing: border-box;
 `;
 
+const LogoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+const SystemName = styled.span`
+  font-size: 22px;
+  padding: 0 10px;
+`;
+
 export const PageHeader: React.FC = () => {
   return (
     <Header>
-      <Logo height="30px" width="30px" fill={bgColor.Light} />
+      <LogoWrapper>
+        <Logo height="30px" width="30px" fill={bgColor.Light} />
+        <SystemName>{strings.SystemName}</SystemName>
+      </LogoWrapper>
       <NavigationMenu />
     </Header>
   );
