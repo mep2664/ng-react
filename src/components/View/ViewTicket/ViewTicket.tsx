@@ -155,7 +155,11 @@ export const ViewTicket: React.FC<ITicket> = ({ project, ticket }) => {
     }
 
     if (error) {
-        return <div>{error.message}</div>
+        if (error.networkError && "statusCode" in error.networkError
+            && error.networkError["statusCode"] === 405) {
+            window.location.assign(`${window.location.protocol}//${window.location.host}/`);
+        }
+        return <div>{error.message}</div>;
     }
 
     const projectOptions = data.allProjects.map((project: any) => { return { caption: project.projectName, value: project.projectName.toUpperCase() } });

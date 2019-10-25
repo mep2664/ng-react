@@ -66,7 +66,11 @@ export const CreateProject: React.FC = () => {
     }
 
     if (error) {
-        return <div>{error.message}</div>
+        if (error.networkError && "statusCode" in error.networkError
+            && error.networkError["statusCode"] === 405) {
+            window.location.assign(`${window.location.protocol}//${window.location.host}/`);
+        }
+        return <div>{error.message}</div>;
     }
 
     const teamOptions = data.allTeams.map((team: any) => { return { caption: team.teamName, value: team.teamId } });
