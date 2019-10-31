@@ -25,6 +25,7 @@ const Header = styled.header`
 const LogoWrapper = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 const SystemName = styled.span`
   font-size: 22px;
@@ -42,7 +43,7 @@ interface IPageHeaderProps {
 const PageHeaderComponent: React.FC<IPageHeaderProps> = ({ system }) => {
   return (
     <Header>
-      <LogoWrapper>
+      <LogoWrapper onClick={() => window.location.assign(`${window.location.protocol}//${window.location.host}/home`)} role="button">
         <Logo height="30px" width="30px" fill={bgColor.Light} />
         <SystemName>{strings.SystemName}</SystemName>
       </LogoWrapper>
