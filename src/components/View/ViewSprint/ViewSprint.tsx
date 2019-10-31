@@ -25,6 +25,7 @@ const GET_SPRINT_PROJECT = gql`
                 ticketType
                 priority
                 storyPoints
+                title
                 description
                 activeUserId
                 statusId
@@ -46,6 +47,23 @@ const UPDATE_SPRINT_PROJECT = gql`
     }
 `;
 
+const UPDATE_TICKET = gql`
+    mutation updateTicket($changes: TicketInput!, $ticketId: ID! ) {
+        updateTicket(changes: $changes, ticketId: $ticketId) {
+            ticket {
+                ticketId
+                ticketNumber
+                projectName
+                sprintName
+                ticketType
+                priority
+                storyPoints
+                description
+            }
+        }
+    }
+`;
+
 interface Status {
     statusId: string;
     statusOrder: number;
@@ -61,6 +79,7 @@ interface Ticket {
     priority: string;
     storyPoints: number;
     description: string;
+    title: string;
     activeUserId: string;
     statusId: string;
     sprintProjectId: string;
@@ -76,8 +95,9 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
     const [goal, setGoal] = React.useState<string>("");
     const [statuses, setStatuses] = React.useState<Array<Status>>([]);
     const [tickets, setTickets] = React.useState<Array<Ticket>>([]);
-    const { loading, error, data } = useQuery(GET_SPRINT_PROJECT, { variables: { sprintProjectId }, fetchPolicy: "no-cache" });
+    const { loading, error, data, refetch } = useQuery(GET_SPRINT_PROJECT, { variables: { sprintProjectId }, fetchPolicy: "no-cache" });
     const [updateSprintProject] = useMutation(UPDATE_SPRINT_PROJECT);
+    const [updateTicket] = useMutation(UPDATE_TICKET);
 
     React.useLayoutEffect(() => {
         if (data && data.sprintProject) {
@@ -108,22 +128,19 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
         return <div>{error.message}</div>;
     }
 
-    const initialPanels: IKanbanPanel[] = statuses.map((status) => (
-        {
-            title: status.statusLabel,
-            accepts: ["ticket"],
-        }
-    ));
-
-    const initialItems: IKanbanItem[] = tickets.map((ticket, index) => (
-        {
-            panel: (statuses.find((status) => status.statusId === ticket.statusId) as Status).statusLabel,
-            name: index.toString(),
-            type: "ticket",
-            description: ticket.description,
-            indicatorColor: bgColor.Primary,
-        }
-    ));
+    const updateTicketStatus = (panel: IKanbanPanel, item: IKanbanItem) => {
+        console.log(panel);
+        console.log(item);
+        const statusId = (statuses.find((status) => status.statusLabel === panel.title) as Status).statusId;
+        const changes = {
+            statusId
+        };
+        updateTicket({
+            variables: { changes, ticketId: item.externalId }, update: () => {
+                refetch({ sprintProjectId });
+            }
+        });
+    }
 
     return (
         <div>
@@ -135,17 +152,20 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
                         statuses.map((status) => (
                             {
                                 title: status.statusLabel,
+                                subtitle: status.statusId,
                                 accepts: ["ticket"],
+                                onDrop: updateTicketStatus,
                             }
                         ))
                     }
                     initialItems={
-                        tickets.map((ticket, index) => (
+                        tickets.map((ticket) => (
                             {
                                 panel: (statuses.find((status) => status.statusId === ticket.statusId) as Status).statusLabel,
-                                name: index.toString(),
+                                name: ticket.title,
                                 type: "ticket",
                                 description: ticket.description,
+                                externalId: ticket.ticketId,
                                 indicatorColor: bgColor.Primary,
                             }
                         ))

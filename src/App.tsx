@@ -128,14 +128,17 @@ const AppComponent: React.FC<IAppProps> = ({ system, updateSession }) => {
         [
             {
                 title: "The First One",
+                subtitle: "Subtitle One",
                 accepts: ["ticket"],
             },
             {
                 title: "The Second One",
+                subtitle: "Subtitle Two",
                 accepts: ["ticket"],
             },
             {
                 title: "The Third One",
+                subtitle: "Subtitle Three",
                 accepts: ["ticket"],
             },
         ];

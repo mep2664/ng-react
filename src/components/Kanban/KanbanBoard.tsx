@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { DndProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { bgColor } from "../../theme";
-import { IKanbanBoard, IKanbanItem, KanbanItem, KanbanPanel } from ".";
+import { IKanbanBoard, IKanbanItem, KanbanItem, KanbanPanel, IKanbanPanel } from ".";
 import * as _ from "lodash";
 
 const KanbanWrapper = styled.div`
@@ -28,21 +28,24 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
         }
     }, [initialPanels, initialItems])
 
-    const dragEndEvent = (panelIndex: any, droppedItem: any) => {
+    const dropEvent = (panel: IKanbanPanel, droppedItem: any) => {
         const item = items.find((item) => item.name === droppedItem.name) as IKanbanItem;
-        item.panel = panels[panelIndex].title;
+        item.panel = panel.title;
+        if (panel.onDrop) {
+            panel.onDrop(panel, item);
+        }
         setItems(Array.from(items));
     }
 
     return (
         <DndProvider backend={HTML5Backend}>
             <KanbanWrapper>
-                {panels.map((panel, index) => (
+                {panels.map((panel) => (
                     <KanbanPanel
                         title={panel.title}
                         subtitle={"subtitle where are you coming from?"}
                         accept={panel.accepts}
-                        onDrop={(item) => dragEndEvent(index, item)}
+                        onDrop={(item) => dropEvent(panel, item)}
                         key={panel.title}
                     >
                         <div>
@@ -50,8 +53,6 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
                                 <KanbanItem
                                     name={item.name}
                                     type="ticket"
-                                    isDropped={false}
-                                    id={item.name}
                                     key={item.name}
                                     description={item.description}
                                     indicatorColor={item.indicatorColor as string}

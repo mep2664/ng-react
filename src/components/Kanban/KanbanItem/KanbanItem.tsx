@@ -52,12 +52,11 @@ export interface IKanbanItemProps {
     name: string;
     type: string;
     description: string;
-    isDropped: boolean;
     indicatorColor: string;
-    id: string;
+    onDrop?: () => void;
 }
 
-export const KanbanItem: React.FC<IKanbanItemProps> = ({ id, name, isDropped, type, description, indicatorColor }) => {
+export const KanbanItem: React.FC<IKanbanItemProps> = ({ name, type, description, indicatorColor, onDrop }) => {
     const [{ opacity }, drag] = useDrag({
         item: { name, type },
         collect: monitor => ({
