@@ -20,6 +20,7 @@ const ItemWrapper = styled.div<{ indicatorColor: string, /*isDragging: boolean,*
     opacity: ${({ opacity }) => opacity};
     grid-template-columns: auto;
     grid-template-rows: 20px 30px;
+    overflow: hidden;
     grid-gap: 5px;
     padding: 5px;
     box-sizing: border-box;
