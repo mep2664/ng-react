@@ -4,7 +4,7 @@ import { SystemActionTypes, SystemState } from "./store/System/types";
 import { updateSession } from "./store/System/actions";
 import { connect } from "react-redux";
 import "./App.css";
-import { CreateItem, Dashboard, Home, ITicket, Loaders, Login, ModuleAside, NotFound, PageHeader, ViewItem } from "./components";
+import { CreateItem, Dashboard, Home, ITicket, KanbanBoard, Loaders, Login, ModuleAside, NotFound, PageHeader, ViewItem } from "./components";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 
@@ -127,6 +127,78 @@ const AppComponent: React.FC<IAppProps> = ({ system, updateSession }) => {
         return <ViewItem {...match.params} />;
     }
 
+    const board = {
+        Panels: [
+            {
+                ID: 0,
+                Type: "TypeOne",
+                Title: "The First One",
+                Items: [
+                    {
+                        ID: 0,
+                        Type: "TypeOne",
+                        Title: "0-0",
+                        Description: "Something about the description of the ticket",
+                        IndicatorColor: bgColor.Primary,
+                    },
+                    {
+                        ID: 1,
+                        Type: "TypeOne",
+                        Title: "0-1",
+                        Description: "Something about the description of the ticket",
+                        IndicatorColor: bgColor.Primary,
+                    },
+                    {
+                        ID: 2,
+                        Type: "TypeOne",
+                        Title: "0-2",
+                        Description: "Something about the description of the ticket",
+                        IndicatorColor: bgColor.Primary,
+                    },
+                ]
+            },
+            {
+                ID: 1,
+                Type: "TypeOne",
+                Title: "The Second One",
+                Items: [
+                    {
+                        ID: 3,
+                        Type: "TypeOne",
+                        Title: "1-3",
+                        Description: "Something about the description of the ticket",
+                        IndicatorColor: bgColor.Secondary,
+                    },
+                    {
+                        ID: 4,
+                        Type: "TypeOne",
+                        Title: "1-4",
+                        Description: "Something about the description of the ticket",
+                        IndicatorColor: bgColor.Secondary,
+                    },
+                ]
+            },
+            {
+                ID: 2,
+                Type: "TypeOne",
+                Title: "The Third One",
+                Items: [
+                    {
+                        ID: 5,
+                        Type: "TypeOne",
+                        Title: "2-5",
+                        Description: "Something about the description of the ticket",
+                        IndicatorColor: bgColor.Neutral,
+                    },
+                ]
+            },
+        ]
+    }
+
+    function kanban() {
+        return <KanbanBoard PanelsAndItems={board} />
+    }
+
     const client = new ApolloClient({
         uri: "http://localhost:5556/graphql",
         headers: {
@@ -151,6 +223,7 @@ const AppComponent: React.FC<IAppProps> = ({ system, updateSession }) => {
                         <Route path="/view/:item/:identifier?" component={view} />
                         <Route path="/page-not-found" component={notFound} />
                         <Route path="/loaders" component={loaders} />
+                        <Route path="/kanban" component={kanban} />
                         <Route default component={notFound} />
                     </Switch>
                 </main>
