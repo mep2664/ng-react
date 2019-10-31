@@ -1,6 +1,5 @@
 import * as React from "react";
 import styled from "styled-components";
-import { Draggable } from "react-beautiful-dnd";
 import { useDrag } from "react-dnd";
 import { fontColor, bgColor } from "../../../theme";
 
@@ -52,14 +51,13 @@ const ItemDescription = styled.div`
 export interface IKanbanItemProps {
     name: string;
     type: string;
-    title: string;
     description: string;
     isDropped: boolean;
     indicatorColor: string;
     id: string;
 }
 
-export const KanbanItem: React.FC<IKanbanItemProps> = ({ id, name, isDropped, title, type, description, indicatorColor }) => {
+export const KanbanItem: React.FC<IKanbanItemProps> = ({ id, name, isDropped, type, description, indicatorColor }) => {
     const [{ opacity }, drag] = useDrag({
         item: { name, type },
         collect: monitor => ({
@@ -73,7 +71,7 @@ export const KanbanItem: React.FC<IKanbanItemProps> = ({ id, name, isDropped, ti
             opacity={opacity}
             indicatorColor={indicatorColor ? indicatorColor : bgColor.Primary}
         >
-            <ItemTitle>{title}</ItemTitle>
+            <ItemTitle>{name}</ItemTitle>
             <ItemDescription>{description}</ItemDescription>
         </ItemWrapper>
     )

@@ -3,6 +3,8 @@ import { Loader, TextInput } from "../..";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/react-hooks";
+import { KanbanBoard, IKanbanPanel, IKanbanItem } from "../../../components";
+import { bgColor } from "../../../theme";
 
 const GET_SPRINT_PROJECT = gql`
     query ($sprintProjectId: ID!) {
@@ -10,6 +12,23 @@ const GET_SPRINT_PROJECT = gql`
             sprintName
             projectName
             goal
+            ticketStatuses {
+                statusId
+                statusOrder
+                statusLabel
+                projectId
+            }
+            tickets {
+                ticketId
+                projectName
+                sprintName
+                ticketType
+                priority
+                storyPoints
+                description
+                activeUserId
+                statusId
+            }
         }
     }
 `;
@@ -27,6 +46,26 @@ const UPDATE_SPRINT_PROJECT = gql`
     }
 `;
 
+interface Status {
+    statusId: string;
+    statusOrder: number;
+    statusLabel: string;
+    projectId: string;
+}
+
+interface Ticket {
+    ticketId: string;
+    projectName: string;
+    sprintName: string;
+    ticketType: string;
+    priority: string;
+    storyPoints: number;
+    description: string;
+    activeUserId: string;
+    statusId: string;
+    sprintProjectId: string;
+}
+
 export interface ISprint {
     sprintProjectId: string;
 }
@@ -35,6 +74,8 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
     const [sprintName, setSprintName] = React.useState<string>("");;
     const [projectName, setProjectName] = React.useState<string>("");
     const [goal, setGoal] = React.useState<string>("");
+    const [statuses, setStatuses] = React.useState<Array<Status>>([]);
+    const [tickets, setTickets] = React.useState<Array<Ticket>>([]);
     const { loading, error, data } = useQuery(GET_SPRINT_PROJECT, { variables: { sprintProjectId }, fetchPolicy: "no-cache" });
     const [updateSprintProject] = useMutation(UPDATE_SPRINT_PROJECT);
 
@@ -43,6 +84,8 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
             setSprintName(data.sprintProject.sprintName);
             setProjectName(data.sprintProject.projectName);
             setGoal(data.sprintProject.goal);
+            setStatuses(data.sprintProject.ticketStatuses);
+            setTickets(data.sprintProject.tickets);
         }
     }, [data]);
 
@@ -65,11 +108,48 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
         return <div>{error.message}</div>;
     }
 
+    const initialPanels: IKanbanPanel[] = statuses.map((status) => (
+        {
+            title: status.statusLabel,
+            accepts: ["ticket"],
+        }
+    ));
+
+    const initialItems: IKanbanItem[] = tickets.map((ticket, index) => (
+        {
+            panel: (statuses.find((status) => status.statusId === ticket.statusId) as Status).statusLabel,
+            name: index.toString(),
+            type: "ticket",
+            description: ticket.description,
+            indicatorColor: bgColor.Primary,
+        }
+    ));
+
     return (
         <div>
             <React.Fragment>
                 <div>{`Sprint: ${sprintName} - ${projectName}`}</div>
                 <TextInput label="Goal" name="goal" value={goal} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGoal(e.target.value)} onBlur={(e: React.FocusEvent<HTMLInputElement>) => handleChange("goal", setGoal, e.target.value)} />
+                <KanbanBoard
+                    initialPanels={
+                        statuses.map((status) => (
+                            {
+                                title: status.statusLabel,
+                                accepts: ["ticket"],
+                            }
+                        ))
+                    }
+                    initialItems={
+                        tickets.map((ticket, index) => (
+                            {
+                                panel: (statuses.find((status) => status.statusId === ticket.statusId) as Status).statusLabel,
+                                name: index.toString(),
+                                type: "ticket",
+                                description: ticket.description,
+                                indicatorColor: bgColor.Primary,
+                            }
+                        ))
+                    } />
             </React.Fragment>
         </div >
     );

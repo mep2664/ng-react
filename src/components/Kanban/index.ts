@@ -4,7 +4,6 @@ export * from "./KanbanPanel";
 
 export interface IKanbanItem {
     name: string;
-    title: string;
     type: string;
     description: string;
     panel: string; // panel name
@@ -14,7 +13,6 @@ export interface IKanbanItem {
 export interface IKanbanPanel {
     title: string;
     accepts: string[];
-    lastDroppedItem: any;
 }
 
 export interface IKanbanBoard {

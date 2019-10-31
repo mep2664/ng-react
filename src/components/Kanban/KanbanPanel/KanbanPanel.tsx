@@ -1,21 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
-import { Droppable } from "react-beautiful-dnd";
-import { useDrop, DragElementWrapper } from "react-dnd";
+import { useDrop } from "react-dnd";
 import { bgColor, fontColor } from "../../../theme";
-
-const style: React.CSSProperties = {
-    height: '12rem',
-    width: '12rem',
-    marginRight: '1.5rem',
-    marginBottom: '1.5rem',
-    color: 'white',
-    padding: '1rem',
-    textAlign: 'center',
-    fontSize: '1rem',
-    lineHeight: 'normal',
-    float: 'left',
-}
 
 const PanelWrapper = styled.div`
     width: 200px;
@@ -86,13 +72,6 @@ export const KanbanPanel: React.FC<IKanbanPanelProps> = ({ children, title, subt
                 <PanelTitle>{title}</PanelTitle>
                 {subtitle ? (<PanelSubTitle>{subtitle}</PanelSubTitle>) : undefined}
             </div>
-            {/* <div ref={drop} style={{ ...style, backgroundColor }}>
-                {isActive
-                    ? 'Release to drop'
-                    : `This dustbin accepts: ${accept.join(', ')}`}
-
-                {lastDroppedItem}
-            </div> */}
             {children}
         </PanelWrapper>
     );
