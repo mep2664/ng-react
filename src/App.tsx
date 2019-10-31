@@ -56,7 +56,6 @@ const checkForActiveSession = (): Promise<SystemState> => {
                     referrer: "no-referrer",
                 }
             ).then((response) => {
-                console.log(response);
                 response.json().then((session) => {
                     return resolve({
                         loggedIn: session.authenticated,
@@ -90,10 +89,8 @@ interface IAppProps {
 
 const AppComponent: React.FC<IAppProps> = ({ system, updateSession }) => {
     const [loading, setLoading] = React.useState<boolean>(true);
-    console.log(system);
     React.useEffect(() => {
         checkForActiveSession().then((session) => {
-            console.log(session);
             updateSession(session);
             setLoading(false);
         }, (reason) => { console.log(reason); setLoading(false); });

@@ -52,7 +52,6 @@ export const RegisterForm: React.FC<IRegisterFormProps> = ({ formId, emphasis = 
         }).then((response) => {
             if (response.ok) {
                 response.json().then((session) => {
-                    console.log(session);
                     const d = new Date();
                     const numHours = 4;
                     const expires = d.setTime(d.getTime() + ((numHours * 60 * 60 * 1000)));

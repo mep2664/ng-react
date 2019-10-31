@@ -45,7 +45,6 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
                         onDrop={(item) => dragEndEvent(index, item)}
                         key={panel.title}
                     >
-                        {console.log(panel)}
                         <div>
                             {items.filter((item) => item.panel === panel.title).map((item: IKanbanItem) =>
                                 <KanbanItem
