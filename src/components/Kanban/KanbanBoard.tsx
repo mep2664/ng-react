@@ -19,6 +19,8 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
     const [items, setItems] = React.useState(_.cloneDeep(initialItems));
 
     // TODO: not sure it is safe to set state every time we get new props
+    // TODO: need to add panels, items as a dependency, but don't want to
+    //       set them back to initial if they change, needs re-work
     React.useEffect(() => {
         if (!_.isEqual(initialPanels, panels)) {
             setPanels(_.cloneDeep(initialPanels));
