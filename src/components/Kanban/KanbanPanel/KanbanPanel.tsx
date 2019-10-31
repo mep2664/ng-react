@@ -1,7 +1,21 @@
 import * as React from "react";
 import styled from "styled-components";
 import { Droppable } from "react-beautiful-dnd";
+import { useDrop, DragElementWrapper } from "react-dnd";
 import { bgColor, fontColor } from "../../../theme";
+
+const style: React.CSSProperties = {
+    height: '12rem',
+    width: '12rem',
+    marginRight: '1.5rem',
+    marginBottom: '1.5rem',
+    color: 'white',
+    padding: '1rem',
+    textAlign: 'center',
+    fontSize: '1rem',
+    lineHeight: 'normal',
+    float: 'left',
+}
 
 const PanelWrapper = styled.div`
     width: 200px;
@@ -40,24 +54,46 @@ const PanelBody = styled.div<{ isHovering: boolean }>`
     background-color: ${(props) => props.isHovering ? bgColor.Dark : "transparent"};
 `;
 
-export const KanbanPanel: React.FC<{ children: React.ReactNode, id: number, title: string, subtitle?: string }> = ({ children, id, title, subtitle }) => {
+export interface IKanbanPanelProps {
+    title: string;
+    subtitle: string;
+    accept: string[]
+    lastDroppedItem?: any
+    onDrop: (item: any) => void
+}
+
+export const KanbanPanel: React.FC<IKanbanPanelProps> = ({ children, title, subtitle, accept, lastDroppedItem, onDrop }) => {
+    const [{ isOver, canDrop }, drop] = useDrop({
+        accept,
+        drop: onDrop,
+        collect: monitor => ({
+            isOver: monitor.isOver(),
+            canDrop: monitor.canDrop(),
+        }),
+    });
+
+    const isActive = isOver && canDrop
+    let backgroundColor = '#222'
+    if (isActive) {
+        backgroundColor = 'darkgreen'
+    } else if (canDrop) {
+        backgroundColor = 'darkkhaki'
+    }
+
     return (
-        <PanelWrapper>
+        <PanelWrapper ref={drop}>
             <div>
                 <PanelTitle>{title}</PanelTitle>
                 {subtitle ? (<PanelSubTitle>{subtitle}</PanelSubTitle>) : undefined}
             </div>
-            <Droppable droppableId={id.toString()} type="TypeOne">
-                {(provided, snapshot) => (
-                    <PanelBody
-                        ref={provided.innerRef}
-                        isHovering={snapshot.isDraggingOver}
-                    >
-                        {children}
-                        {provided.placeholder}
-                    </PanelBody>
-                )}
-            </Droppable>
+            {/* <div ref={drop} style={{ ...style, backgroundColor }}>
+                {isActive
+                    ? 'Release to drop'
+                    : `This dustbin accepts: ${accept.join(', ')}`}
+
+                {lastDroppedItem}
+            </div> */}
+            {children}
         </PanelWrapper>
     );
 };

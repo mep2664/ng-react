@@ -49,7 +49,7 @@ const checkForActiveSession = (): Promise<SystemState> => {
                     cache: "no-cache",
                     credentials: "same-origin",
                     headers: {
-                        "Content-Type": "application/json; charset=utf-8",
+                        "Content-type": "application/json; charset=utf-8",
                         "Accept": "application/json",
                     },
                     redirect: "follow",
@@ -60,8 +60,8 @@ const checkForActiveSession = (): Promise<SystemState> => {
                 response.json().then((session) => {
                     return resolve({
                         loggedIn: session.authenticated,
-                        session: session.sessionID,
-                        userName: session.userID,
+                        session: session.sessionid,
+                        userName: session.userid,
                     })
                 }, (reason) => reject(reason));
             }, (reason) => reject(reason));
@@ -127,76 +127,78 @@ const AppComponent: React.FC<IAppProps> = ({ system, updateSession }) => {
         return <ViewItem {...match.params} />;
     }
 
-    const board = {
-        Panels: [
+    const panels =
+        [
             {
-                ID: 0,
-                Type: "TypeOne",
-                Title: "The First One",
-                Items: [
-                    {
-                        ID: 0,
-                        Type: "TypeOne",
-                        Title: "0-0",
-                        Description: "Something about the description of the ticket",
-                        IndicatorColor: bgColor.Primary,
-                    },
-                    {
-                        ID: 1,
-                        Type: "TypeOne",
-                        Title: "0-1",
-                        Description: "Something about the description of the ticket",
-                        IndicatorColor: bgColor.Primary,
-                    },
-                    {
-                        ID: 2,
-                        Type: "TypeOne",
-                        Title: "0-2",
-                        Description: "Something about the description of the ticket",
-                        IndicatorColor: bgColor.Primary,
-                    },
-                ]
+                title: "The First One",
+                accepts: ["ticket"],
+                lastDroppedItem: undefined,
             },
             {
-                ID: 1,
-                Type: "TypeOne",
-                Title: "The Second One",
-                Items: [
-                    {
-                        ID: 3,
-                        Type: "TypeOne",
-                        Title: "1-3",
-                        Description: "Something about the description of the ticket",
-                        IndicatorColor: bgColor.Secondary,
-                    },
-                    {
-                        ID: 4,
-                        Type: "TypeOne",
-                        Title: "1-4",
-                        Description: "Something about the description of the ticket",
-                        IndicatorColor: bgColor.Secondary,
-                    },
-                ]
+                title: "The Second One",
+                accepts: ["ticket"],
+                lastDroppedItem: undefined,
             },
             {
-                ID: 2,
-                Type: "TypeOne",
-                Title: "The Third One",
-                Items: [
-                    {
-                        ID: 5,
-                        Type: "TypeOne",
-                        Title: "2-5",
-                        Description: "Something about the description of the ticket",
-                        IndicatorColor: bgColor.Neutral,
-                    },
-                ]
+                title: "The Third One",
+                accepts: ["ticket"],
+                lastDroppedItem: undefined,
             },
-        ]
-    }
+        ];
+
+    const items = [
+        {
+            panel: panels[0].title,
+            name: "0",
+            type: "ticket",
+            title: "0-0",
+            description: "Something about the description of the ticket",
+            indicatorColor: bgColor.Primary,
+        },
+        {
+            panel: panels[0].title,
+            name: "1",
+            type: "ticket",
+            title: "0-1",
+            description: "Something about the description of the ticket",
+            indicatorColor: bgColor.Primary,
+        },
+        {
+            panel: panels[0].title,
+            name: "2",
+            type: "ticket",
+            title: "0-2",
+            description: "Something about the description of the ticket",
+            indicatorColor: bgColor.Primary,
+        },
+        {
+            panel: panels[0].title,
+            name: "5",
+            type: "ticket",
+            title: "2-5",
+            description: "Something about the description of the ticket",
+            indicatorColor: bgColor.Neutral,
+        },
+        {
+            panel: panels[0].title,
+            name: "3",
+            type: "ticket",
+            title: "1-3",
+            description: "Something about the description of the ticket",
+            indicatorColor: bgColor.Secondary,
+        },
+        {
+            panel: panels[0].title,
+            name: "4",
+            type: "ticket",
+            title: "1-4",
+            description: "Something about the description of the ticket",
+            indicatorColor: bgColor.Secondary,
+        },
+    ];
 
     function kanban() {
-        return <KanbanBoard PanelsAndItems={board} />
+        return <KanbanBoard initialPanels={panels} initialItems={items} />
     }
 
     const client = new ApolloClient({

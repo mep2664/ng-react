@@ -1,8 +1,12 @@
 import * as React from "react";
 import styled from "styled-components";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
+// import { NativeTypes } from "react-dnd-html5-backend";
+import { DndProvider } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 import { bgColor } from "../../theme";
 import { IKanbanBoard, IKanbanPanel, IKanbanItem, KanbanItem, KanbanPanel } from ".";
+import * as _ from "lodash";
 
 const KanbanWrapper = styled.div`
     width: 100%;
@@ -11,72 +15,52 @@ const KanbanWrapper = styled.div`
     background-color: ${bgColor.Light};
 `;
 
-export const KanbanBoard: React.FC<{ PanelsAndItems: IKanbanBoard }> = ({ PanelsAndItems }) => {
-    const [panelsAndItems, setPanelsAndItems] = React.useState(PanelsAndItems);
+export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItems }) => {
+    const [panels, setPanels] = React.useState(_.cloneDeep(initialPanels));
+    const [items, setItems] = React.useState(_.cloneDeep(initialItems));
 
-    const dragEndEvent = (result: DropResult) => {
-
-        // Grab result variables
-        const { destination, source, draggableId } = result;
-
-        // If there is no move
-        if (!destination) {
-            return;
-        }
-
-        // If it moved to the same place it started
-        if (destination.droppableId === source.droppableId &&
-            destination.index === source.index) {
-            return;
-        }
-
-        // Get the panels from state
-        const panels: IKanbanPanel[] = panelsAndItems.Panels;
-
-        // Get the item that's being moved
-        const sourcePanel = panels.find((panel) => panel.ID.toString() === source.droppableId) as IKanbanPanel;
-        const movedItem = sourcePanel.Items.find((item) => item.ID.toString() === draggableId) as IKanbanItem;
-
-        // Remove it from the source panel
-        if (sourcePanel.Items.length === 1) {
-            sourcePanel.Items.pop();
-        } else { // TODO: why do we need an if / else here? can't we just splice using the index of the item no matter what?
-            sourcePanel.Items.splice(
-                sourcePanel.Items.indexOf(movedItem), 1);
-        }
-
-        // Add it to the destination panel
-        const destinationPanel = panels.find((panel) => panel.ID.toString() === destination.droppableId) as IKanbanPanel;
-        destinationPanel.Items.splice(destination.index, 0, movedItem);
-
-        // Construct new object so React knows to rerender
-        const newPanelsAndItems = {
-            Panels: Array.from(panels),
-        };
-
-        // Update state
-        setPanelsAndItems(newPanelsAndItems);
+    const dragEndEvent = (panelIndex: any, droppedItem: any) => {
+        console.log(panelIndex);
+        console.log(droppedItem);
+        const item = items.find((item) => item.name === droppedItem.name) as IKanbanItem;
+        item.panel = panels[panelIndex].title;
+        console.log(item);
+        setItems(Array.from(items));
     }
 
+    // const [droppedBoxNames, setDroppedBoxNames] = useState<string[]>([])
+    // const isDropped = (boxName: string) => droppedBoxNames.indexOf(boxName) > -1
+    //   }
+
+    console.log(items);
+
     return (
-        <DragDropContext onDragEnd={dragEndEvent}>
-            <KanbanWrapper>
-                {panelsAndItems && panelsAndItems.Panels.map((panel: IKanbanPanel, panelIndex) => {
-                    return (
-                        <KanbanPanel id={panel.ID} key={`panel-${panelIndex}`} title={panel.Title} subtitle="test">
-                            {panel.Items.map((item: IKanbanItem) => {
-                                return <KanbanItem
-                                    id={item.ID}
-                                    key={item.ID}
-                                    title={item.Title}
-                                    description={item.Description}
-                                    indicatorColor={item.IndicatorColor}
-                                />
-                            })}
-                        </KanbanPanel>
-                    );
-                })}
-            </KanbanWrapper>
-        </DragDropContext>
-    );
+        <DndProvider backend={HTML5Backend}>
+            <div style={{ overflow: 'hidden', clear: 'both' }}>
+                {panels.map((panel, index) => (
+                    <KanbanPanel
+                        title={panel.title}
+                        subtitle={"subtitle where are you coming from?"}
+                        accept={panel.accepts}
+                        lastDroppedItem={panel.lastDroppedItem}
+                        onDrop={(item) => dragEndEvent(index, item)}
+                        key={panel.title}
+                    >
+                        {items.filter((item) => item.panel === panel.title).map((item: IKanbanItem) =>
+                            <KanbanItem
+                                name={item.name}
+                                type="ticket"
+                                isDropped={false}
+                                id={item.name}
+                                key={item.name}
+                                title={item.title}
+                                description={item.description}
+                                indicatorColor={item.indicatorColor as string}
+                            />
+                        )}
+                    </KanbanPanel>
+                ))}
+            </div>
+        </DndProvider>
+    )
 };
