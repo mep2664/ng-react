@@ -37,6 +37,27 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
         setItems(Array.from(items));
     }
 
+    const handleItemSort = (startIndex: number, endIndex: number) => {
+        const sorted = _.cloneDeep(items.sort((a, b) => a.index! - b.index!));
+        if (startIndex < endIndex) {
+            sorted[startIndex].index = endIndex - 1;
+            let index = endIndex - 1;
+            while (index > startIndex) {
+                sorted[index].index = index - 1;
+                index--;
+            }
+        } else if (startIndex > endIndex) {
+            sorted[startIndex].index = endIndex;
+            let index = endIndex;
+            while (index < startIndex) {
+                sorted[index].index = index + 1;
+                index++;
+            }
+        }
+        setItems(Array.from(sorted.sort((a, b) => a.index! - b.index!)));
+    }
+
+    let index = 0;
     return (
         <DndProvider backend={HTML5Backend}>
             <KanbanWrapper>
@@ -49,15 +70,20 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
                         key={panel.title}
                     >
                         <div>
-                            {items.filter((item) => item.panel === panel.title).map((item: IKanbanItem) =>
-                                <KanbanItem
-                                    name={item.name}
-                                    type="ticket"
-                                    key={item.name}
-                                    description={item.description}
-                                    indicatorColor={item.indicatorColor as string}
-                                />
-                            )}
+                            {items.filter((item) => item.panel === panel.title).map((item: IKanbanItem) => {
+                                item.index = index++;
+                                return (
+                                    <KanbanItem
+                                        name={item.name}
+                                        type="ticket"
+                                        key={item.name}
+                                        index={item.index}
+                                        description={item.description}
+                                        indicatorColor={item.indicatorColor as string}
+                                        onDrop={handleItemSort}
+                                    />
+                                );
+                            })}
                         </div>
                     </KanbanPanel>
                 ))}

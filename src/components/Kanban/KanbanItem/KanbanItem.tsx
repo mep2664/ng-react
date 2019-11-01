@@ -1,7 +1,8 @@
 import * as React from "react";
 import styled from "styled-components";
-import { useDrag } from "react-dnd";
+import { useDrag, useDrop, DropTargetMonitor } from "react-dnd";
 import { fontColor, bgColor } from "../../../theme";
+import { IKanbanItem } from "../";
 
 // TODO: border: ${(props) => props.isDragging ? `2px solid ${props.indicatorColor}` : "0"};
 const ItemWrapper = styled.div<{ indicatorColor: string, /*isDragging: boolean,*/ opacity: number }>`
@@ -53,21 +54,37 @@ export interface IKanbanItemProps {
     name: string;
     type: string;
     description: string;
+    index?: number;
     indicatorColor: string;
-    onDrop?: () => void;
+    onDrop?: (startIndex: number, endIndex: number) => void;
 }
 
-export const KanbanItem: React.FC<IKanbanItemProps> = ({ name, type, description, indicatorColor, onDrop }) => {
+export const KanbanItem: React.FC<IKanbanItemProps> = ({ name, type, description, index, indicatorColor, onDrop }) => {
+    const [dragIndex, setDragIndex] = React.useState<number>();
+    const ref = React.useRef<HTMLDivElement>(null)
+    const [, drop] = useDrop({
+        accept: type,
+        hover: (item: IKanbanItem, monitor: DropTargetMonitor) => {
+            setDragIndex(item.index!);
+        },
+        drop: () => {
+            if (onDrop) {
+                onDrop(dragIndex!, index!);
+            }
+        }
+    });
+
     const [{ opacity }, drag] = useDrag({
-        item: { name, type },
+        item: { name, type, description, index },
         collect: monitor => ({
             opacity: monitor.isDragging() ? 0.4 : 1,
         }),
     })
 
+    drag(drop(ref));
     return (
         <ItemWrapper
-            ref={drag}
+            ref={ref}
             opacity={opacity}
             indicatorColor={indicatorColor ? indicatorColor : bgColor.Primary}
         >

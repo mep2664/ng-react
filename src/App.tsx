@@ -147,6 +147,7 @@ const AppComponent: React.FC<IAppProps> = ({ system, updateSession }) => {
         {
             panel: panels[0].title,
             name: "0",
+            index: 0,
             type: "ticket",
             description: "Something about the description of the ticket",
             indicatorColor: bgColor.Primary,
@@ -154,6 +155,7 @@ const AppComponent: React.FC<IAppProps> = ({ system, updateSession }) => {
         {
             panel: panels[0].title,
             name: "1",
+            index: 1,
             type: "ticket",
             description: "Something about the description of the ticket",
             indicatorColor: bgColor.Primary,
@@ -161,6 +163,7 @@ const AppComponent: React.FC<IAppProps> = ({ system, updateSession }) => {
         {
             panel: panels[0].title,
             name: "2",
+            index: 2,
             type: "ticket",
             description: "Something about the description of the ticket",
             indicatorColor: bgColor.Primary,
@@ -168,6 +171,7 @@ const AppComponent: React.FC<IAppProps> = ({ system, updateSession }) => {
         {
             panel: panels[0].title,
             name: "5",
+            index: 3,
             type: "ticket",
             description: "Something about the description of the ticket",
             indicatorColor: bgColor.Neutral,
@@ -175,6 +179,7 @@ const AppComponent: React.FC<IAppProps> = ({ system, updateSession }) => {
         {
             panel: panels[0].title,
             name: "3",
+            index: 4,
             type: "ticket",
             description: "Something about the description of the ticket",
             indicatorColor: bgColor.Secondary,
@@ -182,6 +187,7 @@ const AppComponent: React.FC<IAppProps> = ({ system, updateSession }) => {
         {
             panel: panels[0].title,
             name: "4",
+            index: 5,
             type: "ticket",
             description: "Something about the description of the ticket",
             indicatorColor: bgColor.Secondary,

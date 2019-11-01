@@ -129,8 +129,6 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
     }
 
     const updateTicketStatus = (panel: IKanbanPanel, item: IKanbanItem) => {
-        console.log(panel);
-        console.log(item);
         const statusId = (statuses.find((status) => status.statusLabel === panel.title) as Status).statusId;
         const changes = {
             statusId

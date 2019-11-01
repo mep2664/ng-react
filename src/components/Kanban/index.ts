@@ -9,6 +9,7 @@ export interface IKanbanItem {
     type: string;
     description: string;
     panel: string; // panel name
+    index?: number;
     externalId?: string;
     indicatorColor?: string;
 }
