@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
-import { useDrag, useDrop, DropTargetMonitor } from "react-dnd";
+import { useDrag, useDrop } from "react-dnd";
 import { fontColor, bgColor } from "../../../theme";
 import { IKanbanItem } from "../";
 
@@ -54,28 +54,25 @@ export interface IKanbanItemProps {
     name: string;
     type: string;
     description: string;
+    panel: string;
     index?: number;
     indicatorColor: string;
     onDrop?: (startIndex: number, endIndex: number) => void;
 }
 
-export const KanbanItem: React.FC<IKanbanItemProps> = ({ name, type, description, index, indicatorColor, onDrop }) => {
-    const [dragIndex, setDragIndex] = React.useState<number>();
+export const KanbanItem: React.FC<IKanbanItemProps> = ({ name, type, description, panel, index, indicatorColor, onDrop }) => {
     const ref = React.useRef<HTMLDivElement>(null)
     const [, drop] = useDrop({
         accept: type,
-        hover: (item: IKanbanItem) => {
-            setDragIndex(item.index!);
-        },
-        drop: () => {
+        drop: (item: IKanbanItem) => {
             if (onDrop) {
-                onDrop(dragIndex!, index!);
+                onDrop(item.index!, index!);
             }
         }
     });
 
     const [{ opacity }, drag] = useDrag({
-        item: { name, type, description, index },
+        item: { name, type, description, panel, index },
         collect: monitor => ({
             opacity: monitor.isDragging() ? 0.4 : 1,
         }),

@@ -153,13 +153,19 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
     };
 
     const handleTicketReorder = (items: IKanbanItem[]) => {
-        const ticketOrder = items.map(({ name, externalId, index }) => { console.log({ name, kanbanIndex: index }); return ({ ticketId: externalId, kanbanIndex: index }) });
+        const ticketOrder = items.map(({ externalId, index }) => ({ ticketId: externalId, kanbanIndex: index }));
         updateTicketOrder({
             variables: { ticketOrder: { ticketOrder } }, update: () => {
                 refetch({ sprintProjectId });
             }
         });
     };
+
+    if (statuses.length === 0) {
+        return (
+            <div>nothing to display</div>
+        );
+    }
 
     return (
         <div>

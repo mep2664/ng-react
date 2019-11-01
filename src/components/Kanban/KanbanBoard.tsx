@@ -18,52 +18,52 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
     const [panels, setPanels] = React.useState(_.cloneDeep(initialPanels));
     const [items, setItems] = React.useState(_.cloneDeep(initialItems));
 
-    // TODO: will this bug out if all panels or items are deleted
-    React.useEffect(() => {
-        //if (panels.length === 0 && initialPanels.length > 0) {
-        setPanels(_.cloneDeep(initialPanels));
-        //}
-        //if (items.length === 0 && initialItems.length > 0) {
-        setItems(_.cloneDeep(initialItems));
-        //}
-    }, [initialPanels, initialItems])
-
     const dropEvent = (panel: IKanbanPanel, droppedItem: IKanbanItem, hasDropped: boolean) => {
-        console.log(hasDropped);
-        if (panel.title !== droppedItem.panel && !hasDropped) {
-            if (droppedItem.index < panel.firstItemIndex!) {
-                handleItemSort(droppedItem.index,
-                    panel.firstItemIndex! - 2 > 0 ? panel.firstItemIndex! - 2 : 0);
-            } else if (droppedItem.index > panel.firstItemIndex!) {
-                handleItemSort(droppedItem.index, panel.firstItemIndex!);
+        if (panel.title !== droppedItem.panel) {
+            let sortedItems = items;
+            if (!hasDropped) {
+                if (droppedItem.index < panel.firstItemIndex!) {
+                    sortedItems = sortItems(droppedItem.index,
+                        panel.firstItemIndex! - 2 > 0 ? panel.firstItemIndex! - 2 : 0);
+                } else if (droppedItem.index > panel.firstItemIndex!) {
+                    sortedItems = sortItems(droppedItem.index, panel.firstItemIndex!);
+                }
             }
+            const item = sortedItems.find((item) => item.name === droppedItem.name) as IKanbanItem;
+            item.panel = panel.title;
+            if (panel.onDrop) {
+                panel.onDrop(panel, item);
+            }
+            setItems(sortedItems);
         }
-        const item = items.find((item) => item.name === droppedItem.name) as IKanbanItem;
-        item.panel = panel.title;
-        if (panel.onDrop) {
-            panel.onDrop(panel, item);
+    }
+
+    const sortItems = (startIndex: number, endIndex: number): IKanbanItem[] => {
+        const sorted = _.cloneDeep(items.sort((a, b) => a.index - b.index));
+        if (startIndex !== endIndex) {
+            if (startIndex < endIndex) {
+                sorted[startIndex].index = endIndex - 1;
+                let index = endIndex - 1;
+                while (index > startIndex) {
+                    sorted[index].index = --index;
+                }
+            } else if (startIndex > endIndex) {
+                sorted[startIndex].index = endIndex;
+                let index = endIndex;
+                while (index < startIndex) {
+                    sorted[index].index = ++index;
+                }
+            }
+            const newItems = Array.from(sorted.sort((a, b) => a.index! - b.index!));
+            items[startIndex].onDrop!(newItems);
+            return newItems;
         }
-        //setItems(Array.from(items));
+        return sorted;
     }
 
     const handleItemSort = (startIndex: number, endIndex: number) => {
-        const sorted = _.cloneDeep(items.sort((a, b) => a.index - b.index));
-        if (startIndex < endIndex) {
-            sorted[startIndex].index = endIndex;
-            let index = endIndex;
-            while (index > startIndex) {
-                sorted[index].index = --index;
-            }
-        } else if (startIndex > endIndex) {
-            sorted[startIndex].index = endIndex;
-            let index = endIndex;
-            while (index < startIndex) {
-                sorted[index].index = ++index;
-            }
-        }
-        const newItems = Array.from(sorted.sort((a, b) => a.index! - b.index!));
-        items[startIndex].onDrop!(newItems);
-        //setItems(Array.from(newItems));
+        const sortedItems = sortItems(startIndex, endIndex);
+        setItems(sortedItems);
     }
 
     let indexOffset = 0;
@@ -105,6 +105,7 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
                                             name={item.name}
                                             type="ticket"
                                             key={item.name}
+                                            panel={item.panel}
                                             index={item.index}
                                             description={item.description}
                                             indicatorColor={item.indicatorColor as string}
