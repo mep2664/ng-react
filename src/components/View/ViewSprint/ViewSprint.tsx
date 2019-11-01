@@ -29,6 +29,7 @@ const GET_SPRINT_PROJECT = gql`
                 description
                 activeUserId
                 statusId
+                kanbanIndex
             }
         }
     }
@@ -59,7 +60,16 @@ const UPDATE_TICKET = gql`
                 priority
                 storyPoints
                 description
+                kanbanIndex
             }
+        }
+    }
+`;
+
+const UPDATE_TICKETS_ORDER = gql`
+    mutation updateTicketOrder($ticketOrder: OrderInput!) {
+        updateTicketOrder(ticketOrder: $ticketOrder) {
+            success
         }
     }
 `;
@@ -83,6 +93,7 @@ interface Ticket {
     activeUserId: string;
     statusId: string;
     sprintProjectId: string;
+    kanbanIndex: number;
 }
 
 export interface ISprint {
@@ -98,6 +109,7 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
     const { loading, error, data, refetch } = useQuery(GET_SPRINT_PROJECT, { variables: { sprintProjectId }, fetchPolicy: "no-cache" });
     const [updateSprintProject] = useMutation(UPDATE_SPRINT_PROJECT);
     const [updateTicket] = useMutation(UPDATE_TICKET);
+    const [updateTicketOrder] = useMutation(UPDATE_TICKETS_ORDER);
 
     React.useLayoutEffect(() => {
         if (data && data.sprintProject) {
@@ -138,7 +150,12 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
                 refetch({ sprintProjectId });
             }
         });
-    }
+    };
+
+    const handleTicketReorder = (items: IKanbanItem[]) => {
+        const ticketOrder = items.map(({ externalId, index }) => ({ ticketId: externalId, kanbanIndex: index }));
+        updateTicketOrder({ variables: { ticketOrder: { ticketOrder } } })
+    };
 
     return (
         <div>
@@ -157,14 +174,16 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
                         ))
                     }
                     initialItems={
-                        tickets.map((ticket) => (
+                        tickets.sort((a, b) => a.kanbanIndex - b.kanbanIndex).map((ticket) => (
                             {
                                 panel: (statuses.find((status) => status.statusId === ticket.statusId) as Status).statusLabel,
                                 name: ticket.title,
                                 type: "ticket",
+                                index: ticket.kanbanIndex,
                                 description: ticket.description,
                                 externalId: ticket.ticketId,
                                 indicatorColor: bgColor.Primary,
+                                onDrop: handleTicketReorder,
                             }
                         ))
                     } />

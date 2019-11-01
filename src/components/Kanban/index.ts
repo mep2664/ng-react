@@ -9,9 +9,10 @@ export interface IKanbanItem {
     type: string;
     description: string;
     panel: string; // panel name
-    index?: number;
+    index: number;
     externalId?: string;
     indicatorColor?: string;
+    onDrop?: (items: IKanbanItem[]) => void;
 }
 
 export interface IKanbanPanel {

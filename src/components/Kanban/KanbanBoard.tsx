@@ -38,26 +38,27 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
     }
 
     const handleItemSort = (startIndex: number, endIndex: number) => {
-        const sorted = _.cloneDeep(items.sort((a, b) => a.index! - b.index!));
+        const sorted = _.cloneDeep(items.sort((a, b) => a.index - b.index));
         if (startIndex < endIndex) {
-            sorted[startIndex].index = endIndex - 1;
-            let index = endIndex - 1;
+            sorted[startIndex].index = endIndex;
+            let index = endIndex;
             while (index > startIndex) {
-                sorted[index].index = index - 1;
-                index--;
+                sorted[index].index = --index;
             }
         } else if (startIndex > endIndex) {
             sorted[startIndex].index = endIndex;
             let index = endIndex;
             while (index < startIndex) {
-                sorted[index].index = index + 1;
-                index++;
+                sorted[index].index = ++index;
             }
         }
+        const newItems = Array.from(sorted.sort((a, b) => a.index! - b.index!));
+        items[startIndex].onDrop!(newItems);
         setItems(Array.from(sorted.sort((a, b) => a.index! - b.index!)));
     }
 
-    let index = 0;
+    let indexOffset = 0;
+    let lastIndex = -1;
     return (
         <DndProvider backend={HTML5Backend}>
             <KanbanWrapper>
@@ -71,7 +72,13 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
                     >
                         <div>
                             {items.filter((item) => item.panel === panel.title).map((item: IKanbanItem) => {
-                                item.index = index++;
+                                if (item.index === -1) {
+                                    item.index = lastIndex + 1;
+                                    indexOffset++;
+                                } else {
+                                    item.index = item.index + indexOffset;
+                                }
+                                lastIndex = item.index;
                                 return (
                                     <KanbanItem
                                         name={item.name}
