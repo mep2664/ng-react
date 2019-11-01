@@ -117,7 +117,7 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
             setProjectName(data.sprintProject.projectName);
             setGoal(data.sprintProject.goal);
             setStatuses(data.sprintProject.ticketStatuses);
-            setTickets(data.sprintProject.tickets);
+            setTickets(data.sprintProject.tickets.sort((a: Ticket, b: Ticket) => a.kanbanIndex - b.kanbanIndex));
         }
     }, [data]);
 
@@ -153,8 +153,12 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
     };
 
     const handleTicketReorder = (items: IKanbanItem[]) => {
-        const ticketOrder = items.map(({ externalId, index }) => ({ ticketId: externalId, kanbanIndex: index }));
-        updateTicketOrder({ variables: { ticketOrder: { ticketOrder } } })
+        const ticketOrder = items.map(({ name, externalId, index }) => { console.log({ name, kanbanIndex: index }); return ({ ticketId: externalId, kanbanIndex: index }) });
+        updateTicketOrder({
+            variables: { ticketOrder: { ticketOrder } }, update: () => {
+                refetch({ sprintProjectId });
+            }
+        });
     };
 
     return (

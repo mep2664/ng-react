@@ -64,7 +64,7 @@ export const KanbanItem: React.FC<IKanbanItemProps> = ({ name, type, description
     const ref = React.useRef<HTMLDivElement>(null)
     const [, drop] = useDrop({
         accept: type,
-        hover: (item: IKanbanItem, monitor: DropTargetMonitor) => {
+        hover: (item: IKanbanItem) => {
             setDragIndex(item.index!);
         },
         drop: () => {

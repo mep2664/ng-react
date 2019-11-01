@@ -45,26 +45,16 @@ export interface IKanbanPanelProps {
     subtitle: string;
     accept: string[]
     lastDroppedItem?: any
-    onDrop: (item: any) => void
+    onDrop: (item: any, hasDropped: boolean) => void
 }
 
-export const KanbanPanel: React.FC<IKanbanPanelProps> = ({ children, title, subtitle, accept, lastDroppedItem, onDrop }) => {
-    const [{ isOver, canDrop }, drop] = useDrop({
+export const KanbanPanel: React.FC<IKanbanPanelProps> = ({ children, title, subtitle, accept, onDrop }) => {
+    const [, drop] = useDrop({
         accept,
-        drop: onDrop,
-        collect: monitor => ({
-            isOver: monitor.isOver(),
-            canDrop: monitor.canDrop(),
-        }),
+        drop: (item, monitor) => {
+            onDrop(item, monitor.didDrop());
+        },
     });
-
-    const isActive = isOver && canDrop
-    let backgroundColor = '#222'
-    if (isActive) {
-        backgroundColor = 'darkgreen'
-    } else if (canDrop) {
-        backgroundColor = 'darkkhaki'
-    }
 
     return (
         <PanelWrapper ref={drop}>

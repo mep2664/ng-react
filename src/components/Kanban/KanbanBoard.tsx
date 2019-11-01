@@ -20,21 +20,30 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
 
     // TODO: will this bug out if all panels or items are deleted
     React.useEffect(() => {
-        if (panels.length === 0 && initialPanels.length > 0) {
-            setPanels(_.cloneDeep(initialPanels));
-        }
-        if (items.length === 0 && initialItems.length > 0) {
-            setItems(_.cloneDeep(initialItems));
-        }
+        //if (panels.length === 0 && initialPanels.length > 0) {
+        setPanels(_.cloneDeep(initialPanels));
+        //}
+        //if (items.length === 0 && initialItems.length > 0) {
+        setItems(_.cloneDeep(initialItems));
+        //}
     }, [initialPanels, initialItems])
 
-    const dropEvent = (panel: IKanbanPanel, droppedItem: any) => {
+    const dropEvent = (panel: IKanbanPanel, droppedItem: IKanbanItem, hasDropped: boolean) => {
+        console.log(hasDropped);
+        if (panel.title !== droppedItem.panel && !hasDropped) {
+            if (droppedItem.index < panel.firstItemIndex!) {
+                handleItemSort(droppedItem.index,
+                    panel.firstItemIndex! - 2 > 0 ? panel.firstItemIndex! - 2 : 0);
+            } else if (droppedItem.index > panel.firstItemIndex!) {
+                handleItemSort(droppedItem.index, panel.firstItemIndex!);
+            }
+        }
         const item = items.find((item) => item.name === droppedItem.name) as IKanbanItem;
         item.panel = panel.title;
         if (panel.onDrop) {
             panel.onDrop(panel, item);
         }
-        setItems(Array.from(items));
+        //setItems(Array.from(items));
     }
 
     const handleItemSort = (startIndex: number, endIndex: number) => {
@@ -54,7 +63,7 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
         }
         const newItems = Array.from(sorted.sort((a, b) => a.index! - b.index!));
         items[startIndex].onDrop!(newItems);
-        setItems(Array.from(sorted.sort((a, b) => a.index! - b.index!)));
+        //setItems(Array.from(newItems));
     }
 
     let indexOffset = 0;
@@ -62,38 +71,51 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
     return (
         <DndProvider backend={HTML5Backend}>
             <KanbanWrapper>
-                {panels.map((panel) => (
-                    <KanbanPanel
-                        title={panel.title}
-                        subtitle={panel.subtitle}
-                        accept={panel.accepts}
-                        onDrop={(item) => dropEvent(panel, item)}
-                        key={panel.title}
-                    >
-                        <div>
-                            {items.filter((item) => item.panel === panel.title).map((item: IKanbanItem) => {
-                                if (item.index === -1) {
-                                    item.index = lastIndex + 1;
-                                    indexOffset++;
-                                } else {
-                                    item.index = item.index + indexOffset;
-                                }
-                                lastIndex = item.index;
-                                return (
-                                    <KanbanItem
-                                        name={item.name}
-                                        type="ticket"
-                                        key={item.name}
-                                        index={item.index}
-                                        description={item.description}
-                                        indicatorColor={item.indicatorColor as string}
-                                        onDrop={handleItemSort}
-                                    />
-                                );
-                            })}
-                        </div>
-                    </KanbanPanel>
-                ))}
+                {panels.map((panel, panelIndex) => {
+                    const panelItems = items.filter((item) => item.panel === panel.title);
+                    panelItems.forEach((item) => {
+                        if (item.index === -1) {
+                            item.index = lastIndex + 1;
+                            indexOffset++;
+                        } else {
+                            item.index = item.index + indexOffset;
+                        }
+                        lastIndex = item.index;
+                    });
+                    panel.firstItemIndex = 0;
+                    if (panelItems.length > 0) {
+                        panel.firstItemIndex = panelItems[0].index;
+                    } else if (panelIndex > 0) {
+                        const lastPanelItems = items.filter((item) => item.panel === panels[panelIndex - 1].title);
+                        // first index is 1 higher than the last index of the previous panel
+                        panel.firstItemIndex = lastPanelItems[lastPanelItems.length - 1].index + 1;
+                    }
+                    return (
+                        <KanbanPanel
+                            title={panel.title}
+                            subtitle={panel.subtitle}
+                            accept={panel.accepts}
+                            onDrop={(item, hasDropped) => dropEvent(panel, item, hasDropped)}
+                            key={panel.title}
+                        >
+                            <div>
+                                {panelItems.map((item: IKanbanItem) => {
+                                    return (
+                                        <KanbanItem
+                                            name={item.name}
+                                            type="ticket"
+                                            key={item.name}
+                                            index={item.index}
+                                            description={item.description}
+                                            indicatorColor={item.indicatorColor as string}
+                                            onDrop={handleItemSort}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        </KanbanPanel>
+                    );
+                })}
             </KanbanWrapper>
         </DndProvider>
     )
