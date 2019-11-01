@@ -167,7 +167,7 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
                         statuses.map((status) => (
                             {
                                 title: status.statusLabel,
-                                subtitle: status.statusId,
+                                subtitle: status.statusLabel,
                                 accepts: ["ticket"],
                                 onDrop: updateTicketStatus,
                             }

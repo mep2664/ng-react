@@ -4,7 +4,7 @@ import { useDrop } from "react-dnd";
 import { bgColor, fontColor } from "../../../theme";
 
 const PanelWrapper = styled.div`
-    width: 200px;
+    width: 250px;
     min-height: 500px;
     background-color: white;
     -webkit-box-shadow: rgba(0, 0, 0, 0.3) 0 1px 3px;
@@ -29,7 +29,7 @@ const PanelTitle = styled.h1`
 
 const PanelSubTitle = styled.h2`
     color: ${fontColor.Dark};
-    font-size: 20px;
+    font-size: 18px;
     margin: 0;
     margin-bottom: 3px;
     margin-block-start: 0;
@@ -70,7 +70,7 @@ export const KanbanPanel: React.FC<IKanbanPanelProps> = ({ children, title, subt
         <PanelWrapper ref={drop}>
             <div>
                 <PanelTitle>{title}</PanelTitle>
-                {subtitle ? (<PanelSubTitle>{subtitle}</PanelSubTitle>) : undefined}
+                {subtitle ? (<PanelSubTitle title={subtitle}>{subtitle}</PanelSubTitle>) : undefined}
             </div>
             {children}
         </PanelWrapper>

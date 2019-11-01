@@ -65,7 +65,7 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
                 {panels.map((panel) => (
                     <KanbanPanel
                         title={panel.title}
-                        subtitle={"subtitle where are you coming from?"}
+                        subtitle={panel.subtitle}
                         accept={panel.accepts}
                         onDrop={(item) => dropEvent(panel, item)}
                         key={panel.title}
