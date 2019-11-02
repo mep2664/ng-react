@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 // TODO: border: ${(props) => props.isDragging ? `2px solid ${props.indicatorColor}` : "0"};
 const ItemWrapper = styled.div<{ indicatorColor: string, /*isDragging: boolean,*/ opacity: number }>`
     width: 100%;
-    min-height: 50px;
+    min-height: 60px;
     background-color: white;
     color: ${fontColor.Dark};
     border-top: 8px solid ${({ indicatorColor }) => indicatorColor};
@@ -21,9 +21,9 @@ const ItemWrapper = styled.div<{ indicatorColor: string, /*isDragging: boolean,*
     display: grid;
     opacity: ${({ opacity }) => opacity};
     grid-template-columns: auto;
-    grid-template-rows: 20px 30px;
+    grid-template-rows: 20px minmax(40px, 50px);
     overflow: hidden;
-    grid-gap: 5px;
+    grid-gap: 10px;
     padding: 5px 7px 7px 7px;
     box-sizing: border-box;
 
@@ -61,6 +61,7 @@ const ItemDescription = styled.div`
     margin-bottom: 5px;
     margin-block-start: 0;
     margin-block-end: 0;
+    overflow: hidden;
 `;
 
 export interface ILink {
@@ -105,7 +106,7 @@ export const KanbanItem: React.FC<IKanbanItemProps> = ({ name, link, type, descr
             indicatorColor={indicatorColor ? indicatorColor : bgColor.Primary}
         >
             <ItemTitle>{link && <ItemLink to={link.path}>{link.caption}:</ItemLink>} {name}</ItemTitle>
-            <ItemDescription>{description}</ItemDescription>
+            <ItemDescription title={description}>{description}</ItemDescription>
         </ItemWrapper>
     )
 }
