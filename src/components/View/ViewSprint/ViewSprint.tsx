@@ -20,6 +20,7 @@ const GET_SPRINT_PROJECT = gql`
             }
             tickets {
                 ticketId
+                ticketNumber
                 projectName
                 sprintName
                 ticketType
@@ -83,6 +84,7 @@ interface Status {
 
 interface Ticket {
     ticketId: string;
+    ticketNumber: number;
     projectName: string;
     sprintName: string;
     ticketType: string;
@@ -167,6 +169,7 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
         );
     }
 
+    console.log(tickets);
     return (
         <div>
             <React.Fragment>
@@ -188,6 +191,7 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
                             {
                                 panel: (statuses.find((status) => status.statusId === ticket.statusId) as Status).statusLabel,
                                 name: ticket.title,
+                                link: { caption: `${ticket.projectName}-${ticket.ticketNumber}`, path: `/view/ticket/${ticket.projectName}-${ticket.ticketNumber}` },
                                 type: "ticket",
                                 index: ticket.kanbanIndex,
                                 description: ticket.description,

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useDrag, useDrop } from "react-dnd";
 import { fontColor, bgColor } from "../../../theme";
 import { IKanbanItem } from "../";
+import { Link } from "react-router-dom";
 
 // TODO: border: ${(props) => props.isDragging ? `2px solid ${props.indicatorColor}` : "0"};
 const ItemWrapper = styled.div<{ indicatorColor: string, /*isDragging: boolean,*/ opacity: number }>`
@@ -41,6 +42,17 @@ const ItemTitle = styled.div`
     margin-block-end: 0;
 `;
 
+const ItemLink = styled(Link)`
+    text-transform: uppercase;
+    font-weight: bold;
+    text-decoration: none;
+    color: #0a085f;
+
+    &:hover {
+        text-decoration: underline;
+    }
+`
+
 const ItemDescription = styled.div`
     color: ${fontColor.Dark};
     font-size: 13px;
@@ -50,8 +62,14 @@ const ItemDescription = styled.div`
     margin-block-end: 0;
 `;
 
+export interface ILink {
+    caption: string;
+    path: string;
+}
+
 export interface IKanbanItemProps {
     name: string;
+    link?: ILink;
     type: string;
     description: string;
     panel: string;
@@ -60,7 +78,7 @@ export interface IKanbanItemProps {
     onDrop?: (startIndex: number, endIndex: number) => void;
 }
 
-export const KanbanItem: React.FC<IKanbanItemProps> = ({ name, type, description, panel, index, indicatorColor, onDrop }) => {
+export const KanbanItem: React.FC<IKanbanItemProps> = ({ name, link, type, description, panel, index, indicatorColor, onDrop }) => {
     const ref = React.useRef<HTMLDivElement>(null)
     const [, drop] = useDrop({
         accept: type,
@@ -79,13 +97,14 @@ export const KanbanItem: React.FC<IKanbanItemProps> = ({ name, type, description
     })
 
     drag(drop(ref));
+    console.log(link);
     return (
         <ItemWrapper
             ref={ref}
             opacity={opacity}
             indicatorColor={indicatorColor ? indicatorColor : bgColor.Primary}
         >
-            <ItemTitle>{name}</ItemTitle>
+            {link ? <ItemLink to={link.path}>{link.caption}</ItemLink> : <ItemTitle>{name}</ItemTitle>}
             <ItemDescription>{description}</ItemDescription>
         </ItemWrapper>
     )

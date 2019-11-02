@@ -1,4 +1,4 @@
-import { IKanbanItemProps } from "./KanbanItem";
+import { ILink } from "./KanbanItem";
 
 export * from "./KanbanBoard";
 export * from "./KanbanItem";
@@ -7,6 +7,7 @@ export * from "./KanbanPanel";
 export interface IKanbanItem {
     name: string;
     type: string;
+    link?: ILink;
     description: string;
     panel: string; // panel name
     index: number;

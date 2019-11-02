@@ -103,6 +103,7 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
                                     return (
                                         <KanbanItem
                                             name={item.name}
+                                            link={item.link}
                                             type="ticket"
                                             key={item.name}
                                             panel={item.panel}
