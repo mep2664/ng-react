@@ -102,14 +102,7 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
                                 {panelItems.map((item: IKanbanItem) => {
                                     return (
                                         <KanbanItem
-                                            name={item.name}
-                                            link={item.link}
-                                            type="ticket"
-                                            key={item.name}
-                                            panel={item.panel}
-                                            index={item.index}
-                                            description={item.description}
-                                            indicatorColor={item.indicatorColor as string}
+                                            item={item}
                                             onDrop={handleItemSort}
                                         />
                                     );

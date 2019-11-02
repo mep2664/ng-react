@@ -70,29 +70,23 @@ export interface ILink {
 }
 
 export interface IKanbanItemProps {
-    name: string;
-    link?: ILink;
-    type: string;
-    description: string;
-    panel: string;
-    index?: number;
-    indicatorColor: string;
+    item: IKanbanItem;
     onDrop?: (startIndex: number, endIndex: number) => void;
 }
 
-export const KanbanItem: React.FC<IKanbanItemProps> = ({ name, link, type, description, panel, index, indicatorColor, onDrop }) => {
+export const KanbanItem: React.FC<IKanbanItemProps> = ({ item, onDrop }) => {
     const ref = React.useRef<HTMLDivElement>(null)
     const [, drop] = useDrop({
-        accept: type,
-        drop: (item: IKanbanItem) => {
+        accept: item.type,
+        drop: (droppedItem: IKanbanItem) => {
             if (onDrop) {
-                onDrop(item.index!, index!);
+                onDrop(droppedItem.index!, item.index!);
             }
         }
     });
 
     const [{ opacity }, drag] = useDrag({
-        item: { name, type, description, panel, index },
+        item: { name: item.name, type: item.type, description: item.description, panel: item.panel, index: item.index },
         collect: monitor => ({
             opacity: monitor.isDragging() ? 0.4 : 1,
         }),
@@ -103,10 +97,10 @@ export const KanbanItem: React.FC<IKanbanItemProps> = ({ name, link, type, descr
         <ItemWrapper
             ref={ref}
             opacity={opacity}
-            indicatorColor={indicatorColor ? indicatorColor : bgColor.Primary}
+            indicatorColor={item.indicatorColor ? item.indicatorColor : bgColor.Primary}
         >
-            <ItemTitle>{link && <ItemLink to={link.path}>{link.caption}:</ItemLink>} {name}</ItemTitle>
-            <ItemDescription title={description}>{description}</ItemDescription>
+            <ItemTitle>{item.link && <ItemLink to={item.link.path}>{item.link.caption}:</ItemLink>} {item.name}</ItemTitle>
+            <ItemDescription title={item.description}>{item.description}</ItemDescription>
         </ItemWrapper>
     )
 }
