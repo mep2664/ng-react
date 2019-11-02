@@ -169,7 +169,20 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
         );
     }
 
-    console.log(tickets);
+    type TicketType = "Enhancement" | "Research" | "Bug";
+
+    interface ITicketTypeMap {
+        Enhancement: string;
+        Research: string;
+        Bug: string;
+    }
+
+    const indicatorColorMap: ITicketTypeMap = {
+        Enhancement: bgColor["Positive"]!,
+        Research: bgColor["Primary"]!,
+        Bug: bgColor["Error"]!,
+    }
+
     return (
         <div>
             <React.Fragment>
@@ -196,7 +209,7 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
                                 index: ticket.kanbanIndex,
                                 description: ticket.description,
                                 externalId: ticket.ticketId,
-                                indicatorColor: bgColor.Primary,
+                                indicatorColor: indicatorColorMap[ticket.ticketType as TicketType] ? indicatorColorMap[ticket.ticketType as TicketType] : bgColor["Warning"],
                                 onDrop: handleTicketReorder,
                             }
                         ))

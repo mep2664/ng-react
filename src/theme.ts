@@ -32,6 +32,7 @@ export const bgColor: IEmphasisTypes = {
     Lightgray: "rgb(115, 115, 115)",
     Light: "#f0f0f0",
     Positive: "#21ba45",
+    Neutral: "yellow",
     Warning: "orange",
     Error: "#d8000c",
     Overlay: "rgba(0,0,0,0.1)",
