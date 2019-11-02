@@ -19,6 +19,7 @@ export interface IKanbanPanel {
     title: string;
     subtitle: string;
     accepts: string[];
+    firstItemIndex?: number;
     onDrop?: (panel: IKanbanPanel, item: IKanbanItem) => void;
 }
 
