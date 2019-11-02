@@ -164,6 +164,8 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
     };
 
     if (statuses.length === 0) {
+        // TODO: this should probably be a loader, have to make
+        // sure there is never a case where statuses is actually 0 though
         return (
             <div>nothing to display</div>
         );
