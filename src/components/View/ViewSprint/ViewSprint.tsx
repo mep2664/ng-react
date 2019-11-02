@@ -193,7 +193,7 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
                         statuses.map((status) => (
                             {
                                 title: status.statusLabel,
-                                subtitle: status.statusLabel,
+                                subtitle: "", // TODO: do we really need a subtitle?
                                 accepts: ["ticket"],
                                 onDrop: updateTicketStatus,
                             }

@@ -64,11 +64,6 @@ const ItemDescription = styled.div`
     overflow: hidden;
 `;
 
-export interface ILink {
-    caption: string;
-    path: string;
-}
-
 export interface IKanbanItemProps {
     item: IKanbanItem;
     onDrop?: (startIndex: number, endIndex: number) => void;

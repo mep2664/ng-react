@@ -1,15 +1,18 @@
-import { ILink } from "./KanbanItem";
-
 export * from "./KanbanBoard";
 export * from "./KanbanItem";
 export * from "./KanbanPanel";
+
+export interface ILink {
+    caption: string;
+    path: string;
+}
 
 export interface IKanbanItem {
     name: string;
     type: string;
     link?: ILink;
     description: string;
-    panel: string; // panel name
+    panel: string; // panel title
     index: number;
     externalId?: string;
     indicatorColor?: string;
