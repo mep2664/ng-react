@@ -104,7 +104,7 @@ export const KanbanItem: React.FC<IKanbanItemProps> = ({ name, link, type, descr
             opacity={opacity}
             indicatorColor={indicatorColor ? indicatorColor : bgColor.Primary}
         >
-            {link ? <ItemLink to={link.path}>{link.caption}</ItemLink> : <ItemTitle>{name}</ItemTitle>}
+            <ItemTitle>{link && <ItemLink to={link.path}>{link.caption}:</ItemLink>} {name}</ItemTitle>
             <ItemDescription>{description}</ItemDescription>
         </ItemWrapper>
     )
