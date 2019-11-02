@@ -24,12 +24,13 @@ const ItemWrapper = styled.div<{ indicatorColor: string, /*isDragging: boolean,*
     grid-template-rows: 20px 30px;
     overflow: hidden;
     grid-gap: 5px;
-    padding: 5px;
+    padding: 5px 7px 7px 7px;
     box-sizing: border-box;
 
     &:hover {
         border: 2px solid ${({ indicatorColor }) => indicatorColor};
         border-top: 8px solid ${({ indicatorColor }) => indicatorColor};
+        padding: 5px;
     }
 `;
 
@@ -97,7 +98,6 @@ export const KanbanItem: React.FC<IKanbanItemProps> = ({ name, link, type, descr
     })
 
     drag(drop(ref));
-    console.log(link);
     return (
         <ItemWrapper
             ref={ref}
