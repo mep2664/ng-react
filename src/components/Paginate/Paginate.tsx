@@ -3,14 +3,27 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import styled from "styled-components";
 
-interface IWrapper {
+interface IScroll {
     height: string;
     width: string;
 }
-const Wrapper = styled.div<IWrapper>`
+
+const Wrapper = styled.div<IScroll>`
     height: ${({ height }) => height};
     width: ${({ width }) => width};
+`;
+
+const Scroll = styled.div<IScroll>`
+    height: calc(${({ height }) => height} - 35px);
+    width: ${({ width }) => width};
     overflow-y: scroll;
+`;
+
+const Button = styled.button`
+    width: 100%;
+    height: 35px;
+    position: sticky;
+    bottom: 0;
 `;
 
 interface IPaginateProps {
@@ -42,10 +55,14 @@ export const InfiniteScroll: React.FC<IPaginateProps> = ({ query, variables, num
         const contentHeight = e.currentTarget.offsetHeight;
         const scrollHeight = e.currentTarget.scrollHeight;
         if (amountScrolled === (scrollHeight - contentHeight) && amountScrolled > lastFetchHeight) {
-            refetch({ first: numItems, after: data[itemName].pageInfo.endCursor })
+            refetch({ first: numItems, after: data[itemName].pageInfo.endCursor });
             setLastFetchHeight(amountScrolled);
         }
     };
+
+    const handleLoadAll = () => {
+        refetch({ first: undefined, after: data[itemName].pageInfo.endCursor });
+    }
 
     if (error) {
         return (
@@ -54,9 +71,12 @@ export const InfiniteScroll: React.FC<IPaginateProps> = ({ query, variables, num
     }
 
     return (
-        <Wrapper height={height} width={width} onScroll={handleScroll}>
-            {renderItems(cache)}
-            {loading && <div key="loadingmoreitems">loading...</div>}
+        <Wrapper height={height} width={width}>
+            <Scroll height={height} width={width} onScroll={handleScroll}>
+                {renderItems(cache)}
+                {(loading && hasNextPage) && <div key="loadingmoreitems">loading...</div>}
+            </Scroll>
+            <Button onClick={handleLoadAll}>Load All</Button>
         </Wrapper>
     );
 }
