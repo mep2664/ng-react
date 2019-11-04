@@ -3,8 +3,13 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import styled from "styled-components";
 
-const InfiniteScroll = styled.div`
-    height: 150px;
+interface IWrapper {
+    height: string;
+    width: string;
+}
+const Wrapper = styled.div<IWrapper>`
+    height: ${({ height }) => height};
+    width: ${({ width }) => width};
     overflow-y: scroll;
 `;
 
@@ -14,10 +19,12 @@ interface IPaginateProps {
     numItems: number;
     afterId: string;
     itemName: string;
+    height: string;
+    width: string;
     renderItems: (data: any) => JSX.Element | JSX.Element[];
 }
 
-export const Paginate: React.FC<IPaginateProps> = ({ query, variables, numItems, afterId, itemName, renderItems }) => {
+export const InfiniteScroll: React.FC<IPaginateProps> = ({ query, variables, numItems, afterId, itemName, height, width, renderItems }) => {
     const [hasNextPage, setHasNextPage] = React.useState<boolean>(true);
     const [cache, setCache] = React.useState<Array<any>>([]);
     const [lastFetchHeight, setLastFetchHeight] = React.useState<number>(0);
@@ -34,7 +41,6 @@ export const Paginate: React.FC<IPaginateProps> = ({ query, variables, numItems,
         const amountScrolled = e.currentTarget.scrollTop;
         const contentHeight = e.currentTarget.offsetHeight;
         const scrollHeight = e.currentTarget.scrollHeight;
-        console.log(`${amountScrolled} - ${scrollHeight - contentHeight}`);
         if (amountScrolled === (scrollHeight - contentHeight) && amountScrolled > lastFetchHeight) {
             refetch({ first: numItems, after: data[itemName].pageInfo.endCursor })
             setLastFetchHeight(amountScrolled);
@@ -47,12 +53,10 @@ export const Paginate: React.FC<IPaginateProps> = ({ query, variables, numItems,
         );
     }
 
-    console.log(data);
     return (
-        <InfiniteScroll onScroll={handleScroll}>
+        <Wrapper height={height} width={width} onScroll={handleScroll}>
             {renderItems(cache)}
-            {loading && <div key="loadingmoreitems">loading more items...</div>}
-            <button key="refetchbutton" onClick={() => refetch({ first: numItems, after: data[itemName].pageInfo.endCursor })} disabled={!hasNextPage}>refetch</button>
-        </InfiniteScroll>
+            {loading && <div key="loadingmoreitems">loading...</div>}
+        </Wrapper>
     );
 }

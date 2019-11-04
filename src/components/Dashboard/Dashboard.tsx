@@ -1,7 +1,7 @@
 import * as React from "react";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import { Loader, Paginate, ProjectDetail, SprintProjectDetail, TeamDetail, TicketDetail, UserDetail } from "../";
+import { Loader, InfiniteScroll, ProjectDetail, SprintProjectDetail, TeamDetail, TicketDetail, UserDetail } from "../";
 import styled from "styled-components";
 
 const TICKET_PAGINATION_QUERY = `
@@ -13,6 +13,13 @@ query ($first: Int, $after: String, $before: String) {
           ticketNumber
           projectName
           description
+          sprintName
+          activeUserId
+          priority
+          ticketType
+          statusId
+          storyPoints
+          title
         }
       }
       pageInfo {
@@ -52,16 +59,6 @@ export const GET_DATA = gql`
             projectName
             goal
         }
-        allTickets {
-            projectName
-            ticketNumber
-            ticketId
-            description
-            sprintName
-            priority
-            ticketType
-            storyPoints
-        }
     }
 `;
 
@@ -79,10 +76,14 @@ const Projects = styled.div``;
 
 const Sprints = styled.div``;
 
-const Tickets = styled.div``;
+const Tickets = styled.div`
+    padding: 15px;
+    height: 500px;
+    width: 40%;
+`;
 
 const renderTickets = (nodes: any) => {
-    return nodes.map(({ node }: any) => <div key={node.ticketId}>{node.ticketId}</div>);
+    return nodes.map(({ node }: any) => <TicketDetail key={node.ticketId} ticket={node} />);
 }
 
 export const Dashboard: React.FC = () => {
@@ -101,7 +102,10 @@ export const Dashboard: React.FC = () => {
 
     return (
         <React.Fragment>
-            <Paginate query={TICKET_PAGINATION_QUERY} variables={{}} numItems={10} afterId={""} itemName={"tickets"} renderItems={renderTickets} />
+            <Tickets>
+                Tickets
+                <InfiniteScroll height="100%" width="100%" query={TICKET_PAGINATION_QUERY} variables={{}} numItems={10} afterId={""} itemName={"tickets"} renderItems={renderTickets} />
+            </Tickets>
             <Wrapper>
                 <Users>
                     Users
@@ -127,12 +131,6 @@ export const Dashboard: React.FC = () => {
                         <SprintProjectDetail key={index} sprintProject={sprintProject} />
                     )}
                 </Sprints>
-                <Tickets>
-                    Tickets
-                {(data.allTickets as any[]).map((ticket: any, index) => // TODO give ticket a type
-                        <TicketDetail key={index} ticket={ticket} />
-                    )}
-                </Tickets>
             </Wrapper>
         </React.Fragment>
     );
