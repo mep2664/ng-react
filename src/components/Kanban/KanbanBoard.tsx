@@ -92,16 +92,17 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
                     }
                     return (
                         <KanbanPanel
+                            key={panel.title}
                             title={panel.title}
                             subtitle={panel.subtitle}
                             accept={panel.accepts}
                             onDrop={(item, hasDropped) => dropEvent(panel, item, hasDropped)}
-                            key={panel.title}
                         >
                             <div>
                                 {panelItems.map((item: IKanbanItem) => {
                                     return (
                                         <KanbanItem
+                                            key={item.name}
                                             item={item}
                                             onDrop={handleItemSort}
                                         />

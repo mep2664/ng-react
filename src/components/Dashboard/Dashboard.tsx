@@ -1,8 +1,29 @@
 import * as React from "react";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import { Loader, ProjectDetail, SprintProjectDetail, TeamDetail, TicketDetail, UserDetail } from "../";
+import { Loader, Paginate, ProjectDetail, SprintProjectDetail, TeamDetail, TicketDetail, UserDetail } from "../";
 import styled from "styled-components";
+
+const TICKET_PAGINATION_QUERY = `
+query ($first: Int, $after: String, $before: String) {
+    tickets(first: $first, after: $after, before: $before) {
+      edges {
+        node {
+          ticketId
+          ticketNumber
+          projectName
+          description
+        }
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+    }
+  }
+`;
 
 export const GET_DATA = gql`
     {
@@ -60,6 +81,10 @@ const Sprints = styled.div``;
 
 const Tickets = styled.div``;
 
+const renderTickets = (nodes: any) => {
+    return nodes.map(({ node }: any) => <div key={node.ticketId}>{node.ticketId}</div>);
+}
+
 export const Dashboard: React.FC = () => {
     const { loading, error, data } = useQuery(GET_DATA, { fetchPolicy: "no-cache" });
     if (loading) {
@@ -75,37 +100,40 @@ export const Dashboard: React.FC = () => {
     }
 
     return (
-        <Wrapper>
-            <Users>
-                Users
+        <React.Fragment>
+            <Paginate query={TICKET_PAGINATION_QUERY} variables={{}} numItems={10} afterId={""} itemName={"tickets"} renderItems={renderTickets} />
+            <Wrapper>
+                <Users>
+                    Users
                 {(data.allUsers as any[]).map((user: any, index) => // TODO give ticket a type
-                    <UserDetail key={index} user={user} />
-                )}
-            </Users>
-            <Teams>
-                Teams
+                        <UserDetail key={index} user={user} />
+                    )}
+                </Users>
+                <Teams>
+                    Teams
                 {(data.allTeams as any[]).map((team: any, index) => // TODO give ticket a type
-                    <TeamDetail key={index} team={team} />
-                )}
-            </Teams>
-            <Projects>
-                Projects
+                        <TeamDetail key={index} team={team} />
+                    )}
+                </Teams>
+                <Projects>
+                    Projects
                 {(data.allProjects as any[]).map((project: any, index) => // TODO give ticket a type
-                    <ProjectDetail key={index} project={project} />
-                )}
-            </Projects>
-            <Sprints>
-                Sprints
+                        <ProjectDetail key={index} project={project} />
+                    )}
+                </Projects>
+                <Sprints>
+                    Sprints
                 {(data.allSprintProjects as any[]).map((sprintProject: any, index) => // TODO give ticket a type
-                    <SprintProjectDetail key={index} sprintProject={sprintProject} />
-                )}
-            </Sprints>
-            <Tickets>
-                Tickets
+                        <SprintProjectDetail key={index} sprintProject={sprintProject} />
+                    )}
+                </Sprints>
+                <Tickets>
+                    Tickets
                 {(data.allTickets as any[]).map((ticket: any, index) => // TODO give ticket a type
-                    <TicketDetail key={index} ticket={ticket} />
-                )}
-            </Tickets>
-        </Wrapper>
+                        <TicketDetail key={index} ticket={ticket} />
+                    )}
+                </Tickets>
+            </Wrapper>
+        </React.Fragment>
     );
 }

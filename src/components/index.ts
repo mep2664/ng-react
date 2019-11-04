@@ -14,6 +14,7 @@ export * from "./ModuleAside";
 export * from "./Navigation";
 export * from "./NotFound";
 export * from "./PageHeader";
+export * from "./Paginate";
 export * from "./Details";
 export * from "./Tooltip";
 export * from "./View";
