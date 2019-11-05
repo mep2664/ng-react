@@ -62,10 +62,18 @@ export const GET_DATA = gql`
     }
 `;
 
-const Wrapper = styled.div`
-    padding: 15px;
+const ThreeColumns = styled.div`
+    padding: 30px 4.875%;
     display: grid;
-    grid-gap: 15px;
+    grid-gap: 2.5%;
+    grid-template-columns: 31% 31% 31%;
+`;
+
+const TwoColumns = styled.div`
+    padding: 30px 4.875%;
+    display: grid;
+    grid-gap: 2.5%;
+    grid-template-columns: 47.75% 47.75%;
 `;
 
 const Users = styled.div``;
@@ -77,9 +85,7 @@ const Projects = styled.div``;
 const Sprints = styled.div``;
 
 const Tickets = styled.div`
-    padding: 15px;
     height: 500px;
-    width: 40%;
 `;
 
 const renderTickets = (nodes: any) => {
@@ -102,11 +108,19 @@ export const Dashboard: React.FC = () => {
 
     return (
         <React.Fragment>
-            <Tickets>
-                Tickets
-                <InfiniteScroll height="100%" width="100%" query={TICKET_PAGINATION_QUERY} variables={{}} numItems={10} afterId={""} itemName={"tickets"} renderItems={renderTickets} />
-            </Tickets>
-            <Wrapper>
+            <TwoColumns>
+                <Sprints>
+                    Sprints
+                    {(data.allSprintProjects as any[]).map((sprintProject: any, index) => // TODO give ticket a type
+                        <SprintProjectDetail key={index} sprintProject={sprintProject} />
+                    )}
+                </Sprints>
+                <Tickets>
+                    Tickets
+                    <InfiniteScroll height="100%" width="100%" query={TICKET_PAGINATION_QUERY} variables={{}} numItems={10} afterId={""} itemName={"tickets"} renderItems={renderTickets} />
+                </Tickets>
+            </TwoColumns>
+            <ThreeColumns>
                 <Users>
                     Users
                 {(data.allUsers as any[]).map((user: any, index) => // TODO give ticket a type
@@ -125,13 +139,7 @@ export const Dashboard: React.FC = () => {
                         <ProjectDetail key={index} project={project} />
                     )}
                 </Projects>
-                <Sprints>
-                    Sprints
-                {(data.allSprintProjects as any[]).map((sprintProject: any, index) => // TODO give ticket a type
-                        <SprintProjectDetail key={index} sprintProject={sprintProject} />
-                    )}
-                </Sprints>
-            </Wrapper>
-        </React.Fragment>
+            </ThreeColumns>
+        </React.Fragment >
     );
 }
