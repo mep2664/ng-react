@@ -58,6 +58,7 @@ const NavigationMenuComponent: React.FC<INavigationMenu> = ({ system, updateSess
     const handleLogout = () => {
         document.cookie = "uuid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         updateSession({ loggedIn: false, session: "", userName: "" });
+        window.location.assign(`${window.location.protocol}//${window.location.host}/home`);
     }
 
     return (
