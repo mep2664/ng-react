@@ -4,7 +4,7 @@ import { useDrop } from "react-dnd";
 import { bgColor, fontColor } from "../../../theme";
 
 const PanelWrapper = styled.div`
-    width: 250px;
+    min-width: 225px;
     min-height: 500px;
     background-color: white;
     -webkit-box-shadow: rgba(0, 0, 0, 0.3) 0 1px 3px;

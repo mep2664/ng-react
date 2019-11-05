@@ -1,16 +1,32 @@
 import * as React from "react";
-import { Loader } from "./";
+import { CircleLoader, Loader } from "./";
 import styled from "styled-components";
+
+const Wrapper = styled.div`
+`;
 
 const LoaderContainer = styled.div`
     position: relative;
-    top: 100px;
+    top: 25px;
+    height: 100px;
+`;
+
+const CenterLoader = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 0;
 `;
 
 export const Loaders: React.FC = () => {
     return (
-        <LoaderContainer title="Loader">
-            <Loader />
-        </LoaderContainer>
+        <Wrapper>
+            <LoaderContainer title="Loader">
+                <Loader />
+            </LoaderContainer>
+            <CenterLoader title="CircleLoader">
+                <CircleLoader />
+            </CenterLoader>
+        </Wrapper>
     );
 }

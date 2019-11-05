@@ -3,7 +3,7 @@ import { Loader, TextInput } from "../..";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { KanbanBoard, IKanbanPanel, IKanbanItem } from "../../../components";
+import { CircleLoader, KanbanBoard, IKanbanPanel, IKanbanItem } from "../../../components";
 import { bgColor } from "../../../theme";
 
 const GET_SPRINT_PROJECT = gql`
@@ -75,6 +75,10 @@ const UPDATE_TICKETS_ORDER = gql`
     }
 `;
 
+const Wrapper = styled.div`
+    position: relative;
+`;
+
 interface Status {
     statusId: string;
     statusOrder: number;
@@ -108,9 +112,10 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
     const [goal, setGoal] = React.useState<string>("");
     const [statuses, setStatuses] = React.useState<Array<Status>>([]);
     const [tickets, setTickets] = React.useState<Array<Ticket>>([]);
-    const { loading, error, data, refetch } = useQuery(GET_SPRINT_PROJECT, { variables: { sprintProjectId }, fetchPolicy: "no-cache" });
+    const [ticketOrder, setTicketOrder] = React.useState<Array<any>>([]);
+    const { loading, error, data } = useQuery(GET_SPRINT_PROJECT, { variables: { sprintProjectId }, fetchPolicy: "no-cache" });
     const [updateSprintProject] = useMutation(UPDATE_SPRINT_PROJECT);
-    const [updateTicket] = useMutation(UPDATE_TICKET);
+    const [updateTicket, updateTicketState] = useMutation(UPDATE_TICKET);
     const [updateTicketOrder] = useMutation(UPDATE_TICKETS_ORDER);
 
     React.useLayoutEffect(() => {
@@ -148,20 +153,21 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
             statusId
         };
         updateTicket({
-            variables: { changes, ticketId: item.externalId }, update: () => {
-                refetch({ sprintProjectId });
-            }
+            variables: { changes, ticketId: item.externalId }
         });
     };
 
     const handleTicketReorder = (items: IKanbanItem[]) => {
-        const ticketOrder = items.map(({ externalId, index }) => ({ ticketId: externalId, kanbanIndex: index }));
-        updateTicketOrder({
-            variables: { ticketOrder: { ticketOrder } }, update: () => {
-                refetch({ sprintProjectId });
-            }
-        });
+        setTicketOrder(items.map(({ externalId, index }) => ({ ticketId: externalId, kanbanIndex: index })));
     };
+
+    window.onbeforeunload = () => {
+        if (ticketOrder) {
+            updateTicketOrder({
+                variables: { ticketOrder: { ticketOrder } }
+            });
+        }
+    }
 
     if (statuses.length === 0) {
         // TODO: this should probably be a loader, have to make
@@ -186,37 +192,36 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
     }
 
     return (
-        <div>
-            <React.Fragment>
-                <div>{`Sprint: ${sprintName} - ${projectName}`}</div>
-                <TextInput label="Goal" name="goal" value={goal} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGoal(e.target.value)} onBlur={(e: React.FocusEvent<HTMLInputElement>) => handleChange("goal", setGoal, e.target.value)} />
-                <KanbanBoard
-                    initialPanels={
-                        statuses.map((status) => (
-                            {
-                                title: status.statusLabel,
-                                subtitle: "", // TODO: do we really need a subtitle?
-                                accepts: ["ticket"],
-                                onDrop: updateTicketStatus,
-                            }
-                        ))
-                    }
-                    initialItems={
-                        tickets.sort((a, b) => a.kanbanIndex - b.kanbanIndex).map((ticket) => (
-                            {
-                                panel: (statuses.find((status) => status.statusId === ticket.statusId) as Status).statusLabel,
-                                name: ticket.title,
-                                link: { caption: `${ticket.projectName}-${ticket.ticketNumber}`, path: `/view/ticket/${ticket.projectName}-${ticket.ticketNumber}` },
-                                type: "ticket",
-                                index: ticket.kanbanIndex,
-                                description: ticket.description,
-                                externalId: ticket.ticketId,
-                                indicatorColor: indicatorColorMap[ticket.ticketType as TicketType] ? indicatorColorMap[ticket.ticketType as TicketType] : bgColor["Warning"],
-                                onDrop: handleTicketReorder,
-                            }
-                        ))
-                    } />
-            </React.Fragment>
-        </div >
+        <Wrapper>
+            <div>{`Sprint: ${sprintName} - ${projectName}`}</div>
+            <TextInput label="Goal" name="goal" value={goal} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGoal(e.target.value)} onBlur={(e: React.FocusEvent<HTMLInputElement>) => handleChange("goal", setGoal, e.target.value)} />
+            <KanbanBoard
+                initialPanels={
+                    statuses.map((status) => (
+                        {
+                            title: status.statusLabel,
+                            subtitle: "", // TODO: do we really need a subtitle?
+                            accepts: ["ticket"],
+                            onDrop: updateTicketStatus,
+                        }
+                    ))
+                }
+                initialItems={
+                    tickets.sort((a, b) => a.kanbanIndex - b.kanbanIndex).map((ticket) => (
+                        {
+                            panel: (statuses.find((status) => status.statusId === ticket.statusId) as Status).statusLabel,
+                            name: ticket.title,
+                            link: { caption: `${ticket.projectName}-${ticket.ticketNumber}`, path: `/view/ticket/${ticket.projectName}-${ticket.ticketNumber}` },
+                            type: "ticket",
+                            index: ticket.kanbanIndex,
+                            description: ticket.description,
+                            externalId: ticket.ticketId,
+                            indicatorColor: indicatorColorMap[ticket.ticketType as TicketType] ? indicatorColorMap[ticket.ticketType as TicketType] : bgColor["Warning"],
+                            onDrop: handleTicketReorder,
+                        }
+                    ))
+                }
+            />
+        </Wrapper>
     );
 }

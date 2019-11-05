@@ -3,22 +3,50 @@ import styled from "styled-components";
 import { DndProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import { bgColor } from "../../theme";
+import { CircleLoader } from "../../components";
 import { IKanbanBoard, IKanbanItem, KanbanItem, KanbanPanel, IKanbanPanel } from ".";
 import * as _ from "lodash";
 
-const KanbanWrapper = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: row;
+interface IKanbanWrapper {
+    numColumns: number;
+}
+const KanbanWrapper = styled.div<IKanbanWrapper>`
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(${({ numColumns }) => numColumns}, 1fr);
     background-color: ${bgColor.Light};
 `;
+
+const Updating = styled.div`
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: ${bgColor["Overlay"]};
+`;
+
+const FixedContainer = styled.div`
+    position: fixed;
+    top: 45%;
+    display: flex;
+    justify-content: center;
+    width: 100%; 
+`;
+
 
 export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItems }) => {
     // TODO: add / remove panel?
     const [panels, setPanels] = React.useState(_.cloneDeep(initialPanels));
     const [items, setItems] = React.useState(_.cloneDeep(initialItems));
+    const [isSorting, setIsSorting] = React.useState<boolean>(false);
+
+    React.useLayoutEffect(() => {
+        console.log(isSorting);
+    }, [isSorting]);
 
     const dropEvent = (panel: IKanbanPanel, droppedItem: IKanbanItem, hasDropped: boolean) => {
+        setIsSorting(true);
         if (panel.title !== droppedItem.panel) {
             let sortedItems = items;
             if (!hasDropped) {
@@ -36,6 +64,7 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
             }
             setItems(sortedItems);
         }
+        setIsSorting(false);
     }
 
     const sortItems = (startIndex: number, endIndex: number): IKanbanItem[] => {
@@ -62,15 +91,17 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
     }
 
     const handleItemSort = (startIndex: number, endIndex: number) => {
+        setIsSorting(true);
         const sortedItems = sortItems(startIndex, endIndex);
         setItems(sortedItems);
+        setIsSorting(false);
     }
 
     let indexOffset = 0;
     let lastIndex = -1;
     return (
         <DndProvider backend={HTML5Backend}>
-            <KanbanWrapper>
+            <KanbanWrapper numColumns={panels.length}>
                 {panels.map((panel, panelIndex) => {
                     const panelItems = items.filter((item) => item.panel === panel.title);
                     panelItems.forEach((item) => {
@@ -112,6 +143,7 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
                         </KanbanPanel>
                     );
                 })}
+                {isSorting && <Updating key="loader"><FixedContainer><CircleLoader /></FixedContainer></Updating>}
             </KanbanWrapper>
         </DndProvider>
     )

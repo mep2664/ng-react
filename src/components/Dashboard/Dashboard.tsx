@@ -111,7 +111,7 @@ export const Dashboard: React.FC = () => {
             <TwoColumns>
                 <Sprints>
                     Sprints
-                    {(data.allSprintProjects as any[]).map((sprintProject: any, index) => // TODO give ticket a type
+                    {(data.allSprintProjects as any[]).map((sprintProject: any, index) =>
                         <SprintProjectDetail key={index} sprintProject={sprintProject} />
                     )}
                 </Sprints>
@@ -123,19 +123,19 @@ export const Dashboard: React.FC = () => {
             <ThreeColumns>
                 <Users>
                     Users
-                {(data.allUsers as any[]).map((user: any, index) => // TODO give ticket a type
+                {(data.allUsers as any[]).map((user: any, index) =>
                         <UserDetail key={index} user={user} />
                     )}
                 </Users>
                 <Teams>
                     Teams
-                {(data.allTeams as any[]).map((team: any, index) => // TODO give ticket a type
+                {(data.allTeams as any[]).map((team: any, index) =>
                         <TeamDetail key={index} team={team} />
                     )}
                 </Teams>
                 <Projects>
                     Projects
-                {(data.allProjects as any[]).map((project: any, index) => // TODO give ticket a type
+                {(data.allProjects as any[]).map((project: any, index) =>
                         <ProjectDetail key={index} project={project} />
                     )}
                 </Projects>
