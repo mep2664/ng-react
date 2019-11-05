@@ -31,10 +31,10 @@ interface ITextInput {
 export const TextInput: React.FC<ITextInput> = ({ label, name, placeholder, value, emphasis = "Secondary", onBlur, onChange }) => {
     const labelFor = `textInput__${label}`;
     return (
-        <React.Fragment>
+        <div>
             <Label htmlFor={labelFor}>{label}</Label>
             <Input id={labelFor} type="text" name={name} placeholder={placeholder} value={value} emphasis={emphasis} onBlur={onBlur} onChange={onChange} />
             {/* create an error tooltip for validation */}
-        </React.Fragment>
+        </div>
     );
 }

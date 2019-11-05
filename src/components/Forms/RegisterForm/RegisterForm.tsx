@@ -3,8 +3,19 @@ import { TextInput } from "../..";
 import styled from "styled-components";
 import { emphasisType } from "../../../theme";
 
+const Form = styled.form`
+    display: grid;
+    grid-gap: 15px;
+`;
+
 const FormHeader = styled.h2`
     text-align: center;
+`;
+
+const NameWrapper = styled.div`
+    display: grid;
+    grid-gap: 4%;
+    grid-template-columns: 48% 48%;
 `;
 
 
@@ -69,13 +80,15 @@ export const RegisterForm: React.FC<IRegisterFormProps> = ({ formId, emphasis = 
     }
 
     return (
-        <form id={formId} onSubmit={handleSubmit}>
+        <Form id={formId} onSubmit={handleSubmit}>
             <FormHeader>Register</FormHeader>
             {error && <div style={{ color: "red" }}>{error}</div>}
+            <NameWrapper>
+                <TextInput name="firstName" label="First Name" value={firstName} emphasis={emphasis} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFirstName(e.target.value)} />
+                <TextInput name="lastName" label="Last Name" value={lastName} emphasis={emphasis} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLastName(e.target.value)} />
+            </NameWrapper>
             <TextInput name="email" label="Email" value={email} emphasis={emphasis} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} />
             <TextInput name="password" label="Password" value={password} emphasis={emphasis} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} />
-            <TextInput name="firstName" label="First Name" value={firstName} emphasis={emphasis} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFirstName(e.target.value)} />
-            <TextInput name="lastName" label="Last Name" value={lastName} emphasis={emphasis} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLastName(e.target.value)} />
-        </form>
+        </Form>
     );
 }

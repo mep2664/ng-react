@@ -3,6 +3,11 @@ import { TextInput } from "../..";
 import styled from "styled-components";
 import { emphasisType } from "../../../theme";
 
+const Form = styled.form`
+    display: grid;
+    grid-gap: 15px;
+`;
+
 const FormHeader = styled.h2`
     text-align: center;
 `;
@@ -68,11 +73,11 @@ export const LoginForm: React.FC<ILoginFormProps> = ({ formId, emphasis = "Prima
     }
 
     return (
-        <form id={formId} onSubmit={handleSubmit}>
+        <Form id={formId} onSubmit={handleSubmit}>
             <FormHeader>Login</FormHeader>
             {error && <div style={{ color: "red" }}>{error}</div>}
             <TextInput emphasis={emphasis} name="email" label="Email" value={email} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} />
             <TextInput emphasis={emphasis} name="password" label="Password" value={password} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} />
-        </form >
+        </Form >
     );
 }
