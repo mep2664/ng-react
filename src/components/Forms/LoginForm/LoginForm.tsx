@@ -2,6 +2,7 @@ import * as React from "react";
 import { TextInput } from "../..";
 import styled from "styled-components";
 import { emphasisType } from "../../../theme";
+import { Link } from "react-router-dom";
 
 const Form = styled.form`
     display: grid;
@@ -10,6 +11,20 @@ const Form = styled.form`
 
 const FormHeader = styled.h2`
     text-align: center;
+`;
+
+const PasswordWrapper = styled.div`
+`;
+
+const ForgotWrapper = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    padding: 3px 5px;
+`;
+
+const ForgotLink = styled(Link)`
+    font-size: 14px;
+    text-decoration: none;
 `;
 
 interface ILoginFormProps {
@@ -77,7 +92,12 @@ export const LoginForm: React.FC<ILoginFormProps> = ({ formId, emphasis = "Prima
             <FormHeader>Login</FormHeader>
             {error && <div style={{ color: "red" }}>{error}</div>}
             <TextInput emphasis={emphasis} name="email" label="Email" value={email} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)} />
-            <TextInput emphasis={emphasis} name="password" label="Password" value={password} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} />
+            <PasswordWrapper>
+                <TextInput emphasis={emphasis} name="password" label="Password" value={password} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} />
+                <ForgotWrapper>
+                    <ForgotLink to="/home" onClick={() => alert("This is just here to look good.")}>Forgot password?</ForgotLink>
+                </ForgotWrapper>
+            </PasswordWrapper>
         </Form >
     );
 }
