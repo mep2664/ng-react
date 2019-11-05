@@ -54,14 +54,16 @@ export const InfiniteScroll: React.FC<IPaginateProps> = ({ query, variables, num
         const amountScrolled = e.currentTarget.scrollTop;
         const contentHeight = e.currentTarget.offsetHeight;
         const scrollHeight = e.currentTarget.scrollHeight;
-        if (amountScrolled === (scrollHeight - contentHeight) && amountScrolled > lastFetchHeight) {
+        if (amountScrolled === (scrollHeight - contentHeight) && amountScrolled > lastFetchHeight && hasNextPage) {
             refetch({ first: numItems, after: data[itemName].pageInfo.endCursor });
             setLastFetchHeight(amountScrolled);
         }
     };
 
     const handleLoadAll = () => {
-        refetch({ first: undefined, after: data[itemName].pageInfo.endCursor });
+        if (hasNextPage) {
+            refetch({ first: undefined, after: data[itemName].pageInfo.endCursor });
+        }
     }
 
     if (error) {
