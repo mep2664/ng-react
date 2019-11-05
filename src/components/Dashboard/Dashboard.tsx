@@ -66,14 +66,14 @@ const ThreeColumns = styled.div`
     padding: 30px 4.875%;
     display: grid;
     grid-gap: 2.5%;
-    grid-template-columns: 31% 31% 31%;
+    grid-template-columns: 31.5% 31.5% 31.5%;
 `;
 
 const TwoColumns = styled.div`
     padding: 30px 4.875%;
     display: grid;
     grid-gap: 2.5%;
-    grid-template-columns: 47.75% 47.75%;
+    grid-template-columns: 48.75% 48.75%;
 `;
 
 const Users = styled.div``;
