@@ -79,7 +79,7 @@ export const CreateProject: React.FC = () => {
         <div>
             {`Create Project...`}
             <ProjectInfo>
-                <form action="localhost:5556/project" method="post" onSubmit={handleSubmit}>
+                <form action="localhost:5557/project" method="post" onSubmit={handleSubmit}>
                     <TextInput name="projectName" label="Project Name" value={projectName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setProject(e.target.value)} />
                     <SelectInput name="teamId" label="Team" options={teamOptions} value={teamId} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setTeamId(e.target.value)} />
                     <DescriptionWrapper>

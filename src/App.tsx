@@ -30,7 +30,7 @@ export const getCookie = (cname: string) => {
 
 const loginClient =
     new ApolloClient({
-        uri: "http://localhost:5556/login",
+        uri: "http://localhost:5557/login",
     });
 
 const Spaceholder = styled.div`
@@ -42,7 +42,7 @@ const checkForActiveSession = (): Promise<SystemState> => {
     return new Promise<SystemState>((resolve, reject) => {
         const token = getCookie("uuid");
         if (token) {
-            fetch(`http://localhost:5556/rest/login/${token}`,
+            fetch(`http://localhost:5557/rest/login/${token}`,
                 {
                     method: "GET",
                     mode: "cors",
@@ -199,7 +199,7 @@ const AppComponent: React.FC<IAppProps> = ({ system, updateSession }) => {
     }
 
     const client = new ApolloClient({
-        uri: "http://localhost:5556/graphql",
+        uri: "http://localhost:5557/graphql",
         headers: {
             AUTHTOKEN: getCookie("uuid"),
         },

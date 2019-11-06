@@ -48,7 +48,7 @@ export const RegisterForm: React.FC<IRegisterFormProps> = ({ formId, emphasis = 
             firstName,
             lastName
         }
-        fetch("http://localhost:5556/rest/register", {
+        fetch("http://localhost:5557/rest/register", {
             method: "POST",
             mode: "cors",
             cache: "no-cache",

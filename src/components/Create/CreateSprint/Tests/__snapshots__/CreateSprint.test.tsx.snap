@@ -5,7 +5,7 @@ exports[`Tests for the CreateSprint component Component matches snapshot 1`] = `
   <div>
     Create Sprint...
     <form
-      action="localhost:5556/sprint"
+      action="localhost:5557/sprint"
       method="post"
     >
       <label

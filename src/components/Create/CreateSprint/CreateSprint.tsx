@@ -39,7 +39,7 @@ export const CreateSprint: React.FC = () => {
     return (
         <div>
             {`Create Sprint...`}
-            <form action="localhost:5556/sprint" method="post" onSubmit={handleSubmit}>
+            <form action="localhost:5557/sprint" method="post" onSubmit={handleSubmit}>
                 <TextInput label="Sprint Name" name="sprintName" value={sprintName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSprintName(e.target.value)} />
                 <TextInput label="Goal" name="goal" value={goal} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGoal(e.target.value)} />
                 <label htmlFor="dateInput__dateStart">Date Start</label>

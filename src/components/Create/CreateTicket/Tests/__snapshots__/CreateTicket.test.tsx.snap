@@ -8,7 +8,7 @@ exports[`Tests for the CreateTicket component Component matches snapshot 1`] = `
       class="sc-Rmtcm AwuUM"
     >
       <form
-        action="localhost:5556/ticket"
+        action="localhost:5557/ticket"
         method="post"
       >
         <div
