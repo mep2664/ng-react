@@ -41,12 +41,10 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
     const [items, setItems] = React.useState(_.cloneDeep(initialItems));
     const [isSorting, setIsSorting] = React.useState<boolean>(false);
 
-    React.useLayoutEffect(() => {
-        console.log(isSorting);
-    }, [isSorting]);
-
     const dropEvent = (panel: IKanbanPanel, droppedItem: IKanbanItem, hasDropped: boolean) => {
-        setIsSorting(true);
+        if (!isSorting) {
+            setIsSorting(true);
+        }
         if (panel.title !== droppedItem.panel) {
             let sortedItems = items;
             if (!hasDropped) {
@@ -91,17 +89,20 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
     }
 
     const handleItemSort = (startIndex: number, endIndex: number) => {
-        setIsSorting(true);
+        if (!isSorting) {
+            setIsSorting(true);
+        }
         const sortedItems = sortItems(startIndex, endIndex);
         setItems(sortedItems);
-        setIsSorting(false);
     }
 
     let indexOffset = 0;
     let lastIndex = -1;
     return (
         <DndProvider backend={HTML5Backend}>
+            <button onClick={() => setIsSorting(!isSorting)}>is sorting?</button>
             <KanbanWrapper numColumns={panels.length}>
+                {isSorting && <Updating key="loader">{console.log(isSorting)}<FixedContainer><CircleLoader /></FixedContainer></Updating>}
                 {panels.map((panel, panelIndex) => {
                     const panelItems = items.filter((item) => item.panel === panel.title);
                     panelItems.forEach((item) => {
@@ -143,7 +144,6 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
                         </KanbanPanel>
                     );
                 })}
-                {isSorting && <Updating key="loader"><FixedContainer><CircleLoader /></FixedContainer></Updating>}
             </KanbanWrapper>
         </DndProvider>
     )
