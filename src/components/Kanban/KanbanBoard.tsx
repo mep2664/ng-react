@@ -130,6 +130,7 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
                             onDrop={(item, hasDropped) => dropEvent(panel, item, hasDropped)}
                         >
                             <div>
+                                <span>hahahaha</span>
                                 {panelItems.map((item: IKanbanItem) => {
                                     return (
                                         <KanbanItem
