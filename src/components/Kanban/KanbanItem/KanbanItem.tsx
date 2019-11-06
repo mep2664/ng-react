@@ -66,7 +66,7 @@ const ItemDescription = styled.div`
 
 export interface IKanbanItemProps {
     item: IKanbanItem;
-    onDrop?: (startIndex: number, endIndex: number) => void;
+    onDrop?: (dropItem: IKanbanItem, targetItem: IKanbanItem) => void;
 }
 
 export const KanbanItem: React.FC<IKanbanItemProps> = ({ item, onDrop }) => {
@@ -75,13 +75,13 @@ export const KanbanItem: React.FC<IKanbanItemProps> = ({ item, onDrop }) => {
         accept: item.type,
         drop: (droppedItem: IKanbanItem) => {
             if (onDrop) {
-                onDrop(droppedItem.index!, item.index!);
+                onDrop(droppedItem, item);
             }
         }
     });
 
     const [{ opacity }, drag] = useDrag({
-        item: { name: item.name, type: item.type, description: item.description, panel: item.panel, index: item.index },
+        item,
         collect: monitor => ({
             opacity: monitor.isDragging() ? 0.4 : 1,
         }),

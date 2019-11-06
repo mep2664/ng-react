@@ -23,7 +23,7 @@ export interface IKanbanPanel {
     title: string;
     subtitle: string;
     accepts: string[];
-    firstItemIndex?: number;
+    firstItem?: IKanbanItem;
     onDrop?: (panel: IKanbanPanel, item: IKanbanItem) => void;
 }
 

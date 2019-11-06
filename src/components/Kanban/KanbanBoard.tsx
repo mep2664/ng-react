@@ -35,7 +35,7 @@ const FixedContainer = styled.div`
 `;
 
 
-export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItems }) => {
+const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItems }) => {
     // TODO: add / remove panel?
     const [panels, setPanels] = React.useState(_.cloneDeep(initialPanels));
     const [items, setItems] = React.useState(_.cloneDeep(initialItems));
@@ -46,82 +46,45 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
             setIsSorting(true);
         }
         if (panel.title !== droppedItem.panel) {
-            let sortedItems = items;
             if (!hasDropped) {
-                if (droppedItem.index < panel.firstItemIndex!) {
-                    sortedItems = sortItems(droppedItem.index,
-                        panel.firstItemIndex! - 2 > 0 ? panel.firstItemIndex! - 2 : 0);
-                } else if (droppedItem.index > panel.firstItemIndex!) {
-                    sortedItems = sortItems(droppedItem.index, panel.firstItemIndex!);
-                }
+                sortItems(droppedItem, panel.firstItem!);
             }
-            const item = sortedItems.find((item) => item.name === droppedItem.name) as IKanbanItem;
+            const item = items.find((item) => item.name === droppedItem.name) as IKanbanItem;
             item.panel = panel.title;
             if (panel.onDrop) {
                 panel.onDrop(panel, item);
             }
-            setItems(sortedItems);
         }
         setIsSorting(false);
     }
 
-    const sortItems = (startIndex: number, endIndex: number): IKanbanItem[] => {
-        const sorted = _.cloneDeep(items.sort((a, b) => a.index - b.index));
-        if (startIndex !== endIndex) {
-            if (startIndex < endIndex) {
-                sorted[startIndex].index = endIndex - 1;
-                let index = endIndex - 1;
-                while (index > startIndex) {
-                    sorted[index].index = --index;
-                }
-            } else if (startIndex > endIndex) {
-                sorted[startIndex].index = endIndex;
-                let index = endIndex;
-                while (index < startIndex) {
-                    sorted[index].index = ++index;
-                }
-            }
-            const newItems = Array.from(sorted.sort((a, b) => a.index! - b.index!));
-            items[startIndex].onDrop!(newItems);
-            return newItems;
+    const sortItems = (startItem: IKanbanItem, endItem: IKanbanItem): IKanbanItem[] => {
+        if (startItem !== endItem) {
+            const startIndex = items.indexOf(startItem);
+            items.splice(startIndex, 1);
+            const endIndex = items.indexOf(endItem);
+            items.splice(endIndex, 0, startItem);
+            items[endIndex].onDrop!(items);
+            return items;
         }
-        return sorted;
+        return items;
     }
 
-    const handleItemSort = (startIndex: number, endIndex: number) => {
+    const handleItemSort = (startItem: IKanbanItem, endItem: IKanbanItem) => {
         if (!isSorting) {
             setIsSorting(true);
         }
-        const sortedItems = sortItems(startIndex, endIndex);
-        setItems(sortedItems);
+        sortItems(startItem, endItem);
     }
-
-    let indexOffset = 0;
-    let lastIndex = -1;
     return (
         <DndProvider backend={HTML5Backend}>
             <button onClick={() => setIsSorting(!isSorting)}>is sorting?</button>
             <KanbanWrapper numColumns={panels.length}>
                 {isSorting && <Updating key="loader">{console.log(isSorting)}<FixedContainer><CircleLoader /></FixedContainer></Updating>}
-                {panels.map((panel, panelIndex) => {
-                    const panelItems = items.filter((item) => item.panel === panel.title);
-                    panelItems.forEach((item) => {
-                        if (item.index === -1) {
-                            item.index = lastIndex + 1;
-                            indexOffset++;
-                        } else {
-                            item.index = item.index + indexOffset;
-                        }
-                        lastIndex = item.index;
-                    });
-                    panel.firstItemIndex = 0;
-                    if (panelItems.length > 0) {
-                        panel.firstItemIndex = panelItems[0].index;
-                    } else if (panelIndex > 0) {
-                        const lastPanelItems = items.filter((item) => item.panel === panels[panelIndex - 1].title);
-                        // first index is 1 higher than the last index of the previous panel
-                        panel.firstItemIndex = lastPanelItems[lastPanelItems.length - 1].index + 1;
-                    }
+                {panels.map((panel) => {
+                    const panelItems: IKanbanItem[] = items.filter((item) => item.panel === panel.title);
+                    panel.firstItem = panelItems[0];
+
                     return (
                         <KanbanPanel
                             key={panel.title}
@@ -148,3 +111,12 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItem
         </DndProvider>
     )
 };
+
+const arePropsEqual = (prevProps: IKanbanBoard, nextProps: IKanbanBoard) => {
+    if (prevProps.initialItems === nextProps.initialItems && prevProps.initialPanels === nextProps.initialPanels) {
+        return true;
+    }
+    return false;
+}
+
+export default React.memo(KanbanBoard, arePropsEqual);

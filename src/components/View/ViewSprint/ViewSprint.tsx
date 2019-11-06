@@ -3,8 +3,10 @@ import { Loader, TextInput } from "../..";
 import styled from "styled-components";
 import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { CircleLoader, KanbanBoard, IKanbanPanel, IKanbanItem } from "../../../components";
+import { CircleLoader, IKanbanPanel, IKanbanItem } from "../../../components";
+import KanbanBoard from "../../../components/Kanban/KanbanBoard";
 import { bgColor } from "../../../theme";
+import * as _ from "lodash";
 
 const GET_SPRINT_PROJECT = gql`
     query ($sprintProjectId: ID!) {
@@ -102,6 +104,20 @@ interface Ticket {
     kanbanIndex: number;
 }
 
+type TicketType = "Enhancement" | "Research" | "Bug";
+
+interface ITicketTypeMap {
+    Enhancement: string;
+    Research: string;
+    Bug: string;
+}
+
+const indicatorColorMap: ITicketTypeMap = {
+    Enhancement: bgColor["Positive"]!,
+    Research: bgColor["Primary"]!,
+    Bug: bgColor["Error"]!,
+}
+
 export interface ISprint {
     sprintProjectId: string;
 }
@@ -110,21 +126,44 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
     const [sprintName, setSprintName] = React.useState<string>("");;
     const [projectName, setProjectName] = React.useState<string>("");
     const [goal, setGoal] = React.useState<string>("");
-    const [statuses, setStatuses] = React.useState<Array<Status>>([]);
-    const [tickets, setTickets] = React.useState<Array<Ticket>>([]);
     const [ticketOrder, setTicketOrder] = React.useState<Array<any>>([]);
+    const [panels, setPanels] = React.useState<IKanbanPanel[]>([]);
+    const [items, setItems] = React.useState<IKanbanItem[]>([]);
     const { loading, error, data } = useQuery(GET_SPRINT_PROJECT, { variables: { sprintProjectId }, fetchPolicy: "no-cache" });
     const [updateSprintProject] = useMutation(UPDATE_SPRINT_PROJECT);
     const [updateTicket, updateTicketState] = useMutation(UPDATE_TICKET);
     const [updateTicketOrder] = useMutation(UPDATE_TICKETS_ORDER);
 
-    React.useLayoutEffect(() => {
+    React.useEffect(() => {
         if (data && data.sprintProject) {
             setSprintName(data.sprintProject.sprintName);
             setProjectName(data.sprintProject.projectName);
             setGoal(data.sprintProject.goal);
-            setStatuses(data.sprintProject.ticketStatuses);
-            setTickets(data.sprintProject.tickets.sort((a: Ticket, b: Ticket) => a.kanbanIndex - b.kanbanIndex));
+            if (data.sprintProject.ticketStatuses.length > 0) {
+                const statuses = data.sprintProject.ticketStatuses.map((status: Status) => (
+                    {
+                        title: status.statusLabel,
+                        subtitle: "", // TODO: do we really need a subtitle?
+                        accepts: ["ticket"],
+                        onDrop: updateTicketStatus,
+                    }
+                ));
+                setPanels(statuses);
+
+                setItems(data.sprintProject.tickets.sort((a: Ticket, b: Ticket) => a.kanbanIndex - b.kanbanIndex).map((ticket: Ticket) => (
+                    {
+                        panel: (data.sprintProject.ticketStatuses.find((status: Status) => status.statusId === ticket.statusId) as Status).statusLabel,
+                        name: ticket.title,
+                        link: { caption: `${ticket.projectName}-${ticket.ticketNumber}`, path: `/view/ticket/${ticket.projectName}-${ticket.ticketNumber}` },
+                        type: "ticket",
+                        index: ticket.kanbanIndex,
+                        description: ticket.description,
+                        externalId: ticket.ticketId,
+                        indicatorColor: indicatorColorMap[ticket.ticketType as TicketType] ? indicatorColorMap[ticket.ticketType as TicketType] : bgColor["Warning"],
+                        onDrop: handleTicketReorder,
+                    }
+                )));
+            }
         }
     }, [data]);
 
@@ -148,7 +187,7 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
     }
 
     const updateTicketStatus = (panel: IKanbanPanel, item: IKanbanItem) => {
-        const statusId = (statuses.find((status) => status.statusLabel === panel.title) as Status).statusId;
+        const statusId = (data.sprintProject.ticketStatuses.find((status: Status) => status.statusLabel === panel.title) as Status).statusId;
         const changes = {
             statusId
         };
@@ -169,7 +208,7 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
         }
     }
 
-    if (statuses.length === 0) {
+    if (panels.length === 0) {
         // TODO: this should probably be a loader, have to make
         // sure there is never a case where statuses is actually 0 though
         return (
@@ -177,50 +216,13 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
         );
     }
 
-    type TicketType = "Enhancement" | "Research" | "Bug";
-
-    interface ITicketTypeMap {
-        Enhancement: string;
-        Research: string;
-        Bug: string;
-    }
-
-    const indicatorColorMap: ITicketTypeMap = {
-        Enhancement: bgColor["Positive"]!,
-        Research: bgColor["Primary"]!,
-        Bug: bgColor["Error"]!,
-    }
-
     return (
         <Wrapper>
             <div>{`Sprint: ${sprintName} - ${projectName}`}</div>
             <TextInput label="Goal" name="goal" value={goal} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGoal(e.target.value)} onBlur={(e: React.FocusEvent<HTMLInputElement>) => handleChange("goal", setGoal, e.target.value)} />
             <KanbanBoard
-                initialPanels={
-                    statuses.map((status) => (
-                        {
-                            title: status.statusLabel,
-                            subtitle: "", // TODO: do we really need a subtitle?
-                            accepts: ["ticket"],
-                            onDrop: updateTicketStatus,
-                        }
-                    ))
-                }
-                initialItems={
-                    tickets.sort((a, b) => a.kanbanIndex - b.kanbanIndex).map((ticket) => (
-                        {
-                            panel: (statuses.find((status) => status.statusId === ticket.statusId) as Status).statusLabel,
-                            name: ticket.title,
-                            link: { caption: `${ticket.projectName}-${ticket.ticketNumber}`, path: `/view/ticket/${ticket.projectName}-${ticket.ticketNumber}` },
-                            type: "ticket",
-                            index: ticket.kanbanIndex,
-                            description: ticket.description,
-                            externalId: ticket.ticketId,
-                            indicatorColor: indicatorColorMap[ticket.ticketType as TicketType] ? indicatorColorMap[ticket.ticketType as TicketType] : bgColor["Warning"],
-                            onDrop: handleTicketReorder,
-                        }
-                    ))
-                }
+                initialPanels={panels}
+                initialItems={items}
             />
         </Wrapper>
     );
