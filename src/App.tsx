@@ -194,10 +194,6 @@ const AppComponent: React.FC<IAppProps> = ({ system, updateSession }) => {
         },
     ];
 
-    function kanban() {
-        return <KanbanBoard initialPanels={panels} initialItems={items} />
-    }
-
     const client = new ApolloClient({
         uri: "http://localhost:5556/graphql",
         headers: {
@@ -222,7 +218,6 @@ const AppComponent: React.FC<IAppProps> = ({ system, updateSession }) => {
                         <Route path="/view/:item/:identifier?" component={view} />
                         <Route path="/page-not-found" component={notFound} />
                         <Route path="/loaders" component={loaders} />
-                        <Route path="/kanban" component={kanban} />
                         <Route default component={notFound} />
                     </Switch>
                 </main>

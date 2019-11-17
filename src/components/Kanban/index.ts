@@ -12,11 +12,9 @@ export interface IKanbanItem {
     type: string;
     link?: ILink;
     description: string;
-    panel: string; // panel title
     index: number;
-    externalId?: string;
+    externalId: string;
     indicatorColor?: string;
-    onDrop?: (items: IKanbanItem[]) => void;
 }
 
 export interface IKanbanPanel {
@@ -24,10 +22,15 @@ export interface IKanbanPanel {
     subtitle: string;
     accepts: string[];
     firstItemIndex?: number;
-    onDrop?: (panel: IKanbanPanel, item: IKanbanItem) => void;
+}
+
+export interface IKanban {
+    panel: string;
+    items: IKanbanItem[];
 }
 
 export interface IKanbanBoard {
-    initialPanels: IKanbanPanel[];
-    initialItems: IKanbanItem[];
+    initialPanels: IKanban[];
+    onOrderChange: (panels: IKanban[]) => void;
+    onPanelChange: (changedItemId: string, panel: string) => void;
 }

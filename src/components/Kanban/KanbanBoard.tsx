@@ -1,9 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
-import { DndProvider } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend'
 import { bgColor } from "../../theme";
-import { IKanbanBoard, IKanbanItem, KanbanItem, KanbanPanel, IKanbanPanel } from ".";
+import { IKanbanBoard, IKanbanItem, KanbanPanel, IKanban } from ".";
 import * as _ from "lodash";
 
 const KanbanWrapper = styled.div`
@@ -13,106 +11,60 @@ const KanbanWrapper = styled.div`
     background-color: ${bgColor.Light};
 `;
 
-export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItems }) => {
+const Updating = styled.div`
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: ${bgColor["Overlay"]};
+`;
+
+const FixedContainer = styled.div`
+    position: fixed;
+    top: 45%;
+    display: flex;
+    justify-content: center;
+    width: 100%; 
+`;
+
+export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, onPanelChange, onOrderChange }) => {
     // TODO: add / remove panel?
-    const [panels, setPanels] = React.useState(_.cloneDeep(initialPanels));
-    const [items, setItems] = React.useState(_.cloneDeep(initialItems));
+    const [panels, setPanels] = React.useState(Array.from(initialPanels));
+    const [allItems, setAllItems] = React.useState(initialPanels.reduce((acc, curr) => acc.concat(curr.items), new Array<IKanbanItem>()));
 
-    const dropEvent = (panel: IKanbanPanel, droppedItem: IKanbanItem, hasDropped: boolean) => {
-        if (panel.title !== droppedItem.panel) {
-            let sortedItems = items;
-            if (!hasDropped) {
-                if (droppedItem.index < panel.firstItemIndex!) {
-                    sortedItems = sortItems(droppedItem.index,
-                        panel.firstItemIndex! - 2 > 0 ? panel.firstItemIndex! - 2 : 0);
-                } else if (droppedItem.index > panel.firstItemIndex!) {
-                    sortedItems = sortItems(droppedItem.index, panel.firstItemIndex!);
-                }
-            }
-            const item = sortedItems.find((item) => item.name === droppedItem.name) as IKanbanItem;
-            item.panel = panel.title;
-            if (panel.onDrop) {
-                panel.onDrop(panel, item);
-            }
-            setItems(sortedItems);
+    const handleChange = (panel: string, itemIds: string[]) => {
+        const changedPanel = panels.find((p) => p.panel === panel) as IKanban;
+        changedPanel.items = itemIds.map((id) => allItems.find((item) => item.externalId === id)!);
+        setPanels(Array.from(panels));
+    }
+
+    const handleAdd = (panel: string, e: any) => {
+        const changedItemId = e.item.getAttribute("data-id");
+        onPanelChange(panel, changedItemId);
+        onOrderChange(panels);
+    }
+
+    const handleEnd = (e: any) => {
+        if (e.from === e.to) {
+            onOrderChange(panels);
         }
     }
 
-    const sortItems = (startIndex: number, endIndex: number): IKanbanItem[] => {
-        const sorted = _.cloneDeep(items.sort((a, b) => a.index - b.index));
-        if (startIndex !== endIndex) {
-            if (startIndex < endIndex) {
-                sorted[startIndex].index = endIndex - 1;
-                let index = endIndex - 1;
-                while (index > startIndex) {
-                    sorted[index].index = --index;
-                }
-            } else if (startIndex > endIndex) {
-                sorted[startIndex].index = endIndex;
-                let index = endIndex;
-                while (index < startIndex) {
-                    sorted[index].index = ++index;
-                }
-            }
-            const newItems = Array.from(sorted.sort((a, b) => a.index! - b.index!));
-            items[startIndex].onDrop!(newItems);
-            return newItems;
-        }
-        return sorted;
-    }
-
-    const handleItemSort = (startIndex: number, endIndex: number) => {
-        const sortedItems = sortItems(startIndex, endIndex);
-        setItems(sortedItems);
-    }
-
-    let indexOffset = 0;
-    let lastIndex = -1;
     return (
-        <DndProvider backend={HTML5Backend}>
-            <KanbanWrapper>
-                {panels.map((panel, panelIndex) => {
-                    const panelItems = items.filter((item) => item.panel === panel.title);
-                    panelItems.forEach((item) => {
-                        if (item.index === -1) {
-                            item.index = lastIndex + 1;
-                            indexOffset++;
-                        } else {
-                            item.index = item.index + indexOffset;
-                        }
-                        lastIndex = item.index;
-                    });
-                    panel.firstItemIndex = 0;
-                    if (panelItems.length > 0) {
-                        panel.firstItemIndex = panelItems[0].index;
-                    } else if (panelIndex > 0) {
-                        const lastPanelItems = items.filter((item) => item.panel === panels[panelIndex - 1].title);
-                        // first index is 1 higher than the last index of the previous panel
-                        panel.firstItemIndex = lastPanelItems[lastPanelItems.length - 1].index + 1;
-                    }
-                    return (
-                        <KanbanPanel
-                            key={panel.title}
-                            title={panel.title}
-                            subtitle={panel.subtitle}
-                            accept={panel.accepts}
-                            onDrop={(item, hasDropped) => dropEvent(panel, item, hasDropped)}
-                        >
-                            <div>
-                                {panelItems.map((item: IKanbanItem) => {
-                                    return (
-                                        <KanbanItem
-                                            key={item.name}
-                                            item={item}
-                                            onDrop={handleItemSort}
-                                        />
-                                    );
-                                })}
-                            </div>
-                        </KanbanPanel>
-                    );
-                })}
-            </KanbanWrapper>
-        </DndProvider>
+        <KanbanWrapper>
+            {panels.map(({ panel, items }) => {
+                return (
+                    <KanbanPanel
+                        key={panel}
+                        title={panel}
+                        items={items}
+                        onChange={handleChange}
+                        onAdd={handleAdd}
+                        onEnd={handleEnd}
+                    />
+                );
+            })}
+        </KanbanWrapper>
     )
 };
