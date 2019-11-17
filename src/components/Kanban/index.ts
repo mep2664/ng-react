@@ -13,7 +13,6 @@ export interface IKanbanItem {
     link?: ILink;
     description: string;
     panel: string; // panel title
-    index: number;
     externalId?: string;
     indicatorColor?: string;
     onDrop?: (items: IKanbanItem[]) => void;

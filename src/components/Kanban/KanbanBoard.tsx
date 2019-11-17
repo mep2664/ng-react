@@ -76,6 +76,7 @@ const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, initialItems }) =>
         }
         sortItems(startItem, endItem);
     }
+
     return (
         <DndProvider backend={HTML5Backend}>
             <button onClick={() => setIsSorting(!isSorting)}>is sorting?</button>

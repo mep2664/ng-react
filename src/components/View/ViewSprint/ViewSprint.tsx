@@ -123,12 +123,14 @@ export interface ISprint {
 }
 
 export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
-    const [sprintName, setSprintName] = React.useState<string>("");;
+    const [sprintName, setSprintName] = React.useState<string>("");
+
+    ;
     const [projectName, setProjectName] = React.useState<string>("");
     const [goal, setGoal] = React.useState<string>("");
     const [ticketOrder, setTicketOrder] = React.useState<Array<any>>([]);
     const [panels, setPanels] = React.useState<IKanbanPanel[]>([]);
-    const [items, setItems] = React.useState<IKanbanItem[]>([]);
+    const [initialItems, setItems] = React.useState<IKanbanItem[]>([]);
     const { loading, error, data } = useQuery(GET_SPRINT_PROJECT, { variables: { sprintProjectId }, fetchPolicy: "no-cache" });
     const [updateSprintProject] = useMutation(UPDATE_SPRINT_PROJECT);
     const [updateTicket, updateTicketState] = useMutation(UPDATE_TICKET);
@@ -149,20 +151,22 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
                     }
                 ));
                 setPanels(statuses);
-
-                setItems(data.sprintProject.tickets.sort((a: Ticket, b: Ticket) => a.kanbanIndex - b.kanbanIndex).map((ticket: Ticket) => (
+                const sortedTickets: Ticket[] = data.sprintProject.tickets.sort((a: Ticket, b: Ticket) => a.kanbanIndex - b.kanbanIndex);
+                const ticketItems: IKanbanItem[] = sortedTickets.map((ticket: Ticket, index) => (
                     {
                         panel: (data.sprintProject.ticketStatuses.find((status: Status) => status.statusId === ticket.statusId) as Status).statusLabel,
                         name: ticket.title,
                         link: { caption: `${ticket.projectName}-${ticket.ticketNumber}`, path: `/view/ticket/${ticket.projectName}-${ticket.ticketNumber}` },
                         type: "ticket",
-                        index: ticket.kanbanIndex,
+                        index,
                         description: ticket.description,
                         externalId: ticket.ticketId,
                         indicatorColor: indicatorColorMap[ticket.ticketType as TicketType] ? indicatorColorMap[ticket.ticketType as TicketType] : bgColor["Warning"],
                         onDrop: handleTicketReorder,
                     }
-                )));
+                ));
+                setItems(ticketItems);
+                setTicketOrder(ticketItems.map(({ externalId }, index) => ({ ticketId: externalId, kanbanIndex: index })));
             }
         }
     }, [data]);
@@ -197,10 +201,11 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
     };
 
     const handleTicketReorder = (items: IKanbanItem[]) => {
-        setTicketOrder(items.map(({ externalId, index }) => ({ ticketId: externalId, kanbanIndex: index })));
+        setTicketOrder(items.map(({ externalId }, index) => ({ ticketId: externalId, kanbanIndex: index })));
     };
 
     window.onbeforeunload = () => {
+        console.log(ticketOrder);
         if (ticketOrder) {
             updateTicketOrder({
                 variables: { ticketOrder: { ticketOrder } }
@@ -222,7 +227,7 @@ export const ViewSprint: React.FC<ISprint> = ({ sprintProjectId }) => {
             <TextInput label="Goal" name="goal" value={goal} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setGoal(e.target.value)} onBlur={(e: React.FocusEvent<HTMLInputElement>) => handleChange("goal", setGoal, e.target.value)} />
             <KanbanBoard
                 initialPanels={panels}
-                initialItems={items}
+                initialItems={initialItems}
             />
         </Wrapper>
     );
