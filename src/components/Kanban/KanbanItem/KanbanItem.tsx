@@ -1,12 +1,11 @@
 import * as React from "react";
 import styled from "styled-components";
-import { useDrag, useDrop } from "react-dnd";
 import { fontColor, bgColor } from "../../../theme";
 import { IKanbanItem } from "../";
 import { Link } from "react-router-dom";
 
 // TODO: border: ${(props) => props.isDragging ? `2px solid ${props.indicatorColor}` : "0"};
-const ItemWrapper = styled.div<{ indicatorColor: string, /*isDragging: boolean,*/ opacity: number }>`
+const ItemWrapper = styled.div<{ indicatorColor: string, /*isDragging: boolean, opacity: number */ }>`
     width: 100%;
     min-height: 60px;
     background-color: white;
@@ -19,7 +18,6 @@ const ItemWrapper = styled.div<{ indicatorColor: string, /*isDragging: boolean,*
     box-shadow: rgba(0, 0, 0, 0.3) 0 1px 3px;
     cursor: grab;
     display: grid;
-    opacity: ${({ opacity }) => opacity};
     grid-template-columns: auto;
     grid-template-rows: 20px minmax(40px, 50px);
     overflow: hidden;
@@ -69,29 +67,10 @@ export interface IKanbanItemProps {
     onDrop?: (startIndex: number, endIndex: number) => void;
 }
 
-export const KanbanItem: React.FC<IKanbanItemProps> = ({ item, onDrop }) => {
-    const ref = React.useRef<HTMLDivElement>(null)
-    const [, drop] = useDrop({
-        accept: item.type,
-        drop: (droppedItem: IKanbanItem) => {
-            if (onDrop) {
-                onDrop(droppedItem.index!, item.index!);
-            }
-        }
-    });
-
-    const [{ opacity }, drag] = useDrag({
-        item: { name: item.name, type: item.type, description: item.description, panel: item.panel, index: item.index },
-        collect: monitor => ({
-            opacity: monitor.isDragging() ? 0.4 : 1,
-        }),
-    })
-
-    drag(drop(ref));
+export const KanbanItem: React.FC<IKanbanItemProps> = ({ item }) => {
     return (
         <ItemWrapper
-            ref={ref}
-            opacity={opacity}
+            data-id={item.externalId}
             indicatorColor={item.indicatorColor ? item.indicatorColor : bgColor.Primary}
         >
             <ItemTitle>{item.link && <ItemLink to={item.link.path}>{item.link.caption}:</ItemLink>} {item.name}</ItemTitle>

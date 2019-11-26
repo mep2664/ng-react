@@ -1,7 +1,8 @@
 import * as React from "react";
 import styled from "styled-components";
-import { useDrop } from "react-dnd";
 import { bgColor, fontColor } from "../../../theme";
+import ReactSortable from "react-sortablejs";
+import { IKanbanItem, KanbanItem } from "../";
 
 const PanelWrapper = styled.div`
     width: 250px;
@@ -41,28 +42,20 @@ const PanelBody = styled.div<{ isHovering: boolean }>`
 `;
 
 export interface IKanbanPanelProps {
+    items: IKanbanItem[];
     title: string;
-    subtitle: string;
-    accept: string[]
-    lastDroppedItem?: any
-    onDrop: (item: any, hasDropped: boolean) => void
+    onChange: (panel: string, itemIds: string[]) => void;
+    onAdd: (panel: string, e: any) => void;
+    onEnd: (e: any) => void;
 }
 
-export const KanbanPanel: React.FC<IKanbanPanelProps> = ({ children, title, subtitle, accept, onDrop }) => {
-    const [, drop] = useDrop({
-        accept,
-        drop: (item, monitor) => {
-            onDrop(item, monitor.didDrop());
-        },
-    });
-
+export const KanbanPanel: React.FC<IKanbanPanelProps> = ({ items, title, onChange, onAdd, onEnd }) => {
     return (
-        <PanelWrapper ref={drop}>
-            <div>
-                <PanelTitle>{title}</PanelTitle>
-                {subtitle ? (<PanelSubTitle title={subtitle}>{subtitle}</PanelSubTitle>) : undefined}
-            </div>
-            {children}
+        <PanelWrapper>
+            <PanelTitle>{title}</PanelTitle>
+            <ReactSortable options={{ group: "shared", onAdd: (e) => onAdd(title, e), onEnd: onEnd }} onChange={(itemIds: string[]) => onChange(title, itemIds)} >
+                {items.map((item) => <KanbanItem key={item.name} item={item} />)}
+            </ReactSortable>
         </PanelWrapper>
     );
 };
