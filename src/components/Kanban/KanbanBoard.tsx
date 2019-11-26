@@ -42,13 +42,10 @@ export const KanbanBoard: React.FC<IKanbanBoard> = ({ initialPanels, onPanelChan
     const handleAdd = (panel: string, e: any) => {
         const changedItemId = e.item.getAttribute("data-id");
         onPanelChange(panel, changedItemId);
-        onOrderChange(panels);
     }
 
     const handleEnd = (e: any) => {
-        if (e.from === e.to) {
-            onOrderChange(panels);
-        }
+        onOrderChange(panels);
     }
 
     return (
