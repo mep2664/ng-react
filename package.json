@@ -38,7 +38,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --coverage --watchAll=false",
     "eject": "react-scripts eject",
-    "heroku-prebuild": "npm install --save react-redux @types/react-redux"
+    "heroku-postbuild": "tsc"
   },
   "eslintConfig": {
     "extends": "react-app"
