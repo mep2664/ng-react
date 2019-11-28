@@ -127,7 +127,7 @@ export const CreateTicket: React.FC = () => {
         <div>
             {`Create Ticket...`}
             <TicketInfo>
-                <form action="localhost:5556/ticket" method="post" onSubmit={handleSubmit}>
+                <form method="post" onSubmit={handleSubmit}>
                     <SelectInputs>
                         <SelectInput label="Project" name="project" options={projectOptions} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setProjectName(e.target.value)} />
                         <SelectInput label="Sprint" name="sprint" options={sprintOptions} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSprintName(e.target.value)} />

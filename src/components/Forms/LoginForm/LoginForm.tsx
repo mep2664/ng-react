@@ -3,6 +3,7 @@ import { TextInput } from "../..";
 import styled from "styled-components";
 import { emphasisType } from "../../../theme";
 import { Link } from "react-router-dom";
+import { API_URL } from "../../../constant";
 
 const Form = styled.form`
     display: grid;
@@ -52,7 +53,7 @@ export const LoginForm: React.FC<ILoginFormProps> = ({ formId, emphasis = "Prima
             email,
             password,
         }
-        fetch("http://localhost:5556/rest/login", {
+        fetch(`${API_URL}/rest/login`, {
             method: "POST",
             mode: "cors",
             cache: "no-cache",

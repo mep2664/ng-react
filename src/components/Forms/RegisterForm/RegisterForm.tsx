@@ -2,6 +2,7 @@ import * as React from "react";
 import { TextInput } from "../..";
 import styled from "styled-components";
 import { emphasisType } from "../../../theme";
+import { API_URL } from "../../../constant";
 
 const Form = styled.form`
     display: grid;
@@ -48,7 +49,7 @@ export const RegisterForm: React.FC<IRegisterFormProps> = ({ formId, emphasis = 
             firstName,
             lastName
         }
-        fetch("http://localhost:5556/rest/register", {
+        fetch(`${API_URL}/rest/register`, {
             method: "POST",
             mode: "cors",
             cache: "no-cache",

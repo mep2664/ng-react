@@ -52,7 +52,7 @@ export const CreateTeam: React.FC = () => {
     return (
         <div>
             {`Create Team...`}
-            <form action="localhost:5556/team" method="post" onSubmit={handleSubmit}>
+            <form method="post" onSubmit={handleSubmit}>
                 <TextInput label="Team Name" name="teamName" value={teamName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTeamName(e.target.value)} />
                 <SelectInputs>
                     { /* TODO - Multiple Select Input With Working State for UserTeam table */}

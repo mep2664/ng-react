@@ -1,1 +1,1 @@
-export const API_URL: string = "http://localhost:5556/"
+export const API_URL: string = process.env.API_URL ? process.env.API_URL : "http://localhost:5556";

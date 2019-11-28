@@ -8,6 +8,7 @@ import { CreateItem, Dashboard, Home, ITicket, KanbanBoard, Loaders, Login, Modu
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 
+import { API_URL } from "./constant";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { bgColor } from './theme';
@@ -28,11 +29,6 @@ export const getCookie = (cname: string) => {
     return "";
 }
 
-const loginClient =
-    new ApolloClient({
-        uri: "http://localhost:5556/login",
-    });
-
 const Spaceholder = styled.div`
     height: 50px;
     background-color: ${bgColor.Darkgray};
@@ -42,7 +38,7 @@ const checkForActiveSession = (): Promise<SystemState> => {
     return new Promise<SystemState>((resolve, reject) => {
         const token = getCookie("uuid");
         if (token) {
-            fetch(`http://localhost:5556/rest/login/${token}`,
+            fetch(`${API_URL}/rest/login/${token}`,
                 {
                     method: "GET",
                     mode: "cors",
@@ -195,7 +191,7 @@ const AppComponent: React.FC<IAppProps> = ({ system, updateSession }) => {
     ];
 
     const client = new ApolloClient({
-        uri: "http://localhost:5556/graphql",
+        uri: `${API_URL}/graphql`,
         headers: {
             AUTHTOKEN: getCookie("uuid"),
         },
