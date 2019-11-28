@@ -1,7 +1,7 @@
 import React from "react"
 import { render, wait } from "@testing-library/react"
 import "@testing-library/jest-dom/extend-expect";
-import { Dashboard, GET_TICKETS } from "../Dashboard"
+import { Dashboard, GET_DATA } from "../Dashboard"
 import { MockedProvider } from '@apollo/react-testing';
 
 const tickets = [
@@ -20,7 +20,7 @@ const tickets = [
 const mocks = [
     {
         request: {
-            query: GET_TICKETS,
+            query: GET_DATA,
             variables: {},
         },
         result: {
@@ -65,7 +65,7 @@ describe("Tests for the Dashboard component", () => {
     test("Displays loading when waiting for data", async () => {
         const errorMock = {
             request: {
-                query: GET_TICKETS,
+                query: GET_DATA,
                 variables: {},
             },
             error: new Error("something went wrong..."),
